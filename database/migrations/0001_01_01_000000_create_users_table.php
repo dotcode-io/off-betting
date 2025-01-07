@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('wallet_amount')->default(0);
             $table->bigInteger('commission_amount')->default(0);
             $table->string('user_type');
+            $table->bigInteger('version')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

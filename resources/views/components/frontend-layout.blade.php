@@ -24,15 +24,24 @@
             <flux:input as="button" variant="filled" placeholder="Search..." icon="magnifying-glass" />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" href="#" current>Home</flux:navlist.item>
-                <flux:navlist.item icon="inbox" badge="12" href="#">Inbox</flux:navlist.item>
-                <flux:navlist.item icon="document-text" href="#">Documents</flux:navlist.item>
-                <flux:navlist.item icon="calendar" href="#">Calendar</flux:navlist.item>
+                <flux:navlist.item icon="home" href="#" current>Dashboard</flux:navlist.item>
+                <flux:navlist.item icon="inbox" href="#">Events</flux:navlist.item>
+                <flux:navlist.item icon="puzzle-piece" href="#">Game Controller</flux:navlist.item>
+                <flux:navlist.item icon="document-text" href="#">Points History</flux:navlist.item>
+                <flux:navlist.item icon="document-text" href="#">Commission History</flux:navlist.item>
+                <flux:navlist.item icon="document-text" href="#">Commission Logs</flux:navlist.item>
 
-                <flux:navlist.group expandable heading="Favorites" class="hidden lg:grid">
-                    <flux:navlist.item href="#">Marketing site</flux:navlist.item>
-                    <flux:navlist.item href="#">Android app</flux:navlist.item>
-                    <flux:navlist.item href="#">Brand guidelines</flux:navlist.item>
+                <flux:navlist.group expandable heading="Downline Menu" class="hidden lg:grid">
+                    <flux:navlist.item href="#" icon="users">Active Players</flux:navlist.item>
+                    <flux:navlist.item href="#" icon="user-group">Active Agents</flux:navlist.item>
+                    <flux:navlist.item href="" icon="user-circle">System Users</flux:navlist.item>
+                    <flux:navlist.item href="#" icon="user-plus">For Approval</flux:navlist.item>
+                    <flux:navlist.item href="" icon="user-minus">Deactivated</flux:navlist.item>
+                </flux:navlist.group>
+
+                <flux:navlist.group expandable heading="Admin Menu" class="hidden lg:grid">
+                    <flux:navlist.item href="#" icon="users">All Players</flux:navlist.item>
+                    <flux:navlist.item href="#" icon="user-group">All Agents</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
