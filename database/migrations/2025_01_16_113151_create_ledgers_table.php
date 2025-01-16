@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ledgers', function (Blueprint $table) {
+        Schema::create('ledgers', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('sender_id')->constrained('users')->nullable();
