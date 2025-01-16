@@ -1,3 +1,20 @@
+<?php
+use App\Livewire\Actions\Logout;
+use Livewire\Volt\Component;
+
+new class extends Component {
+    /**
+     * Log the current user out of the application.
+     */
+    public function logout(Logout $logout): void
+    {
+        $logout();
+
+        $this->redirect('/login', navigate: true);
+    }
+};
+?>
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -53,18 +70,14 @@
             </flux:navlist>
 
             <flux:dropdown position="top" align="start" class="max-lg:hidden">
-                <flux:profile avatar="https://fluxui.dev/img/demo/user.png" name="Olivia Martin" />
+                <flux:profile avatar="https://fluxui.dev/img/demo/user.png" name="{{ Auth::user()->username }}" />
 
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <flux:menu.radio checked>Olivia Martin</flux:menu.radio>
-                        <flux:menu.radio>Truly Delta</flux:menu.radio>
-                    </flux:menu.radio.group>
+                @volt('layout.navigation.profile.dropdown')
+                    <flux:menu>
 
-                    <flux:menu.separator />
-
-                    <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
-                </flux:menu>
+                        <flux:menu.item icon="arrow-right-start-on-rectangle" wire:click='logout'>Logout</flux:menu.item>
+                    </flux:menu>
+                @endvolt
             </flux:dropdown>
         </flux:sidebar>
 
@@ -76,16 +89,12 @@
             <flux:dropdown position="top" alignt="start">
                 <flux:profile avatar="https://fluxui.dev/img/demo/user.png" />
 
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <flux:menu.radio checked>Olivia Martin</flux:menu.radio>
-                        <flux:menu.radio>Truly Delta</flux:menu.radio>
-                    </flux:menu.radio.group>
+                @volt('layout.navigation.profile.dropdown')
+                    <flux:menu>
 
-                    <flux:menu.separator />
-
-                    <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
-                </flux:menu>
+                        <flux:menu.item icon="arrow-right-start-on-rectangle" wire:click='logout'>Logout</flux:menu.item>
+                    </flux:menu>
+                @endvolt
             </flux:dropdown>
         </flux:header>
 

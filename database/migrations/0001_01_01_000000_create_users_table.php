@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,12 +19,13 @@ return new class extends Migration
             $table->string('uuid')->unique();
             $table->string('username')->unique();
             $table->string('password');
-            $table->bigInteger('wallet_amount')->default(0);
-            $table->bigInteger('commission_amount')->default(0);
+            $table->decimal('wallet_amount', 10, 2)->default(0.00);
+            $table->decimal('commission_amount', 10, 2)->default(0.00);
             $table->string('user_type');
             $table->bigInteger('version')->default(1);
             $table->rememberToken();
             $table->timestamps();
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -38,6 +42,13 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        // Add CHECK constraint for 'balance >= 0' on wallets
+        DB::statement('ALTER TABLE users ADD CONSTRAINT chk_wallets_balance_non_negative CHECK (wallet_amount >= 0)');
+
+        // Add CHECK constraint for 'balance >= 0' on commissions
+        DB::statement('ALTER TABLE users ADD CONSTRAINT chk_commissions_balance_non_negative CHECK (commission_amount >= 0)');
+
     }
 
     /**

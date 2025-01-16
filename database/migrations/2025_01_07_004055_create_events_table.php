@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('name');
-            $table->string('event_date');
+            $table->string('date');
             $table->integer('start_of_game')->default(1);
             $table->integer('number_of_games');
             $table->string('status')->default('pending');
-            $table->bigInteger('created_by');
             $table->dateTime('opened_at')->nullable();
             $table->dateTime('closed_at')->nullable();
             $table->timestamps();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\View\Components\FrontendLayout;
 
 return [
@@ -40,7 +42,7 @@ return [
     |
     */
 
-    'layout' =>  FrontendLayout::class,
+    'layout' => FrontendLayout::class,
 
     /*
     |---------------------------------------------------------------------------
