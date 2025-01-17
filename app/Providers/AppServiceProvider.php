@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -26,7 +29,9 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->configureCommands();
         $this->configureModels();
-        $this->configureUrl();
+        $this->configureDates();
+        $this->configureUrls();
+        $this->configureVite();
     }
 
     /**
@@ -35,8 +40,16 @@ final class AppServiceProvider extends ServiceProvider
     private function configureCommands(): void
     {
         DB::prohibitDestructiveCommands(
-            $this->app->environment('production'),
+            $this->app->isProduction(),
         );
+    }
+
+    /**
+     * Configure the application's dates.
+     */
+    private function configureDates(): void
+    {
+        Date::use(CarbonImmutable::class);
     }
 
     /**
@@ -44,18 +57,24 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configureModels(): void
     {
-        // Model::shouldBeStrict();
-
         Model::unguard();
+
+        Model::shouldBeStrict();
     }
 
     /**
-     * Configure the application's URL.
+     * Configure the application's URLs.
      */
-    private function configureUrl(): void
+    private function configureUrls(): void
     {
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
+        URL::forceScheme('https');
+    }
+
+    /**
+     * Configure the application's Vite instance.
+     */
+    private function configureVite(): void
+    {
+        Vite::useAggressivePrefetching();
     }
 }

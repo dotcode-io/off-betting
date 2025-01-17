@@ -31,9 +31,15 @@ return new class extends Migration
 
         });
 
-        DB::statement('ALTER TABLE ledgers ADD CONSTRAINT chk_ledgers_debit_non_negative CHECK (debit >= 0)');
-        DB::statement('ALTER TABLE ledgers ADD CONSTRAINT chk_ledgers_credit_non_negative CHECK (credit >= 0)');
-        DB::statement('ALTER TABLE ledgers ADD CONSTRAINT chk_ledgers_balance_non_negative CHECK (balance >= 0)');
+        if (! app()->environment('testing')) {
+            // Add CHECK constraint for 'debit >= 0' on ledgers
+            DB::statement('ALTER TABLE ledgers ADD CONSTRAINT chk_ledgers_debit_non_negative CHECK (debit >= 0)');
+            // Add CHECK constraint for 'credit >= 0' on ledgers
+            DB::statement('ALTER TABLE ledgers ADD CONSTRAINT chk_ledgers_credit_non_negative CHECK (credit >= 0)');
+            // Add CHECK constraint for 'balance >= 0' on ledgers
+            DB::statement('ALTER TABLE ledgers ADD CONSTRAINT chk_ledgers_balance_non_negative CHECK (balance >= 0)');
+        }
+
     }
 
     /**

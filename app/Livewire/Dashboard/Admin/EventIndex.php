@@ -9,7 +9,7 @@ use Livewire\Component;
 
 final class EventIndex extends Component
 {
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         $events = Event::get();
 

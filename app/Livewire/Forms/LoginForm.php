@@ -32,7 +32,7 @@ final class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['username', 'password']), $this->remember)) {
+        if (! Auth::attempt((array) $this->only(['username', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

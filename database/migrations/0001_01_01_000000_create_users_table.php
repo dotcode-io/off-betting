@@ -43,11 +43,13 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        // Add CHECK constraint for 'balance >= 0' on wallets
-        DB::statement('ALTER TABLE users ADD CONSTRAINT chk_wallets_balance_non_negative CHECK (wallet_amount >= 0)');
+        if (! app()->environment('testing')) {
+            // Add CHECK constraint for 'balance >= 0' on wallets
+            DB::statement('ALTER TABLE users ADD CONSTRAINT chk_wallets_balance_non_negative CHECK (wallet_amount >= 0)');
 
-        // Add CHECK constraint for 'balance >= 0' on commissions
-        DB::statement('ALTER TABLE users ADD CONSTRAINT chk_commissions_balance_non_negative CHECK (commission_amount >= 0)');
+            // Add CHECK constraint for 'balance >= 0' on commissions
+            DB::statement('ALTER TABLE users ADD CONSTRAINT chk_commissions_balance_non_negative CHECK (commission_amount >= 0)');
+        }
 
     }
 

@@ -10,8 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 
 final class Event extends Model
 {
-    use HasFactory,HasUuids;
+    /** @use HasFactory<\Database\Factories\EventFactory> */
+    use HasFactory ,HasUuids;
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<int, string>
+     */
     public function uniqueIds(): array
     {
         return ['uuid'];
