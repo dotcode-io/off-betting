@@ -10,6 +10,9 @@ enum EventStatus: string
     case OPENED = 'opened';
     case CLOSED = 'closed';
 
+    /**
+     * Get the label for the status.
+     */
     public function label(): string
     {
         return match ($this) {
