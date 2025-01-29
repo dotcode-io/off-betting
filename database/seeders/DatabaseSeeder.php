@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\AppSetting;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -18,8 +19,12 @@ final class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'username' => 'admin',
+            'user_type' => 'admin'
+        ]);
+
+        AppSetting::create([
+            'app_name' => 'OCBS - KCI Gaming Services'
         ]);
     }
 }

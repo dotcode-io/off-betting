@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->decimal('wallet_amount', 10, 2)->default(0.00);
             $table->decimal('commission_amount', 10, 2)->default(0.00);
-            $table->string('user_type');
+            $table->enum('user_type', ['admin', 'teller', 'controller', 'player'])->default('player');
             $table->bigInteger('version')->default(1);
             $table->rememberToken();
             $table->timestamps();
