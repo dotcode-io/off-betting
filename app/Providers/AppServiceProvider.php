@@ -40,7 +40,8 @@ final class AppServiceProvider extends ServiceProvider
     private function configureCommands(): void
     {
         DB::prohibitDestructiveCommands(
-            $this->app->isProduction(),
+
+            $this->app->environment('production'),
         );
     }
 
@@ -59,7 +60,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        Model::shouldBeStrict();
+        // Model::shouldBeStrict();
     }
 
     /**
@@ -67,7 +68,9 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configureUrls(): void
     {
-        URL::forceScheme('https');
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 
     /**

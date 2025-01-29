@@ -24,15 +24,10 @@
             <flux:input as="button" variant="filled" placeholder="Search..." icon="magnifying-glass" />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" href="#" current>Home</flux:navlist.item>
-                <flux:navlist.item icon="inbox" badge="12" href="#">Inbox</flux:navlist.item>
-                <flux:navlist.item icon="document-text" href="#">Documents</flux:navlist.item>
-                <flux:navlist.item icon="calendar" href="#">Calendar</flux:navlist.item>
-
-                <flux:navlist.group expandable heading="Favorites" class="hidden lg:grid">
-                    <flux:navlist.item href="#">Marketing site</flux:navlist.item>
-                    <flux:navlist.item href="#">Android app</flux:navlist.item>
-                    <flux:navlist.item href="#">Brand guidelines</flux:navlist.item>
+                <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:current="font-bold text-zinc-800">Dashboard</flux:navlist.item>
+                <flux:navlist.group expandable heading="Game Center" class="hidden lg:grid">
+                    <flux:navlist.item href="#">Game Controller</flux:navlist.item>
+                    <flux:navlist.item href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
@@ -83,7 +78,9 @@
         <flux:main>
             {{ $slot }}
         </flux:main>
-
+            @persist('toast')
+                <flux:toast position="top right"/>
+            @endpersist
         @fluxScripts
     </body>
 

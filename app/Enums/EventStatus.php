@@ -21,4 +21,18 @@ enum EventStatus: string
             self::CLOSED => 'Closed',
         };
     }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::PENDING => 'yellow',
+            self::OPENED => 'green',
+            self::CLOSED => 'red',
+        };
+    }
+
+    public function isEditable(): bool
+    {
+        return $this->value === self::PENDING || $this->value === self::OPENED;
+    }
 }

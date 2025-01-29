@@ -1,84 +1,74 @@
 <div>
-        <div class="flex justify-between">
-            <div>
-                <flux:heading size="xl" level="1">Good afternoon, Olivia</flux:heading>
-                <flux:subheading size="lg" class="mb-6">Here's what's new today</flux:subheading>
-               
-            
-            </div>
-            <div>
-            <flux:select  placeholder="Choose industry...">
-                <flux:option>Photography</flux:option>
-                <flux:option>Design services</flux:option>
-                <flux:option>Web development</flux:option>
-                <flux:option>Accounting</flux:option>
-                <flux:option>Legal services</flux:option>
-                <flux:option>Consulting</flux:option>
-                <flux:option>Other</flux:option>
-            </flux:select>
-            </div>
+    <div class="flex justify-between">
+        <div>
+            <flux:heading size="xl" level="1">Good afternoon, Olivia</flux:heading>
+            <flux:subheading size="lg" class="mb-6">Here's what's new today</flux:subheading>
+
+
         </div>
-        <flux:separator variant="subtle" />
-      <div class="flex">
-        <div class="p-2 w-2/6">
-            <flux:select  placeholder="Choose industry...">
-                <flux:option>Photography</flux:option>
-                <flux:option>Design services</flux:option>
-                <flux:option>Web development</flux:option>
-                <flux:option>Accounting</flux:option>
-                <flux:option>Legal services</flux:option>
-                <flux:option>Consulting</flux:option>
-                <flux:option>Other</flux:option>
-            </flux:select>
+        <div>
+
         </div>
-        <div class="p-2 w-2/6">
-            <flux:select  placeholder="Choose industry...">
-                <flux:option>Photography</flux:option>
-                <flux:option>Design services</flux:option>
-                <flux:option>Web development</flux:option>
-                <flux:option>Accounting</flux:option>
-                <flux:option>Legal services</flux:option>
-                <flux:option>Consulting</flux:option>
-                <flux:option>Other</flux:option>
-            </flux:select>
+    </div>
+    <flux:separator variant="subtle" />
+    <div class="flex p-4 items-center space-x-2">
+        <div class=" w-2/6">
+            <flux:input icon="magnifying-glass" placeholder="Search events" />
         </div>
-      </div>
-    <flux:table>
+
+        <div class="">
+            <flux:button variant="filled" icon-trailing="plus" wire:click="openFormModal()"> Create new event
+            </flux:button>
+        </div>
+
+    </div>
+    <flux:table :paginate="$events">
         <flux:columns>
-            <flux:column>Customer</flux:column>
+            <flux:column>Event name</flux:column>
             <flux:column>Date</flux:column>
             <flux:column>Status</flux:column>
-            <flux:column>Amount</flux:column>
+            <flux:column></flux:column>
         </flux:columns>
-    
+
         <flux:rows>
-            <flux:row>
-                <flux:cell>Lindsey Aminoff</flux:cell>
-                <flux:cell>Jul 29, 10:45 AM</flux:cell>
-                <flux:cell><flux:badge color="green" size="sm" inset="top bottom">Paid</flux:badge></flux:cell>
-                <flux:cell variant="strong">$49.00</flux:cell>
-            </flux:row>
-    
-            <flux:row>
-                <flux:cell>Hanna Lubin</flux:cell>
-                <flux:cell>Jul 28, 2:15 PM</flux:cell>
-                <flux:cell><flux:badge color="green" size="sm" inset="top bottom">Paid</flux:badge></flux:cell>
-                <flux:cell variant="strong">$312.00</flux:cell>
-            </flux:row>
-    
-            <flux:row>
-                <flux:cell>Kianna Bushevi</flux:cell>
-                <flux:cell>Jul 30, 4:05 PM</flux:cell>
-                <flux:cell><flux:badge color="zinc" size="sm" inset="top bottom">Refunded</flux:badge></flux:cell>
-                <flux:cell variant="strong">$132.00</flux:cell>
-            </flux:row>
-    
-            <flux:row>
-                <flux:cell>Gustavo Geidt</flux:cell>
-                <flux:cell>Jul 27, 9:30 AM</flux:cell>
-                <flux:cell><flux:badge color="green" size="sm" inset="top bottom">Paid</flux:badge></flux:cell>
-                <flux:cell variant="strong">$31.00</flux:cell>
-            </flux:row>
+            @foreach ($events as $event)
+                <flux:row :key="$event->id">
+                    <flux:cell>{{ $event->name }}</flux:cell>
+                    <flux:cell>{{ $event->dateFormated() }}</flux:cell>
+                    <flux:cell>
+                        <flux:badge color="{{ $event->status->color() }}" size="sm" inset="top bottom">
+                            {{ $event->status->label() }}
+                        </flux:badge>
+                    </flux:cell>
+                    <flux:cell>
+                        <flux:button size="sm" wire:click="openFormModal('{{ $event->id }}')">Edit</flux:button>
+                        <flux:button size="sm">View</flux:button>
+                    </flux:cell>
+
+
+                </flux:row>
+            @endforeach
+
+
+
         </flux:rows>
     </flux:table>
+
+
+
+    <flux:modal name="event-form" class="md:w-96 space-y-6">
+        <form wire:submit='save'>
+            <div>
+                <flux:heading size="lg">Event Form</flux:heading>
+            </div>
+            <flux:input label="Name" placeholder="Event name" wire:model="form.name" />
+            <flux:input label="Date" type="date" wire:model="form.date" />
+            <flux:input label="Start of game" type="number" wire:model="form.start_of_game" />
+            <flux:input label="Number of game" type="number" wire:model="form.number_of_games" />
+            <div class="flex pt-2">
+                <flux:spacer />
+                <flux:button type="submit" variant="primary">Save event</flux:button>
+            </div>
+        </form>
+    </flux:modal>
 </div>
