@@ -33,6 +33,16 @@ enum EventStatus: string
 
     public function isEditable(): bool
     {
-        return $this->value === self::PENDING || $this->value === self::OPENED;
+        return $this === self::PENDING || $this === self::OPENED;
+    }
+
+    public function disabledOpen(): bool
+    {
+        return $this !== self::PENDING;
+    }
+
+    public function disabledClose(): bool
+    {
+        return $this !== self::OPENED;
     }
 }

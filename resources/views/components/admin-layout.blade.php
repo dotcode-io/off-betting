@@ -26,7 +26,7 @@
             <flux:navlist variant="outline">
                 <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:current="font-bold text-zinc-800">Dashboard</flux:navlist.item>
                 <flux:navlist.group expandable heading="Game Center" class="hidden lg:grid">
-                    <flux:navlist.item href="#">Game Controller</flux:navlist.item>
+                    <flux:navlist.item href="{{ route('events.game-controller')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
                     <flux:navlist.item href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

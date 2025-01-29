@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 final class ClosedEventActions
 {
-    public function handle(Event $event): Event
+    public function handle(Event $event): void
     {
         if ($event->status !== EventStatus::OPENED) {
             throw new Exception('Event is not pending');
         }
 
-        return DB::transaction(function () use ($event) {
-            return $event->update([
+        DB::transaction(function () use ($event) {
+            $event->update([
+                'closed_at' => now(),
                 'status' => EventStatus::CLOSED,
             ]);
         });

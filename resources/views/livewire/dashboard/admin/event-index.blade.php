@@ -13,7 +13,7 @@
     <flux:separator variant="subtle" />
     <div class="flex p-4 items-center space-x-2">
         <div class=" w-2/6">
-            <flux:input icon="magnifying-glass" placeholder="Search events" />
+            <flux:input icon="magnifying-glass" placeholder="Search events" wire:model.live.debounce='search' />
         </div>
 
         <div class="">
@@ -40,8 +40,10 @@
                             {{ $event->status->label() }}
                         </flux:badge>
                     </flux:cell>
-                    <flux:cell>
-                        <flux:button size="sm" wire:click="openFormModal('{{ $event->id }}')">Edit</flux:button>
+                    <flux:cell class="flex space-x-2 items-center justify-center">
+                        @if($event->status->isEditable())
+                        <flux:button size="sm" wire:click="openFormModal('{{ $event->uuid }}')">Edit</flux:button>
+                        @endif
                         <flux:button size="sm">View</flux:button>
                     </flux:cell>
 
