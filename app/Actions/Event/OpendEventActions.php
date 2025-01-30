@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 final class OpendEventActions
 {
+    /**
+     * @throws Exception
+     */
     public function handle(Event $event): void
     {
         if ($event->status !== EventStatus::PENDING) {

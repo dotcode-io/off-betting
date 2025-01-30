@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 final class UpdateEventActions
 {
+    /**
+     * @throws Exception
+     */
     public function handle(EventForm $form, Event $event): Event
     {
 

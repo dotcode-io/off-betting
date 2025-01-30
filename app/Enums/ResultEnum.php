@@ -34,4 +34,6 @@ enum ResultEnum: string
             self::PENDING => 'stone',
         };
     }
+
+
 }
