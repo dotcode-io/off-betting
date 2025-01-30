@@ -10,7 +10,7 @@
 
         </div>
     </div>
-    <flux:separator variant="subtle" />
+    <flux:separator variant="subtle"/>
     <flux:table :paginate="$events">
         <flux:columns>
             <flux:column>Event name</flux:column>
@@ -21,7 +21,7 @@
 
         <flux:rows>
             @foreach ($events as $event)
-                <flux:row :key="$event->id">
+                <flux:row wire:key="{{ $event->id }}">
                     <flux:cell>{{ $event->name }}</flux:cell>
                     <flux:cell>{{ $event->dateFormated() }}</flux:cell>
                     <flux:cell>
@@ -30,19 +30,15 @@
                         </flux:badge>
                     </flux:cell>
                     <flux:cell>
-                        <flux:button size="sm" href="{{ route('events.game-controller.show', $event->uuid)}}">View</flux:button>
+                        <flux:button size="sm" href="{{ route('events.game-controller.show', $event->uuid) }}">View
+                        </flux:button>
                     </flux:cell>
-
-
                 </flux:row>
             @endforeach
-
 
 
         </flux:rows>
     </flux:table>
 
 
-
-  
 </div>

@@ -12,7 +12,7 @@ final class UpsertEventActions
 {
     public function handle(Event $event, EventForm $form): Event
     {
-        return DB::transaction(function () use ($form, $event) {
+        return DB::transaction(function () use ($form, $event): \App\Models\Event {
 
             $event->name = $form->name;
             $event->date = $form->date;

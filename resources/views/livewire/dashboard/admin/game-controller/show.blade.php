@@ -9,7 +9,7 @@
 
         </div>
     </div>
-    <flux:separator variant="subtle" />
+    <flux:separator variant="subtle"/>
 
     <div class="grid grid-cols-3 gap-4 py-3">
         <div class="flex flex-col space-y-2">
@@ -18,7 +18,7 @@
                     <div class="flex-1">
                         <flux:heading size="xl">{{ $event->name }}</flux:heading>
                         <div class="py-2">
-                            <flux:separator variant="subtle" />
+                            <flux:separator variant="subtle"/>
                         </div>
                         <div class="flex items-center space-x-2">
                             <flux:heading size="lg">Status:
@@ -30,111 +30,197 @@
                             </div>
                         </div>
                         <div class="py-2">
-                            <flux:separator variant="subtle" />
+                            <flux:separator variant="subtle"/>
                         </div>
-                        <flux:heading size="lg">Date Opened: </flux:heading>
+                        <flux:heading size="lg">Date Opened:</flux:heading>
                         <flux:subheading>{{ $event->openedAtFormated()}}</flux:subheading>
                         <div class="py-2">
-                            <flux:separator variant="subtle" />
+                            <flux:separator variant="subtle"/>
                         </div>
-                        <flux:heading size="lg">Date Closed: </flux:heading>
+                        <flux:heading size="lg">Date Closed:</flux:heading>
                         <flux:subheading>{{$event->closedAtFormated()}}</flux:subheading>
                         <div class="py-2">
-                            <flux:separator variant="subtle" />
+                            <flux:separator variant="subtle"/>
                         </div>
-                        <flux:heading size="lg">Actions </flux:heading>
+                        <flux:heading size="lg">Actions</flux:heading>
                         <div>
                             <flux:modal.trigger name="open-event">
                                 <flux:button variant="filled" :disabled="$event->status->disabledOpen() ">Opened
                                 </flux:button>
                             </flux:modal.trigger>
-                        <flux:modal.trigger name="close-event">
-                            <flux:button variant="danger" :disabled="$event->status->disabledClose() ">Closed
-                            </flux:button>
+                            <flux:modal.trigger name="close-event">
+                                <flux:button variant="danger" :disabled="$event->status->disabledClose() ">Closed
+                                </flux:button>
                             </flux:modal.trigger>
                         </div>
                         <div class="py-2">
-                            <flux:separator variant="subtle" />
+                            <flux:separator variant="subtle"/>
                         </div>
 
 
-
-
                     </div>
 
                 </div>
 
             </flux:card>
-            <flux:card class="space-y-6">
-                <div class="flex">
-                    <div class="flex-1">
-                        <flux:heading size="lg">Are you sure?</flux:heading>
 
-                        <flux:subheading>
-                            <p>Your post will be deleted permanently.</p>
-                            <p>This action cannot be undone.</p>
-                        </flux:subheading>
-                    </div>
 
-                    <div class="-mx-2 -mt-2">
-                        <flux:button variant="ghost" size="sm" icon="x-mark" inset="top right bottom" />
-                    </div>
-                </div>
-
-                <div class="flex gap-4">
-                    <flux:spacer />
-                    <flux:button variant="ghost">Undo</flux:button>
-                    <flux:button variant="danger">Delete</flux:button>
-                </div>
-            </flux:card>
         </div>
         <div>
-            <flux:card class="space-y-6">
-                <div class="flex">
-                    <div class="flex-1">
-                        <flux:heading size="lg">Are you sure?</flux:heading>
+            <x-game-controller.main :games="$games">
 
-                        <flux:subheading>
-                            <p>Your post will be deleted permanently.</p>
-                            <p>This action cannot be undone.</p>
-                        </flux:subheading>
-                    </div>
-
-                    <div class="-mx-2 -mt-2">
-                        <flux:button variant="ghost" size="sm" icon="x-mark" inset="top right bottom" />
-                    </div>
-                </div>
-
-                <div class="flex gap-4">
-                    <flux:spacer />
-                    <flux:button variant="ghost">Undo</flux:button>
-                    <flux:button variant="danger">Delete</flux:button>
-                </div>
-            </flux:card>
+                <flux:card class="space-y-6">
+                    <x-stats.results-card/>
+                </flux:card>
+            </x-game-controller.main>
         </div>
-        <div>
+        <div class="flex flex-col space-y-2">
             <flux:card class="space-y-6">
                 <div class="flex">
                     <div class="flex-1">
-                        <flux:heading size="lg">Are you sure?</flux:heading>
+                        <flux:heading size="lg">Fight #70</flux:heading>
+                        <div class="py-2">
+                            <flux:separator variant="subtle"/>
+                        </div>
 
-                        <flux:subheading>
-                            <p>Your post will be deleted permanently.</p>
-                            <p>This action cannot be undone.</p>
-                        </flux:subheading>
+                        <div>
+                            <flux:heading size="lg">Game Controller</flux:heading>
+                            <div class="flex items-center space-x-2 py-2">
+                                <flux:button class="!bg-green-500 w-full">Opened</flux:button>
+                                <flux:button variant="danger" class="w-full">Closed</flux:button>
+                            </div>
+
+                        </div>
+                        <div>
+                            <flux:heading size="lg">Game Result</flux:heading>
+                            <flux:select variant="listbox" placeholder="Select Result...">
+                                @foreach (\App\Enums\ResultEnum::cases() as $result)
+
+                                    @if($result !== \App\Enums\ResultEnum::CANCELLED)
+                                        <flux:option value="{{ $result->value}}">
+                                            <div class="flex items-center gap-2">
+                                                <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
+                                                </div>
+                                                <div>
+                                                    {{ $result->label() }}
+                                                </div>
+                                            </div>
+
+                                        </flux:option>
+                                    @endif
+                                @endforeach
+
+                            </flux:select>
+                            <div class="flex items-center space-x-2 py-2">
+                                <flux:button class="!bg-green-500 w-full">Declare</flux:button>
+                                <flux:button variant="danger" class="w-full">Cancelled</flux:button>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div class="-mx-2 -mt-2">
-                        <flux:button variant="ghost" size="sm" icon="x-mark" inset="top right bottom" />
-                    </div>
+
                 </div>
 
-                <div class="flex gap-4">
-                    <flux:spacer />
-                    <flux:button variant="ghost">Undo</flux:button>
-                    <flux:button variant="danger">Delete</flux:button>
-                </div>
             </flux:card>
+            <flux:card class="space-y-6">
+                <div class="flex">
+                    <div class="flex-1">
+                        <flux:heading size="lg">Fight #70</flux:heading>
+                        <div class="py-2">
+                            <flux:separator variant="subtle"/>
+                        </div>
+
+                        <div>
+                            <flux:heading size="lg">Game Controller</flux:heading>
+                            <div class="flex items-center space-x-2 py-2">
+                                <flux:button class="!bg-green-500 w-full">Opened</flux:button>
+                                <flux:button variant="danger" class="w-full">Closed</flux:button>
+                            </div>
+
+                        </div>
+                        <div>
+                            <flux:heading size="lg">Game Result</flux:heading>
+                            <flux:select variant="listbox" placeholder="Select Result...">
+                                @foreach (\App\Enums\ResultEnum::cases() as $result)
+
+                                    @if($result !== \App\Enums\ResultEnum::CANCELLED)
+                                        <flux:option value="{{ $result->value}}">
+                                            <div class="flex items-center gap-2">
+                                                <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
+                                                </div>
+                                                <div>
+                                                    {{ $result->label() }}
+                                                </div>
+                                            </div>
+
+                                        </flux:option>
+                                    @endif
+                                @endforeach
+
+                            </flux:select>
+                            <div class="flex items-center space-x-2 py-2">
+                                <flux:button class="!bg-green-500 w-full">Declare</flux:button>
+                                <flux:button variant="danger" class="w-full">Cancelled</flux:button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </flux:card>
+
+            <flux:card class="space-y-6">
+                <div class="flex">
+                    <div class="flex-1">
+                        <flux:heading size="lg">Fight #70</flux:heading>
+                        <div class="py-2">
+                            <flux:separator variant="subtle"/>
+                        </div>
+
+                        <div>
+                            <flux:heading size="lg">Game Controller</flux:heading>
+                            <div class="flex items-center space-x-2 py-2">
+                                <flux:button class="!bg-green-500 w-full">Opened</flux:button>
+                                <flux:button variant="danger" class="w-full">Closed</flux:button>
+                            </div>
+
+                        </div>
+                        <div>
+                            <flux:heading size="lg">Game Result</flux:heading>
+                            <flux:select variant="listbox" placeholder="Select Result...">
+                                @foreach (\App\Enums\ResultEnum::cases() as $result)
+
+                                    @if($result !== \App\Enums\ResultEnum::CANCELLED)
+                                        <flux:option value="{{ $result->value}}">
+                                            <div class="flex items-center gap-2">
+                                                <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
+                                                </div>
+                                                <div>
+                                                    {{ $result->label() }}
+                                                </div>
+                                            </div>
+
+                                        </flux:option>
+                                    @endif
+                                @endforeach
+
+                            </flux:select>
+                            <div class="flex items-center space-x-2 py-2">
+                                <flux:button class="!bg-green-500 w-full">Declare</flux:button>
+                                <flux:button variant="danger" class="w-full">Cancelled</flux:button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </flux:card>
+
         </div>
     </div>
 
@@ -149,7 +235,7 @@
         </div>
 
         <div class="flex gap-2">
-            <flux:spacer />
+            <flux:spacer/>
 
             <flux:modal.close>
                 <flux:button variant="ghost">Cancel</flux:button>
@@ -171,7 +257,7 @@
         </div>
 
         <div class="flex gap-2">
-            <flux:spacer />
+            <flux:spacer/>
 
             <flux:modal.close>
                 <flux:button variant="ghost">Cancel</flux:button>
@@ -182,9 +268,6 @@
             </form>
         </div>
     </flux:modal>
-
-
-
 
 
 </div>

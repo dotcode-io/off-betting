@@ -18,13 +18,11 @@ final class UpdateEventActions
             throw new Exception('Event is not editable');
         }
 
-        return DB::transaction(function () use ($form, $event) {
-            return $event->update([
-                'name' => $form->name,
-                'date' => $form->date,
-                'start_of_game' => $form->start_of_game,
-                'number_of_games' => $form->number_of_games,
-            ]);
-        });
+        return DB::transaction(fn() => $event->update([
+            'name' => $form->name,
+            'date' => $form->date,
+            'start_of_game' => $form->start_of_game,
+            'number_of_games' => $form->number_of_games,
+        ]));
     }
 }

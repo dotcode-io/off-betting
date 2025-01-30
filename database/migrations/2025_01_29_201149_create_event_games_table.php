@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_games', function (Blueprint $table) {
+        Schema::create('event_games', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('event_id');
             $table->unsignedInteger('game_number');
@@ -28,7 +30,7 @@ return new class extends Migration
             $table->decimal('earnings', 16, 2)->default(0);
             $table->decimal('draw_earnings', 16, 2)->default(0);
             $table->enum('status', ['pending', 'open', 'close', 'done'])->default('pending');
-            $table->enum('result', ['meron', 'wala', 'draw', 'cancelled'])->nullable();
+            $table->enum('result', ['meron', 'wala', 'draw', 'cancelled', 'pending'])->nullable();
             $table->decimal('plasada', 16, 2)->default(0);
             $table->dateTime('opened_at')->nullable();
             $table->dateTime('closed_at')->nullable();

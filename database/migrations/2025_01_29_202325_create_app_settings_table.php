@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('app_settings', function (Blueprint $table) {
+        Schema::create('app_settings', function (Blueprint $table): void {
             $table->id();
             $table->string('app_name')->default('OCBS');
             $table->string('app_logo_url')->nullable();

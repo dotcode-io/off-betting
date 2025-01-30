@@ -1,34 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Enums\ResultEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventGame extends Model
+final class EventGame extends Model
 {
-    use SoftDeletes;
+    use HasFactory;
 
-    protected $fillable = [
-        'event_id',
-        'game_number',
-        'meron_entry',
-        'wala_entry',
-        'meron_odds',
-        'wala_odds',
-        'meron_bettors',
-        'wala_bettors',
-        'draw_bettors',
-        'meron_bets',
-        'wala_bets',
-        'draw_bets',
-        'earnings',
-        'draw_earnings',
-        'status',
-        'result',
-        'plasada',
-        'opened_at',
-        'closed_at',
-        'done_at',
+    public $casts = [
+        'result' => ResultEnum::class,
     ];
 }

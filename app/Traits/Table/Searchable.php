@@ -8,7 +8,7 @@ trait Searchable
 {
     public $search = '';
 
-    public function updatedSearchable($property)
+    public function updatedSearchable($property): void
     {
         if ($property === 'search') {
             $this->resetPage();
@@ -22,7 +22,7 @@ trait Searchable
             return $query;
         }
 
-        return $query->where(function ($query) use ($columns) {
+        return $query->where(function ($query) use ($columns): void {
             foreach ($columns as $column) {
                 $query->orWhere($column, 'like', '%'.$this->search.'%');
             }

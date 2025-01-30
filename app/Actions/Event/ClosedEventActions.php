@@ -17,7 +17,7 @@ final class ClosedEventActions
             throw new Exception('Event is not pending');
         }
 
-        DB::transaction(function () use ($event) {
+        DB::transaction(function () use ($event): void {
             $event->update([
                 'closed_at' => now(),
                 'status' => EventStatus::CLOSED,

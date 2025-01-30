@@ -1,0 +1,13 @@
+<div class="flex space-x-2 overflow-x-auto">
+    <template x-for="(chunks,index) in results" :key="`game-ul-${index}`">>
+        <ul class="space-y-1">
+            <template x-for="(item,index) in chunks" :key="`game-li-${index}`">
+                <li>
+                <span
+                    class="w-6 h-6 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold"
+                    :class="'bg-' + item.color + '-500'" x-text="item.game_number"></span>
+                </li>
+            </template>
+        </ul>
+    </template>
+</div>

@@ -17,11 +17,12 @@ final class OpendEventActions
             throw new Exception('Event is not pending');
         }
 
-        DB::transaction(function () use ($event) {
+        DB::transaction(function () use ($event): void {
             $event->update([
                 'opened_at' => now(),
                 'status' => EventStatus::OPENED,
             ]);
+            $event->createGames();
         });
     }
 }

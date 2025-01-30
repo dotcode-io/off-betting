@@ -10,7 +10,7 @@ use Livewire\Form;
 
 final class EventForm extends Form
 {
-    public ?Event $event;
+    public ?Event $event = null;
 
     #[Validate('required', 'string', 'min:3', 'max:50')]
     public $name = '';

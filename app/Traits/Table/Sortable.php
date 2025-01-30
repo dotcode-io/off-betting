@@ -14,7 +14,7 @@ trait Sortable
     #[Url]
     public $sortAsc = false;
 
-    public function sortBy($column)
+    public function sortBy($column): void
     {
         if ($this->sortCol === $column) {
             $this->sortAsc = ! $this->sortAsc;
@@ -27,15 +27,12 @@ trait Sortable
     protected function applySorting($query, $default = null)
     {
         if ($this->sortCol) {
-
             if (method_exists($this, 'getMatches')) {
                 $column = $this->getMatches();
                 $query->orderBy($column, $this->sortAsc ? 'asc' : 'desc');
             }
-        } else {
-            if ($default) {
-                $query->orderBy($default, 'desc');
-            }
+        } elseif ($default) {
+            $query->orderBy($default, 'desc');
         }
 
         return $query;
