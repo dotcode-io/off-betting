@@ -97,6 +97,16 @@ final class Event extends Model
         ])->orderBy('game_number','asc')->first();
     }
 
+    public function getOpenGame(): EventGame
+    {
+        if($this->status !== EventStatus::OPENED) {
+            throw new Exception('Event is not opened');
+        }
+        return $this->games()->where('status',
+            GameStatus::OPENED
+        )->orderBy('game_number','asc')->firstOrFail();
+    }
+
     public static function getUuidInCache(int $id): string
     {
         return (string) Cache::remember("event_uuid_{$id}", (60 * 60 * 24), function () use ($id) {

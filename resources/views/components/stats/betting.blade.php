@@ -27,7 +27,7 @@
 
 
                 <div class="pb-2">
-                    <flux:heading size="xl" x-text="game.wala_bets">20,000.00</flux:heading>
+                    <flux:heading size="xl" x-text="game.wala_bets"></flux:heading>
                     <flux:heading size="lg" x-text="game.wala_odds"></flux:heading>
                 </div>
 
