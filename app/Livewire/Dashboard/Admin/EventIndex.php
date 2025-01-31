@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Dashboard\Admin;
 
 use App\Actions\Event\ClosedEventActions;
-use App\Actions\Event\OpendEventActions;
+use App\Actions\Event\OpenedEventActions;
 use App\Actions\Event\UpsertEventActions;
 use App\Livewire\Forms\EventForm;
 use App\Models\Event;
@@ -21,7 +21,6 @@ final class EventIndex extends Component
     use Searchable, Sortable , WithPagination;
 
     public EventForm $form;
-
     public function getMatches(): array
     {
         return [
@@ -55,7 +54,7 @@ final class EventIndex extends Component
         return response()->noContent();
     }
 
-    public function open(Event $event, OpendEventActions $actions): Response
+    public function open(Event $event, OpenedEventActions $actions): Response
     {
         $actions->handle($event);
 
@@ -82,6 +81,6 @@ final class EventIndex extends Component
 
         return view('livewire.dashboard.admin.event-index', [
             'events' => $events,
-        ]);
+        ])->title('Events');
     }
 }

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Livewire\Dashboard\Admin\GameController;
 
 use App\Actions\Event\ClosedEventActions;
-use App\Actions\Event\OpendEventActions;
+use App\Actions\Event\OpenedEventActions;
 use App\Actions\Game\ClosedGameActions;
 use App\Actions\Game\DeclaredGameResultAction;
 use App\Actions\Game\OpenedGameActions;
 use App\Enums\GameResult;
+use App\Enums\EventStatus;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\OpenGameForm;
 use App\Models\Event;
@@ -19,12 +20,13 @@ use Flux\Flux;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\Attributes\On; 
 
 final class Show extends Component
 {
     public Event $event;
 
-    public $game;
+    public $game = null;
 
     public array $games = [];
 
@@ -38,27 +40,45 @@ final class Show extends Component
     public function mount(Event $event): void
     {
         $this->event = $event;
-        $this->game = EventGameResource::make($event->getCurrentGame())->resolve();
 
-        $this->games = $event->games()->orderBy('game_number', 'asc')->get()->map(fn (EventGame $game): array => [
+        if ($this->event->status === EventStatus::OPENED) {
+            $this->getGames();
+        }
+    }
+
+    public function getGames()
+    {
+        $game = EventGameResource::make($this->event->getCurrentGame())->resolve();
+        $this->game = $game;
+
+        $this->games = $this->event->games()->orderBy('game_number', 'asc')->get()->map(fn(EventGame $game): array => [
             'id' => $game->id,
             'game_number' => $game->game_number,
             'color' => $game->result->color(),
             'result' => $game->result->value,
         ])->toArray();
+    }
 
+    #[On('event-opened')]
+    public function eventOpened(): void
+    {
+        $this->getGames();
     }
 
     /**
      * @throws Exception
      */
-    public function openEvent(OpendEventActions $action): void
+    public function openEvent(OpenedEventActions $action): void
     {
         $action->handle($this->event);
 
         Flux::toast('Event opened successfully', variant: 'success');
 
         Flux::modal('open-event')->close();
+
+        $this->getGames();
+
+        // $this->dispatch('event-opened');
     }
 
     /**
@@ -111,6 +131,6 @@ final class Show extends Component
 
     public function render(): View
     {
-        return view('livewire.dashboard.admin.game-controller.show');
+        return view('livewire.dashboard.admin.game-controller.show')->title('Game Controller');
     }
 }

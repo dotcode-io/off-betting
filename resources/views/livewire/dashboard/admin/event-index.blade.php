@@ -32,23 +32,23 @@
 
         <flux:rows>
             @foreach ($events as $event)
-                <flux:row :key="$event->id">
-                    <flux:cell>{{ $event->name }}</flux:cell>
-                    <flux:cell>{{ $event->dateFormated() }}</flux:cell>
-                    <flux:cell>
-                        <flux:badge color="{{ $event->status->color() }}" size="sm" inset="top bottom">
-                            {{ $event->status->label() }}
-                        </flux:badge>
-                    </flux:cell>
-                    <flux:cell class="flex space-x-2 items-center justify-center">
-                        @if($event->status->isEditable())
-                        <flux:button size="sm" wire:click="openFormModal('{{ $event->uuid }}')">Edit</flux:button>
-                        @endif
-                        <flux:button size="sm">View</flux:button>
-                    </flux:cell>
+            <flux:row :key="$event->id">
+                <flux:cell>{{ $event->name }}</flux:cell>
+                <flux:cell>{{ $event->dateFormated() }}</flux:cell>
+                <flux:cell>
+                    <flux:badge color="{{ $event->status->color() }}" size="sm" inset="top bottom">
+                        {{ $event->status->label() }}
+                    </flux:badge>
+                </flux:cell>
+                <flux:cell class="flex space-x-2 items-center justify-center">
+                    @if($event->status->isEditable())
+                    <flux:button size="sm" wire:click="openFormModal('{{ $event->uuid }}')">Edit</flux:button>
+                    @endif
+                    <flux:button size="sm">View</flux:button>
+                </flux:cell>
 
 
-                </flux:row>
+            </flux:row>
             @endforeach
 
 
@@ -61,12 +61,12 @@
     <flux:modal name="event-form" class="md:w-96 space-y-6">
         <form wire:submit='save'>
             <div>
-                <flux:heading size="lg">Event Form</flux:heading>
+                <flux:heading size="lg" class="mb-4">Event Form</flux:heading>
             </div>
-            <flux:input label="Name" placeholder="Event name" wire:model="form.name" />
-            <flux:input label="Date" type="date" wire:model="form.date" />
-            <flux:input label="Start of game" type="number" wire:model="form.start_of_game" />
-            <flux:input label="Number of game" type="number" wire:model="form.number_of_games" />
+            <flux:input label="Name" placeholder="Event name" wire:model="form.name" class="mb-3" />
+            <flux:input label="Date" type="date" wire:model="form.date" class="mb-3" min="{{ now()->toDateString() }}" />
+            <flux:input label="Start of game" type="number" wire:model="form.start_of_game" min="1" class="mb-3" />
+            <flux:input label="Number of game" type="number" wire:model="form.number_of_games" min="50" class="mb-3" />
             <div class="flex pt-2">
                 <flux:spacer />
                 <flux:button type="submit" variant="primary">Save event</flux:button>

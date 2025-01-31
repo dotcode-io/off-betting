@@ -25,6 +25,6 @@ final class Index extends Component
 
         return view('livewire.dashboard.admin.game-controller.index', [
             'events' => $events,
-        ]);
+        ])->title('Game Control Panel');
     }
 }

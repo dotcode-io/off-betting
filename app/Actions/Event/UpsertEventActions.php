@@ -17,9 +17,17 @@ final class UpsertEventActions
 
             $event->name = $form->name;
             $event->date = $form->date;
+
+            if (is_null($event->status)) {
+                $event->status = EventStatus::PENDING;
+            }
+
             if ($event->status === EventStatus::PENDING) {
                 $event->start_of_game = $form->start_of_game;
                 $event->number_of_games = $form->number_of_games;
+                $event->created_by = auth()->id();
+                $event->created_at = now();
+                $event->updated_at = now();
             }
             $event->save();
 

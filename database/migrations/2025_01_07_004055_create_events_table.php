@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('name');
-            $table->string('arena');
+            $table->string('arena')->nullable();
             $table->date('date');
             $table->integer('start_of_game')->default(1);
             $table->integer('number_of_games');

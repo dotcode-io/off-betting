@@ -1,15 +1,10 @@
 <div>
     <div class="flex justify-between">
         <div>
-            <flux:heading size="xl" level="1">Game Controller</flux:heading>
-
-
-        </div>
-        <div>
-
+            <flux:heading size="xl" level="1" class="mb-6">Game Controller</flux:heading>
         </div>
     </div>
-    <flux:separator variant="subtle"/>
+    <flux:separator variant="subtle" />
 
     <x-game-controller.main :games="$games" :game="$game">
         <div class="grid  grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 py-3">
@@ -19,7 +14,7 @@
                         <div class="flex-1">
                             <flux:heading size="xl">{{ $event->name }}</flux:heading>
                             <div class="py-2">
-                                <flux:separator variant="subtle"/>
+                                <flux:separator variant="subtle" />
                             </div>
                             <div class="flex items-center space-x-2">
                                 <flux:heading size="lg">Status:
@@ -31,33 +26,32 @@
                                 </div>
                             </div>
                             <div class="py-2">
-                                <flux:separator variant="subtle"/>
+                                <flux:separator variant="subtle" />
                             </div>
                             <flux:heading size="lg">Date Opened:</flux:heading>
                             <flux:subheading>{{ $event->openedAtFormated()}}</flux:subheading>
                             <div class="py-2">
-                                <flux:separator variant="subtle"/>
+                                <flux:separator variant="subtle" />
                             </div>
                             <flux:heading size="lg">Date Closed:</flux:heading>
                             <flux:subheading>{{$event->closedAtFormated()}}</flux:subheading>
                             <div class="py-2">
-                                <flux:separator variant="subtle"/>
+                                <flux:separator variant="subtle" />
                             </div>
-                            <flux:heading size="lg">Actions</flux:heading>
                             <div>
+                                @if($event->status->isPending())
                                 <flux:modal.trigger name="open-event">
-                                    <flux:button variant="filled" :disabled="$event->status->disabledOpen() ">Opened
+                                    <flux:button variant="primary" class="w-full" :disabled="$event->status->disabledOpen() ">Open Event
                                     </flux:button>
                                 </flux:modal.trigger>
+                                @endif
+                                @if($event->status->isOpened())
                                 <flux:modal.trigger name="close-event">
-                                    <flux:button variant="danger" :disabled="$event->status->disabledClose() ">Closed
+                                    <flux:button variant="danger" class="w-full" :disabled="$event->status->disabledClose() ">Close Event
                                     </flux:button>
                                 </flux:modal.trigger>
+                                @endif
                             </div>
-                            <div class="py-2">
-                                <flux:separator variant="subtle"/>
-                            </div>
-
 
                         </div>
 
@@ -68,19 +62,22 @@
 
             </div>
 
+            @if($game)
             <div class="space-y-2">
-                <x-stats.betting/>
-                <x-stats.results-count-card/>
+                <x-stats.betting />
+                <x-stats.results-count-card />
             </div>
+            @endif
 
 
+            @if($game)
             <div class="flex flex-col space-y-2">
                 <flux:card class="space-y-6">
                     <div class="flex">
                         <div class="flex-1">
                             <flux:heading size="lg">Fight #<span x-text="game.game_number"> </span></flux:heading>
                             <div class="py-2">
-                                <flux:separator variant="subtle"/>
+                                <flux:separator variant="subtle" />
                             </div>
 
                             <div>
@@ -100,24 +97,24 @@
                                 <flux:select variant="listbox" placeholder="Select Result..." x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'" wire:model.live="resultSelected">
                                     @foreach (\App\Enums\GameResult::cases() as $result)
 
-                                        @if($result !== \App\Enums\GameResult::CANCELLED && $result !== \App\Enums\GameResult::PENDING)
-                                            <flux:option value="{{ $result->value}}">
-                                                <div class="flex items-center gap-2">
-                                                    <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
-                                                    </div>
-                                                    <div class="uppercase">
-                                                        {{ $result->label() }}
-                                                    </div>
-                                                </div>
+                                    @if($result !== \App\Enums\GameResult::CANCELLED && $result !== \App\Enums\GameResult::PENDING)
+                                    <flux:option value="{{ $result->value}}">
+                                        <div class="flex items-center gap-2">
+                                            <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
+                                            </div>
+                                            <div class="uppercase">
+                                                {{ $result->label() }}
+                                            </div>
+                                        </div>
 
-                                            </flux:option>
-                                        @endif
+                                    </flux:option>
+                                    @endif
                                     @endforeach
 
                                 </flux:select>
                                 <div class="flex items-center space-x-2 py-2">
                                     <flux:modal.trigger name="game-result">
-                                    <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">Declare</flux:button>
+                                        <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">Declare</flux:button>
                                     </flux:modal.trigger>
                                     <flux:button variant="danger" class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'" wire:click="cancelledGameModal">Cancelled</flux:button>
                                 </div>
@@ -129,12 +126,14 @@
                     </div>
 
                 </flux:card>
-                <x-stats.results-card/>
-                <x-stats.streaks-card/>
+                <x-stats.results-card />
+                <x-stats.streaks-card />
             </div>
+            @endif
 
 
         </div>
+        @if($game)
         <flux:modal name="open-game" class="min-w-[22rem] space-y-6">
             <div>
                 <flux:heading size="lg">FIGHT # <span x-text="game.game_number"> </span></flux:heading>
@@ -146,10 +145,10 @@
 
             <form wire:submit="openGame">
 
-                <flux:input type="text" label="MERON ENTRY NAME" wire:model="gameForm.meron_name"/>
-                <flux:input type="text" label="WALA ENTRY NAME" wire:model="gameForm.wala_name"/>
+                <flux:input type="text" label="MERON ENTRY NAME" wire:model="gameForm.meron_name" />
+                <flux:input type="text" label="WALA ENTRY NAME" wire:model="gameForm.wala_name" />
                 <div class="flex gap-2 pt-2">
-                    <flux:spacer/>
+                    <flux:spacer />
 
 
                     <flux:modal.close>
@@ -171,7 +170,7 @@
 
             <form wire:submit="closeGame">
                 <div class="flex gap-2 pt-2">
-                    <flux:spacer/>
+                    <flux:spacer />
 
 
                     <flux:modal.close>
@@ -191,19 +190,19 @@
                     <p>You're about to declare a game result.</p>
                 </flux:subheading>
 
-                <flux:spacer/>
+                <flux:spacer />
                 @php
-                 $resultEnum = \App\Enums\GameResult::tryFrom($resultSelected)
+                $resultEnum = \App\Enums\GameResult::tryFrom($resultSelected)
                 @endphp
 
                 <div class="pt-2">
-                    <flux:heading size="xl" >RESULT: <span class="uppercase text-{{$resultEnum?->color()}}-500">{{ $resultEnum?->label()  }}</span></flux:heading>
+                    <flux:heading size="xl">RESULT: <span class="uppercase text-{{$resultEnum?->color()}}-500">{{ $resultEnum?->label()  }}</span></flux:heading>
                 </div>
             </div>
 
             <form wire:submit="declareGameResult">
                 <div class="flex gap-2 pt-2">
-                    <flux:spacer/>
+                    <flux:spacer />
 
 
                     <flux:modal.close>
@@ -214,6 +213,7 @@
             </form>
 
         </flux:modal>
+        @endif
     </x-game-controller.main>
 
 
@@ -227,7 +227,7 @@
         </div>
 
         <div class="flex gap-2">
-            <flux:spacer/>
+            <flux:spacer />
 
             <flux:modal.close>
                 <flux:button variant="ghost">Cancel</flux:button>
@@ -249,7 +249,7 @@
         </div>
 
         <div class="flex gap-2">
-            <flux:spacer/>
+            <flux:spacer />
 
             <flux:modal.close>
                 <flux:button variant="ghost">Cancel</flux:button>

@@ -21,7 +21,7 @@ final class GameEvent implements ShouldBroadcastNow
     {
         return [
             'current' => new EventGameResource($this->currentGame),
-            'next' => $this->nextGame instanceof \App\Models\EventGame ? new EventGameResource($this->nextGame) : null,
+            'next' => $this->nextGame instanceof EventGame ? new EventGameResource($this->nextGame) : null,
         ];
     }
 

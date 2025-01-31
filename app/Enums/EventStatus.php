@@ -7,8 +7,9 @@ namespace App\Enums;
 enum EventStatus: string
 {
     case PENDING = 'pending';
-    case OPENED = 'opened';
-    case CLOSED = 'closed';
+    case OPENED = 'open';
+    case CLOSED = 'close';
+    case DONE = 'done';
 
     /**
      * Get the label for the status.
@@ -19,6 +20,7 @@ enum EventStatus: string
             self::PENDING => 'Pending',
             self::OPENED => 'Opened',
             self::CLOSED => 'Closed',
+            self::DONE => 'Done',
         };
     }
 
@@ -28,6 +30,7 @@ enum EventStatus: string
             self::PENDING => 'yellow',
             self::OPENED => 'green',
             self::CLOSED => 'red',
+            self::DONE => 'blue',
         };
     }
 
@@ -44,5 +47,25 @@ enum EventStatus: string
     public function disabledClose(): bool
     {
         return $this !== self::OPENED;
+    }
+
+    public function isOpened(): bool
+    {
+        return $this === self::OPENED;
+    }
+
+    public function isClosed(): bool
+    {
+        return $this === self::CLOSED;
+    }
+
+    public function isDone(): bool
+    {
+        return $this === self::DONE;
+    }
+
+    public function isPending(): bool
+    {
+        return $this === self::PENDING;
     }
 }
