@@ -7,7 +7,7 @@ use Livewire\Form;
 
 class BetForm extends Form
 {
-    #[Validate('required', 'string')]
+    #[Validate('required', 'numeric', 'min:1', 'max:100000', 'regex:/^\d*(\.\d{1,2})?$/')]
     public $amount = '';
     #[Validate('required', 'string','in:meron,wala,draw')]
     public $side = '';
