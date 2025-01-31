@@ -1,7 +1,8 @@
-<div class="flex space-x-2 overflow-x-auto">
-    <template x-for="(chunks,index) in results" :key="`game-ul-${index}`">>
+<flux:card class="space-y-6">
+<div class="flex space-x-2 overflow-x-auto min-h-[200px] md:min-h-[250px]">
+    <template x-for="(chunks,index) in results" :key="`game-result-ul-${index}`">>
         <ul class="space-y-1">
-            <template x-for="(item,index) in chunks" :key="`game-li-${index}`">
+            <template x-for="(item,index) in chunks" :key="`game-result-li-${index}`">
                 <li>
                 <span
                     class="w-6 h-6 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold"
@@ -11,3 +12,4 @@
         </ul>
     </template>
 </div>
+</flux:card>

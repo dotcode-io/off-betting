@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\ResultEnum;
+use App\Enums\GameStatus;
+use App\Enums\GameResult;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,7 @@ final class EventGame extends Model
     use HasFactory;
 
     public $casts = [
-        'result' => ResultEnum::class,
+        'result' => GameResult::class,
+        'status' => GameStatus::class
     ];
 }

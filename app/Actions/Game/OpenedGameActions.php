@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Actions\Game;
+
+use App\Enums\GameStatus;
+use App\Events\GameEvent;
+use App\Livewire\Forms\OpenGameForm;
+use App\Models\Event;
+use Illuminate\Support\Facades\DB;
+
+class OpenedGameActions
+{
+
+    /**
+     * @throws \Exception
+     */
+    public  function handle(Event $event, OpenGameForm $gameForm): void
+    {
+       DB::transaction(function () use ($event,$gameForm){
+           $game = $event->getCurrentGame();
+           $game->opened_at = now();
+           $game->meron_entry = $gameForm->meron_name;
+           $game->wala_entry = $gameForm->wala_name;
+           $game->status = GameStatus::OPENED;
+           $game->save();
+
+           GameEvent::dispatch($game,null);
+        });
+    }
+}

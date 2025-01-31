@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\EventStatus;
+use App\Enums\GameStatus;
 use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 final class Event extends Model
 {
@@ -78,5 +80,29 @@ final class Event extends Model
 
         EventGame::insert($games);
 
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getCurrentGame(): EventGame
+    {
+        if($this->status !== EventStatus::OPENED) {
+            throw new Exception('Event is not opened');
+        }
+        return $this->games()->whereIn('status', [
+            GameStatus::PENDING,
+            GameStatus::OPENED,
+            GameStatus::CLOSED,
+        ])->orderBy('game_number','asc')->first();
+    }
+
+    public static function getUuidInCache(int $id): string
+    {
+        return (string) Cache::remember("event_uuid_{$id}", (60 * 60 * 24), function () use ($id) {
+            return Event::query()
+                ->select('uuid')
+                ->find($id)->uuid;
+        });
     }
 }

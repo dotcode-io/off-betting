@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum ResultEnum: string
+enum GameResult: string
 {
     case MERON = 'meron';
     case WALA = 'wala';

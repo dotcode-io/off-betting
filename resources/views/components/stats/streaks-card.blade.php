@@ -1,24 +1,15 @@
-<div>
-    <flux:card class="space-y-6">
-        <div class="flex">
-            <div class="flex-1">
-                <flux:heading size="lg">Fight #</flux:heading>
-
-                <flux:subheading>
-                    <p>Your post will be deleted permanently.</p>
-                    <p>This action cannot be undone.</p>
-                </flux:subheading>
-            </div>
-
-            <div class="-mx-2 -mt-2">
-                <flux:button variant="ghost" size="sm" icon="x-mark" inset="top right bottom"/>
-            </div>
-        </div>
-
-        <div class="flex gap-4">
-            <flux:spacer/>
-            <flux:button variant="ghost">Undo</flux:button>
-            <flux:button variant="danger">Delete</flux:button>
-        </div>
-    </flux:card>
-</div>
+<flux:card class="space-y-6">
+    <div class="flex space-x-2 overflow-x-auto min-h-[200px] md:min-h-[250px]">
+        <template x-for="(chunks,index) in streaks" :key="`game-streak-ul-${index}`">>
+            <ul class="space-y-1">
+                <template x-for="(item,index) in chunks" :key="`game-streak-li-${index}`">
+                    <li>
+                <span
+                    class="w-6 h-6 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold"
+                    :class="'bg-' + item + '-500'" x-text="item.game_number"></span>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </div>
+</flux:card>
