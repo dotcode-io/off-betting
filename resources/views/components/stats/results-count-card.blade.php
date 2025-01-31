@@ -10,7 +10,7 @@
             <flux:heading size="lg">WALA</flux:heading>
             <span
                 class="w-12 h-12 flex items-center justify-center border rounded-full text-xm font-bold"
-                :class="'bg-blue-50-500'" x-text="resultCounts.wala" ></span>
+                :class="'bg-blue-500'" x-text="resultCounts.wala" ></span>
         </div>
         <div class="flex flex-col items-center justify-center">
             <flux:heading size="lg">DRAW</flux:heading>

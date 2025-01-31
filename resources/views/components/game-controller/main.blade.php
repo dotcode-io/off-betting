@@ -100,23 +100,6 @@
                 init() {
                     this.results = chunkArray(this.games, 6);
                     this.resultCounts = resultCount(this.games);
-
-                    const value = [
-                        { result: 'green' },
-                        { result: 'green' },
-                        { result: 'gray' },
-                        { result: 'white' },
-                        { result: 'green' },
-                        { result: 'gray' },
-                        { result: 'gray' },
-                        { result: 'green' },
-                        { result: 'green' },
-                        { result: 'green' },
-                        { result: 'green' },
-                        { result: 'green' },
-                        { result: 'green' },
-                        { result: 'gray' },
-                    ];
                     this.streaks = streak(this.games);
 
 
