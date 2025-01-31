@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\AppSetting;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -20,11 +20,11 @@ final class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'username' => 'admin',
-            'user_type' => 'admin'
+            'user_type' => 'admin',
         ]);
 
         AppSetting::create([
-            'app_name' => 'OCBS - KCI Gaming Services'
+            'app_name' => 'OCBS - KCI Gaming Services',
         ]);
     }
 }

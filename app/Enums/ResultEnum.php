@@ -12,7 +12,6 @@ enum ResultEnum: string
     case CANCELLED = 'cancelled';
     case PENDING = 'pending';
 
-
     public function label(): string
     {
         return match ($this) {
@@ -34,6 +33,4 @@ enum ResultEnum: string
             self::PENDING => 'stone',
         };
     }
-
-
 }

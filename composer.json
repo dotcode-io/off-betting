@@ -73,7 +73,7 @@
         "test:refactor": "rector --dry-run",
         "test": [
             "@test:type-coverage",
-            "@test:unit",
+            "@tesapp/Actions/Event/UpdateEventActions.phpt:unit",
             "@test:lint",
             "@test:types",
             "@test:refactor"

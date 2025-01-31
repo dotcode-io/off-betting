@@ -17,7 +17,7 @@ final class UpsertEventActions
 
             $event->name = $form->name;
             $event->date = $form->date;
-            if($event->status === EventStatus::PENDING){
+            if ($event->status === EventStatus::PENDING) {
                 $event->start_of_game = $form->start_of_game;
                 $event->number_of_games = $form->number_of_games;
             }

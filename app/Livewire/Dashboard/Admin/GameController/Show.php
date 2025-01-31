@@ -8,6 +8,7 @@ use App\Actions\Event\ClosedEventActions;
 use App\Actions\Event\OpendEventActions;
 use App\Models\Event;
 use App\Models\EventGame;
+use Exception;
 use Flux\Flux;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -22,7 +23,7 @@ final class Show extends Component
     public function mount(Event $event): void
     {
         $this->event = $event;
-        $this->games = $event->games()->orderBy('game_number', 'asc')->get()->map(fn(EventGame $game): array => [
+        $this->games = $event->games()->orderBy('game_number', 'asc')->get()->map(fn (EventGame $game): array => [
             'id' => $game->id,
             'game_number' => $game->game_number,
             'color' => $game->result->color(),
@@ -32,7 +33,7 @@ final class Show extends Component
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function openEvent(OpendEventActions $action): void
     {
@@ -44,7 +45,7 @@ final class Show extends Component
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function closeEvent(ClosedEventActions $action): RedirectResponse
     {
