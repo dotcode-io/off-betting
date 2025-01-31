@@ -19,13 +19,14 @@ final class Bet extends Model
         'bet_at' => 'datetime',
         'status' => BetStatus::class,
         'result' => GameResult::class,
-        'side' => BetSide::class
+        'side' => BetSide::class,
     ];
 
-    public function eventGame():BelongsTo
+    public function eventGame(): BelongsTo
     {
         return $this->belongsTo(EventGame::class);
     }
+
     public function uniqueIds(): array
     {
         return ['uuid'];

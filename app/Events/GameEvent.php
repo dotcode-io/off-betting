@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events;
 
 use App\Http\Resources\EventGameResource;
@@ -9,19 +11,17 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class GameEvent implements  ShouldBroadcastNow
+final class GameEvent implements ShouldBroadcastNow
 {
     use Dispatchable;
 
-    public function __construct(public EventGame $currentGame, public ?EventGame $nextGame)
-    {
-    }
+    public function __construct(public EventGame $currentGame, public ?EventGame $nextGame) {}
 
     public function broadcastWith(): array
     {
         return [
             'current' => new EventGameResource($this->currentGame),
-            'next' => $this->nextGame ? new EventGameResource($this->nextGame) : null,
+            'next' => $this->nextGame instanceof \App\Models\EventGame ? new EventGameResource($this->nextGame) : null,
         ];
     }
 

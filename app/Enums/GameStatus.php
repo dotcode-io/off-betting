@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 enum GameStatus: string
 {
-
     case PENDING = 'pending';
     case OPENED = 'open';
     case CLOSED = 'close';

@@ -24,6 +24,13 @@ final class Event extends Model
         'closed_at' => 'datetime',
     ];
 
+    public static function getUuidInCache(int $id): string
+    {
+        return (string) Cache::remember("event_uuid_{$id}", (60 * 60 * 24), fn() => Event::query()
+            ->select('uuid')
+            ->find($id)->uuid);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -87,32 +94,25 @@ final class Event extends Model
      */
     public function getCurrentGame(): EventGame
     {
-        if($this->status !== EventStatus::OPENED) {
+        if ($this->status !== EventStatus::OPENED) {
             throw new Exception('Event is not opened');
         }
+
         return $this->games()->whereIn('status', [
             GameStatus::PENDING,
             GameStatus::OPENED,
             GameStatus::CLOSED,
-        ])->orderBy('game_number','asc')->first();
+        ])->orderBy('game_number', 'asc')->first();
     }
 
     public function getOpenGame(): EventGame
     {
-        if($this->status !== EventStatus::OPENED) {
+        if ($this->status !== EventStatus::OPENED) {
             throw new Exception('Event is not opened');
         }
+
         return $this->games()->where('status',
             GameStatus::OPENED
-        )->orderBy('game_number','asc')->firstOrFail();
-    }
-
-    public static function getUuidInCache(int $id): string
-    {
-        return (string) Cache::remember("event_uuid_{$id}", (60 * 60 * 24), function () use ($id) {
-            return Event::query()
-                ->select('uuid')
-                ->find($id)->uuid;
-        });
+        )->orderBy('game_number', 'asc')->firstOrFail();
     }
 }

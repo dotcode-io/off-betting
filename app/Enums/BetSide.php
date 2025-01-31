@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 enum BetSide: string
 {
-
     case Meron = 'meron';
     case Wala = 'wala';
     case Draw = 'draw';

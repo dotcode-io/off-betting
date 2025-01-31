@@ -24,7 +24,7 @@ final class Show extends Component
 {
     public Event $event;
 
-    public  $game;
+    public $game;
 
     public array $games = [];
 
@@ -38,7 +38,7 @@ final class Show extends Component
     public function mount(Event $event): void
     {
         $this->event = $event;
-        $this->game = EventGameResource::make( $event->getCurrentGame())->resolve();
+        $this->game = EventGameResource::make($event->getCurrentGame())->resolve();
 
         $this->games = $event->games()->orderBy('game_number', 'asc')->get()->map(fn (EventGame $game): array => [
             'id' => $game->id,
@@ -93,24 +93,21 @@ final class Show extends Component
         Flux::modal('close-game')->close();
     }
 
-    public  function  cancelledGameModal()
+    public function cancelledGameModal(): void
     {
         $this->resultSelected = 'cancelled';
         Flux::modal('game-result')->show();
     }
 
-
-
     public function declareGameResult(DeclaredGameResultAction $action): void
     {
         $result = GameResult::tryFrom($this->resultSelected);
-        $action->handle($this->event,$result);
+        $action->handle($this->event, $result);
         Flux::toast('Game successfully declared', variant: 'success');
         Flux::modal('game-result')->close();
         $this->resultSelected = '';
 
     }
-
 
     public function render(): View
     {

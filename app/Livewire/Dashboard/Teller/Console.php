@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard\Teller;
 
 use App\Actions\Console\BetActions;
@@ -7,13 +9,13 @@ use App\Enums\EventStatus;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\BetForm;
 use App\Models\Event;
+use Exception;
 use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class Console extends Component
+final class Console extends Component
 {
     public BetForm $betForm;
 
@@ -22,7 +24,7 @@ class Console extends Component
     public Event $event;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function mount(Event $event): void
     {
@@ -48,7 +50,6 @@ class Console extends Component
 
         Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
 
-
         $this->dispatch('silent-print', [
             'printData' => [
                 'event' => $this->event->name,
@@ -59,7 +60,7 @@ class Console extends Component
                 'teller' => Auth::user()->username,
                 'date' => $bet->bet_at->format('F d, Y'),
                 'time' => $bet->bet_at->format('H:i A'),
-            ]
+            ],
         ]);
     }
 

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('win_amount', 16, 2)->default(0);
             $table->enum('side', ['meron', 'wala', 'draw'])->nullable();
             $table->enum('status', ['on-going', 'winner', 'loser'])->default('on-going');
-            $table->enum('result', ['meron', 'wala', 'draw', 'cancelled','pending'])->nullable();
+            $table->enum('result', ['meron', 'wala', 'draw', 'cancelled', 'pending'])->nullable();
             $table->tinyInteger('is_claimed')->default(0);
             $table->dateTime('bet_at');
             $table->unsignedBigInteger('claimed_by')->nullable();

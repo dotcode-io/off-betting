@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Console;
 
 use App\Enums\BetSide;
@@ -11,13 +13,12 @@ use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class BetActions
+final class BetActions
 {
-
-    public function handle(Event $event, BetForm $form):Bet
+    public function handle(Event $event, BetForm $form): Bet
     {
 
-       return DB::transaction(function () use ($event,$form) {
+        return DB::transaction(function () use ($event, $form) {
             $openGame = $event->getOpenGame();
 
             return Bet::create([
