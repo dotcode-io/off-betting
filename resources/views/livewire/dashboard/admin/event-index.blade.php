@@ -46,9 +46,6 @@
 
             </flux:row>
             @endforeach
-
-
-
         </flux:rows>
     </flux:table>
 

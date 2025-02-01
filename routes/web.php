@@ -16,5 +16,7 @@ Route::prefix('app')->middleware('auth')->group(function () {
     Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
     Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
 
+    Volt::route('users', 'dashboard.admin.user-index')->name('users.index');
+
     Volt::route('console/{event}', 'dashboard.teller.console')->name('tell.console');
 });

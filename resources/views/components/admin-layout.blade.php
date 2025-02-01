@@ -29,6 +29,10 @@
                 <flux:navlist.item href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
                 <flux:navlist.item href="{{ route('events.game-controller')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
             </flux:navlist.group>
+            <flux:navlist.item icon="clipboard-document-list" href="#" wire:current="font-bold text-zinc-800">Bets</flux:navlist.item>
+            <flux:navlist.item icon="trophy" href="#" wire:current="font-bold text-zinc-800">Winners</flux:navlist.item>
+            <flux:navlist.item icon="users" href="{{ route('users.index') }}" wire:current="font-bold text-zinc-800">Users</flux:navlist.item>
+
         </flux:navlist>
 
         <flux:spacer />

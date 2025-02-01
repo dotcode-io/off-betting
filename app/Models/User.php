@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
+use App\Enums\UserType;
 use Database\Factories\UserFactory;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Override;
 
 final class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -23,6 +26,11 @@ final class User extends Model implements AuthenticatableContract, AuthorizableC
      *
      * @var list<string>
      */
+    public $casts = [
+        'status' => UserStatus::class,
+        'user_type' => UserType::class,
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -36,6 +44,12 @@ final class User extends Model implements AuthenticatableContract, AuthorizableC
     public function uniqueIds(): array
     {
         return ['uuid'];
+    }
+
+    #[Override]
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
     }
 
     public function getEmailForVerification()
