@@ -1,13 +1,7 @@
 <div>
     <div class="flex justify-between">
         <div>
-            <flux:heading size="xl" level="1">Good afternoon, Olivia</flux:heading>
-            <flux:subheading size="lg" class="mb-6">Here's what's new today</flux:subheading>
-
-
-        </div>
-        <div>
-
+            <flux:heading size="xl" level="1" class="mb-6">Events</flux:heading>
         </div>
     </div>
     <flux:separator variant="subtle" />
@@ -26,6 +20,7 @@
         <flux:columns>
             <flux:column>Event name</flux:column>
             <flux:column>Date</flux:column>
+            <flux:column>No. of Games</flux:column>
             <flux:column>Status</flux:column>
             <flux:column></flux:column>
         </flux:columns>
@@ -34,7 +29,8 @@
             @foreach ($events as $event)
             <flux:row :key="$event->id">
                 <flux:cell>{{ $event->name }}</flux:cell>
-                <flux:cell>{{ $event->dateFormated() }}</flux:cell>
+                <flux:cell>{{ $event->dateFormatted() }}</flux:cell>
+                <flux:cell>{{ $event->number_of_games }}</flux:cell>
                 <flux:cell>
                     <flux:badge color="{{ $event->status->color() }}" size="sm" inset="top bottom">
                         {{ $event->status->label() }}
@@ -69,7 +65,7 @@
             <flux:input label="Number of game" type="number" wire:model="form.number_of_games" min="50" class="mb-3" />
             <div class="flex pt-2">
                 <flux:spacer />
-                <flux:button type="submit" variant="primary">Save event</flux:button>
+                <flux:button type="submit" variant="primary">Save Event</flux:button>
             </div>
         </form>
     </flux:modal>

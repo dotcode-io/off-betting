@@ -22,6 +22,7 @@ final class EventGameResource extends JsonResource
             'id' => $this->id,
             'game_number' => $this->game_number,
             'status' => $this->status->label(),
+            'status_color' => $this->status->color(),
             'meron_name' => $this->meron_entry ?? '-',
             'wala_name' => $this->wala_entry ?? '-',
             'meron_odds' => $this->meron_odds.'%',

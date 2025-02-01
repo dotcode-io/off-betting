@@ -12,29 +12,33 @@
                 <flux:card class="space-y-6">
                     <div class="flex">
                         <div class="flex-1">
-                            <flux:heading size="xl">{{ $event->name }}</flux:heading>
+                            <div class="flex justify-between">
+                                <flux:heading size="xl">{{ $event->name }}</flux:heading>
+                                <flux:badge color="{{ $event->status->color() }}" size="sm">
+                                    {{ $event->status->label() }}
+                                </flux:badge>
+                            </div>
+
                             <div class="py-2">
                                 <flux:separator variant="subtle" />
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <flux:heading size="lg">Status:
-                                </flux:heading>
-                                <div>
-                                    <flux:badge color="{{ $event->status->color() }}" size="sm">
-                                        {{ $event->status->label() }}
-                                    </flux:badge>
-                                </div>
+                            <flux:heading size="lg">Event Date:</flux:heading>
+                            <flux:subheading>{{ $event->dateFormatted()}}</flux:subheading>
+                            <div class="py-2">
+                                <flux:separator variant="subtle" />
                             </div>
+                            <flux:heading size="lg">Number of Games:</flux:heading>
+                            <flux:subheading>{{ $event->number_of_games}}</flux:subheading>
                             <div class="py-2">
                                 <flux:separator variant="subtle" />
                             </div>
                             <flux:heading size="lg">Date Opened:</flux:heading>
-                            <flux:subheading>{{ $event->openedAtFormated()}}</flux:subheading>
+                            <flux:subheading>{{ $event->openedAtFormatted()}}</flux:subheading>
                             <div class="py-2">
                                 <flux:separator variant="subtle" />
                             </div>
                             <flux:heading size="lg">Date Closed:</flux:heading>
-                            <flux:subheading>{{$event->closedAtFormated()}}</flux:subheading>
+                            <flux:subheading>{{$event->closedAtFormatted()}}</flux:subheading>
                             <div class="py-2">
                                 <flux:separator variant="subtle" />
                             </div>
@@ -75,19 +79,25 @@
                 <flux:card class="space-y-6">
                     <div class="flex">
                         <div class="flex-1">
-                            <flux:heading size="lg">Fight #<span x-text="game.game_number"> </span></flux:heading>
+                            <div class="flex justify-between">
+                                <flux:heading size="lg">Fight #<span x-text="game.game_number"> </span></flux:heading>
+                                <flux:badge color="{{ $game['status_color'] }}" size="sm">
+                                    {{ $game['status'] }}
+                                </flux:badge>
+                            </div>
+
                             <div class="py-2">
                                 <flux:separator variant="subtle" />
                             </div>
 
                             <div>
                                 <flux:heading size="lg">Game Controller</flux:heading>
-                                <div class="flex items-center space-x-2 py-2">
+                                <div class="flex items-center space-x-2 py-2 gap-2">
                                     <flux:modal.trigger name="open-game">
-                                        <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::PENDING->label() }}'">Opened</flux:button>
+                                        <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::PENDING->label() }}'">Open</flux:button>
                                     </flux:modal.trigger>
                                     <flux:modal.trigger name="close-game">
-                                        <flux:button variant="danger" class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::OPENED->label() }}'">Closed</flux:button>
+                                        <flux:button variant="danger" class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::OPENED->label() }}'">Close</flux:button>
                                     </flux:modal.trigger>
                                 </div>
 
@@ -112,11 +122,11 @@
                                     @endforeach
 
                                 </flux:select>
-                                <div class="flex items-center space-x-2 py-2">
+                                <div class="flex items-center py-2 gap-2">
                                     <flux:modal.trigger name="game-result">
                                         <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">Declare</flux:button>
                                     </flux:modal.trigger>
-                                    <flux:button variant="danger" class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'" wire:click="cancelledGameModal">Cancelled</flux:button>
+                                    <flux:button class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'" wire:click="cancelledGameModal">Cancel Game</flux:button>
                                 </div>
 
                             </div>
@@ -145,8 +155,8 @@
 
             <form wire:submit="openGame">
 
-                <flux:input type="text" label="MERON ENTRY NAME" wire:model="gameForm.meron_name" />
-                <flux:input type="text" label="WALA ENTRY NAME" wire:model="gameForm.wala_name" />
+                <flux:input type="text" label="MERON ENTRY NAME" wire:model="gameForm.meron_name" class="mb-3" placeholder="Enter Meron Entry Name" />
+                <flux:input type="text" label="WALA ENTRY NAME" wire:model="gameForm.wala_name" placeholder="Enter Wala Entry Name" />
                 <div class="flex gap-2 pt-2">
                     <flux:spacer />
 
@@ -154,7 +164,7 @@
                     <flux:modal.close>
                         <flux:button variant="ghost">Cancel</flux:button>
                     </flux:modal.close>
-                    <flux:button type="submit" variant="primary">Opened Game</flux:button>
+                    <flux:button type="submit" variant="primary">Open Game #<span x-text="game.game_number"> </span></flux:button>
                 </div>
             </form>
 
@@ -176,7 +186,7 @@
                     <flux:modal.close>
                         <flux:button variant="ghost">Cancel</flux:button>
                     </flux:modal.close>
-                    <flux:button type="submit" variant="primary">Close Game</flux:button>
+                    <flux:button type="submit" variant="primary">Close Game #<span x-text="game.game_number"> </span></flux:button>
                 </div>
             </form>
 
@@ -219,10 +229,10 @@
 
     <flux:modal name="open-event" class="min-w-[22rem] space-y-6">
         <div>
-            <flux:heading size="lg">Opened event?</flux:heading>
+            <flux:heading size="lg">Open Event?</flux:heading>
 
             <flux:subheading>
-                <p>You're about to opened this event.</p>
+                <p>You're about to open this event.</p>
             </flux:subheading>
         </div>
 
@@ -234,17 +244,17 @@
             </flux:modal.close>
             <form wire:submit="openEvent">
 
-                <flux:button type="submit" variant="primary">Opened event</flux:button>
+                <flux:button type="submit" variant="primary">Open event</flux:button>
             </form>
         </div>
     </flux:modal>
 
     <flux:modal name="close-event" class="min-w-[22rem] space-y-6">
         <div>
-            <flux:heading size="lg">Closed event?</flux:heading>
+            <flux:heading size="lg">Close event?</flux:heading>
 
             <flux:subheading>
-                <p>You're about to closed this event.</p>
+                <p>You're about to close this event.</p>
             </flux:subheading>
         </div>
 
@@ -256,7 +266,7 @@
             </flux:modal.close>
             <form wire:submit="closeEvent">
 
-                <flux:button type="submit" variant="primary">Closed event</flux:button>
+                <flux:button type="submit" variant="primary">Close event</flux:button>
             </form>
         </div>
     </flux:modal>

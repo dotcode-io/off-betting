@@ -23,6 +23,16 @@ final class DatabaseSeeder extends Seeder
             'user_type' => 'admin',
         ]);
 
+        User::factory()->create([
+            'username' => 'teller',
+            'user_type' => 'teller',
+        ]);
+
+        User::factory()->create([
+            'username' => 'controller',
+            'user_type' => 'controller',
+        ]);
+
         AppSetting::create([
             'app_name' => 'OCBS - KCI Gaming Services',
         ]);

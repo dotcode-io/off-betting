@@ -48,17 +48,17 @@ final class Event extends Model
         return 'uuid';
     }
 
-    public function dateFormated(): string
+    public function dateFormatted(): string
     {
-        return $this->date->format('F d, Y H:i A');
+        return $this->date->format('F d, Y');
     }
 
-    public function openedAtFormated(): string
+    public function openedAtFormatted(): string
     {
         return $this->opened_at?->format('F d, Y H:i A') ?? 'Not opened yet';
     }
 
-    public function closedAtFormated(): string
+    public function closedAtFormatted(): string
     {
         return $this->closed_at?->format('F d, Y H:i A') ?? 'Not closed yet';
     }

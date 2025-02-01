@@ -21,7 +21,7 @@ final class BetActions
         return DB::transaction(function () use ($event, $form) {
             $openGame = $event->getOpenGame();
 
-            return Bet::create([
+            return Bet::create(['reference' => Bet::generateReference(),
                 'event_id' => $event->id,
                 'event_game_id' => $openGame->id,
                 'user_id' => Auth::id(),

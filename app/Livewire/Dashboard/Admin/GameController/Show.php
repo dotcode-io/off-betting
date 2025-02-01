@@ -65,6 +65,12 @@ final class Show extends Component
         $this->getGames();
     }
 
+    #[On('game-updated')]
+    public function refreshGame(): void
+    {
+        $this->game = EventGameResource::make($this->event->getCurrentGame())->resolve();
+    }
+
     /**
      * @throws Exception
      */
@@ -77,8 +83,6 @@ final class Show extends Component
         Flux::modal('open-event')->close();
 
         $this->getGames();
-
-        // $this->dispatch('event-opened');
     }
 
     /**
@@ -102,6 +106,9 @@ final class Show extends Component
     {
         $this->gameForm->validate();
         $action->handle($this->event, $this->gameForm);
+
+        $this->dispatch('game-updated');
+
         Flux::toast('Game opened successfully', variant: 'success');
         Flux::modal('open-game')->close();
         $this->gameForm->reset();
@@ -110,6 +117,9 @@ final class Show extends Component
     public function closeGame(ClosedGameActions $action): void
     {
         $action->handle($this->event);
+        $this->dispatch('game-updated');
+
+        Flux::toast('Game closed successfully', variant: 'success');
         Flux::modal('close-game')->close();
     }
 
@@ -126,6 +136,9 @@ final class Show extends Component
     {
         $result = GameResult::tryFrom($this->resultSelected);
         $action->handle($this->event, $result);
+
+        $this->getGames();
+
         Flux::toast('Game successfully declared', variant: 'success');
         Flux::modal('game-result')->close();
         $this->resultSelected = '';

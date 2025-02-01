@@ -31,4 +31,9 @@ final class Bet extends Model
     {
         return ['uuid'];
     }
+
+    public function generateReference(): string
+    {
+        return 'BET-'.now()->format('YmdHis').'-'.$this->id;
+    }
 }
