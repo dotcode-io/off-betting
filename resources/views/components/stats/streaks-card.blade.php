@@ -5,7 +5,7 @@
                 <template x-for="(item,index) in chunks" :key="`game-streak-li-${index}`">
                     <li>
                 <span
-                    class="w-6 h-6 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold"
+                    class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold"
                     :class="'bg-' + item + '-500'" x-text="item.game_number"></span>
                     </li>
                 </template>

@@ -3,7 +3,10 @@
         <div class="bg-red-500 flex flex-col items-center justify-center">
            <div class="my-5 text-center">
                <div class="pb-2">
-                     <flux:heading size="xl">MERON</flux:heading>
+                        <flux:heading size="xl">MERON</flux:heading>
+
+
+
                      <flux:heading size="lg" x-text="game.meron_name"></flux:heading>
                </div>
 
@@ -14,6 +17,13 @@
                </div>
 
                <flux:heading>Bettors: <span x-text="game.meron_bettors"></span></flux:heading>
+
+                <div class="pt-6" x-show="game.result == 'Meron'">
+                    <flux:heading >WINNER</flux:heading>
+                </div>
+               <div class="pt-6" x-show="game.result == 'Cancelled'">
+                   <flux:heading >CANCELLED</flux:heading>
+               </div>
            </div>
 
         </div>
@@ -32,6 +42,12 @@
                 </div>
 
                 <flux:heading>Bettors: <span x-text="game.wala_bettors"></span></flux:heading>
+                <div class="pt-6" x-show="game.result == 'Wala'">
+                    <flux:heading >WINNER</flux:heading>
+                </div>
+                <div class="pt-6" x-show="game.result == 'Cancelled'">
+                    <flux:heading >CANCELLED</flux:heading>
+                </div>
             </div>
         </div>
 
@@ -45,7 +61,12 @@
                 <div class="pb-2">
                     <flux:heading>Bettors: <span x-text="game.draw_bettors"></span></flux:heading>
                 </div>
-
+                <div class="pt-6" x-show="game.result == 'Draw'">
+                    <flux:heading >WINNER</flux:heading>
+                </div>
+                <div class="pt-6" x-show="game.result == 'Cancelled'">
+                    <flux:heading >CANCELLED</flux:heading>
+                </div>
 
             </div>
         </div>

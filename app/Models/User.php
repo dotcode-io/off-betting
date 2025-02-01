@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Database\Factories\UserFactory;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
-final class User extends Authenticatable
+final class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasUuids;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'password',
-    ];
+    /** @use HasFactory<UserFactory> */
+    use Authenticatable, Authorizable, HasFactory, HasUuids;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,6 +36,11 @@ final class User extends Authenticatable
     public function uniqueIds(): array
     {
         return ['uuid'];
+    }
+
+    public function getEmailForVerification()
+    {
+        return $this->username;
     }
 
     /**

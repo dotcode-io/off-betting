@@ -26,7 +26,7 @@ final class Event extends Model
 
     public static function getUuidInCache(int $id): string
     {
-        return (string) Cache::remember("event_uuid_{$id}", (60 * 60 * 24), fn() => Event::query()
+        return (string) Cache::remember("event_uuid_{$id}", (60 * 60 * 24), fn () => Event::query()
             ->select('uuid')
             ->find($id)->uuid);
     }
@@ -71,7 +71,6 @@ final class Event extends Model
         if ($this->status !== EventStatus::OPENED) {
             throw new Exception('Event is not opened');
         }
-
         $games = [];
         for ($i = 0; $i < $this->number_of_games; $i++) {
             $games[] = [

@@ -31,6 +31,8 @@ final class EventGameResource extends JsonResource
             'wala_bettors' => $this->wala_bettors,
             'draw_bettors' => $this->draw_bettors,
             'result' => $this->result->label(),
+            'result_color' => $this->result->color(),
+            'result_value' => $this->result->value,
 
         ];
     }

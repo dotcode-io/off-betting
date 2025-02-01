@@ -21,6 +21,7 @@ final class EventIndex extends Component
     use Searchable, Sortable , WithPagination;
 
     public EventForm $form;
+
     public function getMatches(): array
     {
         return [

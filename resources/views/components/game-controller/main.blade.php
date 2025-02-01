@@ -1,4 +1,4 @@
-@props(['games','game'])
+@props(['games','game', 'event'])
 <div x-data="gameData">
     {{ $slot }}
 </div>
@@ -23,16 +23,16 @@
         let currentStreak = [];
 
         for (let i = 0; i < data.length; i++) {
-            const currentResult = data[i].result;
+            const currentResult = data[i].color;
 
             // If the current streak is empty or matches the last element, add to current streak
             if (
                 currentStreak.length === 0 ||
                 currentResult === currentStreak[0] ||
-                currentResult === 'draw' ||
-                currentResult === 'cancelled'
+                currentResult === 'green' ||
+                currentResult === 'zinc'
             ) {
-                currentStreak.push(data[i].color);
+                currentStreak.push(currentResult);
             } else {
                 // If the current streak exceeds 6, split it into chunks of 6
                 if (currentStreak.length > 6) {
@@ -42,6 +42,7 @@
                 } else {
                     result.push(currentStreak);
                 }
+
                 currentStreak = [currentResult]; // Start a new streak
             }
         }
@@ -54,6 +55,7 @@
         } else if (currentStreak.length > 0) {
             result.push(currentStreak);
         }
+
 
 
         return result;
@@ -85,7 +87,6 @@
 
         document.addEventListener('alpine:init', () => {
             Alpine.data('gameData', () => ({
-                // Entangle the Livewire `game` property with Alpine.js
                 games: @entangle('games'),
                 game: @entangle('game'),
                 resultCounts: {
@@ -100,15 +101,41 @@
                 init() {
                     this.results = chunkArray(this.games, 6);
                     this.resultCounts = resultCount(this.games);
-                    this.streaks = streak(this.games);
+                    this.streaks =streak(this.games);
 
 
 
                     this.$watch('games', value => {
-
-
+                        this.results = chunkArray(value, 6);
+                        this.resultCounts = resultCount(value);
+                        this.streaks = streak(value);
 
                     });
+
+                    Echo.channel(`game-event.{{ $event->uuid }}`)
+                        .listen('GameEvent', (e) => {
+
+                            console.log(e)
+                            this.game = e.current
+
+                            if (e.next) {
+
+                                const index = this.games.findIndex((item) => item.game_number === e.current.game_number);
+                                if (index !== -1) {
+                                    this.games[index] = {
+                                        id: e.current.id,
+                                        game_number: e.current.game_number,
+                                        color: e.current.result_color,
+                                        result: e.current.result_value,
+                                    };
+                                }
+                                console.log(this.games[index], e.current)
+                                setTimeout(() => {
+                                    this.game = e.next;
+                                }, 4000);
+                            }
+
+                        });
                 }
 
             }));

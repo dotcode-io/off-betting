@@ -23,6 +23,10 @@ final class DeclaredGameResultAction
         }
         DB::transaction(function () use ($event, $result): void {
             $game = $event->getCurrentGame();
+            if ($game->status !== GameStatus::CLOSED) {
+                throw new Exception('Game is not closed yet');
+            }
+
             $game->done_at = now();
             $game->status = GameStatus::DONE;
             $game->result = $result;

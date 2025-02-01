@@ -9,8 +9,8 @@ use App\Actions\Event\OpenedEventActions;
 use App\Actions\Game\ClosedGameActions;
 use App\Actions\Game\DeclaredGameResultAction;
 use App\Actions\Game\OpenedGameActions;
-use App\Enums\GameResult;
 use App\Enums\EventStatus;
+use App\Enums\GameResult;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\OpenGameForm;
 use App\Models\Event;
@@ -19,8 +19,8 @@ use Exception;
 use Flux\Flux;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\Attributes\On; 
 
 final class Show extends Component
 {
@@ -46,12 +46,12 @@ final class Show extends Component
         }
     }
 
-    public function getGames()
+    public function getGames(): void
     {
         $game = EventGameResource::make($this->event->getCurrentGame())->resolve();
         $this->game = $game;
 
-        $this->games = $this->event->games()->orderBy('game_number', 'asc')->get()->map(fn(EventGame $game): array => [
+        $this->games = $this->event->games()->orderBy('game_number', 'asc')->get()->map(fn (EventGame $game): array => [
             'id' => $game->id,
             'game_number' => $game->game_number,
             'color' => $game->result->color(),
@@ -119,6 +119,9 @@ final class Show extends Component
         Flux::modal('game-result')->show();
     }
 
+    /**
+     * @throws Exception
+     */
     public function declareGameResult(DeclaredGameResultAction $action): void
     {
         $result = GameResult::tryFrom($this->resultSelected);
