@@ -26,7 +26,7 @@ final class Show extends Component
 {
     public Event $event;
 
-    public $game = null;
+    public $game;
 
     public array $games = [];
 

@@ -87,8 +87,8 @@
 
         document.addEventListener('alpine:init', () => {
             Alpine.data('gameData', () => ({
-                games: @entangle('games'),
-                game: @entangle('game'),
+                games: @entangle('games').live,
+                game: @entangle('game').live,
                 resultCounts: {
                     meron: 0,
                     wala: 0,

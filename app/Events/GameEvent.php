@@ -8,7 +8,6 @@ use App\Http\Resources\EventGameResource;
 use App\Models\Event;
 use App\Models\EventGame;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 

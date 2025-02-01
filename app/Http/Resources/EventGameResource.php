@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 final class EventGameResource extends JsonResource
 {
@@ -14,6 +15,7 @@ final class EventGameResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Override;
 
 final class Event extends Model
 {
@@ -41,6 +42,7 @@ final class Event extends Model
         return ['uuid'];
     }
 
+    #[Override]
     public function getRouteKeyName(): string
     {
         return 'uuid';
@@ -68,14 +70,21 @@ final class Event extends Model
 
     public function createGames(): void
     {
-        if ($this->status !== EventStatus::OPENED) {
-            throw new Exception('Event is not opened');
+
+        $end = $this->number_of_games;
+        if ($end % 6 === 0) {
+            $result = $end + 12;
+        } else {
+            $nearestMultiple = ceil($end / 6) * 6;
+            $difference = $nearestMultiple - $end;
+            $extraValue = $this->start_of_game - 1;
+            $result = $end + $difference + 24 + $extraValue;
         }
         $games = [];
-        for ($i = 0; $i < $this->number_of_games; $i++) {
+        for ($i = $this->start_of_game; $i < $result; $i++) {
             $games[] = [
                 'event_id' => $this->id,
-                'game_number' => $this->start_of_game + $i,
+                'game_number' => $i,
                 'status' => 'pending',
                 'result' => 'pending',
                 'plasada' => 8,
