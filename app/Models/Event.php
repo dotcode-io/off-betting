@@ -81,7 +81,7 @@ final class Event extends Model
             $result = $end + $difference + 24 + $extraValue;
         }
         $games = [];
-        for ($i = $this->start_of_game; $i < $result; $i++) {
+        for ($i = $this->start_of_game; $i <= $result; $i++) {
             $games[] = [
                 'event_id' => $this->id,
                 'game_number' => $i,
