@@ -78,6 +78,10 @@
             "@test:lint",
             "@test:types",
             "@test:refactor"
+        ],
+        "clean": [
+            "@refactor",
+            "@lint"
         ]
     },
     "extra": {
