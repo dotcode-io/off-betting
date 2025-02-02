@@ -1,7 +1,7 @@
 <flux:card>
     <form wire:submit='login' class="space-y-6">
         <div>
-            <flux:heading size="lg">Log in to your account</flux:heading>
+            <flux:heading size="lg">Login to your account</flux:heading>
             <flux:subheading>Welcome back!</flux:subheading>
         </div>
 
@@ -13,7 +13,7 @@
         </div>
 
         <div class="space-y-2">
-            <flux:button variant="primary" class="w-full" type="submit">Log in</flux:button>
+            <flux:button variant="primary" class="w-full" type="submit">Login</flux:button>
 
         </div>
     </form>

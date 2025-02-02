@@ -26,14 +26,14 @@ final class Console extends Component
     /**
      * @throws Exception
      */
-    public function mount(Event $event): void
+    public function mount(): void
     {
-        if ($event->status !== EventStatus::OPENED) {
-            abort(404);
-        }
-        $this->event = $event;
-        $this->game = EventGameResource::make($event->getCurrentGame())->resolve();
+        $event = Event::query()->where('status', EventStatus::OPENED)->first();
 
+        if ($event) {
+            $this->event = $event;
+            $this->game = EventGameResource::make($event->getCurrentGame())->resolve();
+        }
     }
 
     public function setSide(string $side): void

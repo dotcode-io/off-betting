@@ -32,7 +32,7 @@ final class Login extends Component
         }
 
         if ($user->isTeller()) {
-            $this->redirectIntended(default: route('teller.dashboard', absolute: false), navigate: true);
+            $this->redirectIntended(default: route('teller.console', absolute: false), navigate: true);
         }
 
         if ($user->isController()) {
@@ -42,6 +42,6 @@ final class Login extends Component
 
     public function render(): \Illuminate\View\View
     {
-        return view('livewire.auth.login');
+        return view('livewire.auth.login')->title('Login');
     }
 }

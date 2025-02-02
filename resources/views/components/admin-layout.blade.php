@@ -25,7 +25,7 @@
 
         <flux:navlist variant="outline">
             @if(auth()->user()->isAdmin())
-            <flux:navlist.item icon="home" href="{{ route('admin.dashboard') }}" wire:current="font-bold text-zinc-800">Dashboard</flux:navlist.item>
+            <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:current="font-bold text-zinc-800">Dashboard</flux:navlist.item>
             <flux:navlist.group expandable heading="Game Center" class=" lg:grid">
                 <flux:navlist.item href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
                 <flux:navlist.item href="{{ route('events.game-controller')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
@@ -36,9 +36,11 @@
             @endif
 
             @if(auth()->user()->isTeller())
-            <flux:navlist.item icon="home" href="{{ route('teller.dashboard') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
-            <flux:navlist.item icon="clipboard-document-list" href="{{ route('teller.bets') }}" wire:current="font-bold text-zinc-800">Bets</flux:navlist.item>
-            <flux:navlist.item icon="trophy" href="{{ route('teller.winners') }}" wire:current="font-bold text-zinc-800">Winners</flux:navlist.item>
+            <flux:navlist.item icon="paper-airplane" href="{{ route('teller.console') }}" wire:current="font-bold text-zinc-800">Bet</flux:navlist.item>
+            <flux:navlist.item icon="inbox-arrow-down" href="#" wire:current="font-bold text-zinc-800">Claim Ticket</flux:navlist.item>
+            <flux:navlist.item icon="document-arrow-down" href="#" wire:current="font-bold text-zinc-800">Bet History</flux:navlist.item>
+            <flux:navlist.item icon="document-arrow-up" href="#" wire:current="font-bold text-zinc-800">Claim History</flux:navlist.item>
+            <flux:navlist.item icon="document-text" href="#" wire:current="font-bold text-zinc-800">Summary</flux:navlist.item>
             @endif
 
             @if(auth()->user()->isController())
