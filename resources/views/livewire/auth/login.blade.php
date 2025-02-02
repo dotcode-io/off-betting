@@ -5,19 +5,9 @@
             <flux:subheading>Welcome back!</flux:subheading>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-5">
             <flux:input wire:model='form.username' label="Username" type="text" placeholder="Enter your username" />
-
-            <flux:field>
-                <flux:label class="flex justify-between">
-                    Password
-
-                </flux:label>
-
-                <flux:input wire:model='form.password' type="password" placeholder="Your password" />
-
-                <flux:error name="form.password" />
-            </flux:field>
+            <flux:input wire:model='form.password' label="Password" type="password" placeholder="Enter your password" viewable />
 
             <flux:checkbox wire:model="form.remember" label="Remember me" />
         </div>

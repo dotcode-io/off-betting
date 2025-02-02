@@ -24,6 +24,7 @@
 
 
         <flux:navlist variant="outline">
+            @if(auth()->user()->isAdmin())
             <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:current="font-bold text-zinc-800">Dashboard</flux:navlist.item>
             <flux:navlist.group expandable heading="Game Center" class=" lg:grid">
                 <flux:navlist.item href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
@@ -32,7 +33,18 @@
             <flux:navlist.item icon="clipboard-document-list" href="#" wire:current="font-bold text-zinc-800">Bets</flux:navlist.item>
             <flux:navlist.item icon="trophy" href="#" wire:current="font-bold text-zinc-800">Winners</flux:navlist.item>
             <flux:navlist.item icon="users" href="{{ route('users.index') }}" wire:current="font-bold text-zinc-800">Users</flux:navlist.item>
+            @endif
 
+            @if(auth()->user()->isTeller())
+            <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
+            <flux:navlist.item icon="clipboard-document-list" href="#" wire:current="font-bold text-zinc-800">Bets</flux:navlist.item>
+            <flux:navlist.item icon="trophy" href="#" wire:current="font-bold text-zinc-800">Winners</flux:navlist.item>
+            @endif
+
+            @if(auth()->user()->isController())
+            <flux:navlist.item icon="home" href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
+            <flux:navlist.item icon="puzzle-piece" href="{{ route('events.game-controller')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
+            @endif
         </flux:navlist>
 
         <flux:spacer />
@@ -52,7 +64,7 @@
 
                 <flux:menu.separator />
 
-                <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
+                <livewire:dashboard.logout-button />
             </flux:menu>
         </flux:dropdown>
     </flux:sidebar>
@@ -72,7 +84,7 @@
 
                 <flux:menu.separator />
 
-                <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
+                <livewire:dashboard.logout-button />
             </flux:menu>
         </flux:dropdown>
     </flux:header>

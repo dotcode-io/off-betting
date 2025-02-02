@@ -57,6 +57,21 @@ final class User extends Model implements AuthenticatableContract, AuthorizableC
         return $this->username;
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->user_type === UserType::ADMIN;
+    }
+
+    public function isTeller(): bool
+    {
+        return $this->user_type === UserType::TELLER;
+    }
+
+    public function isController(): bool
+    {
+        return $this->user_type === UserType::CONTROLLER;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
