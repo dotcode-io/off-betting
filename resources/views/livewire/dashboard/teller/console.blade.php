@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 gap-4" x-data="consoleData">
+<div x-data="consoleData">
     @if($event)
     <div id="receipt-content" style="display: none;">
         <div class="receipt">
@@ -19,12 +19,7 @@
             <p>Thank you for your bet!</p>
         </div>
     </div>
-
-
-    <flux:card class="space-y-6">
-
-    </flux:card>
-    <flux:card class="space-y-6">
+    <flux:card class="w-full !bg-[#232323]">
         <form wire:submit="submitBet">
             <div class="flex">
                 <div class="flex-1">
@@ -54,10 +49,10 @@
 
             <div class="pt-5">
                 <flux:input wire:model="betForm.amount" label="AMOUNT" x-mask:dynamic="$money($input)" placeholder="ENTER AMOUNT TO BET" />
-                <div class="flex items-center justify-center gap-[4px] py-[16px]">
+                <div class="flex overflow-x-auto   gap-[4px] py-[16px]">
 
                     <template x-for="(amount,index) in amountList" :key="`amount-${index}`">
-                        <flux:button @click="setAmount(amount.value)" variant="primary">
+                        <flux:button @click="setAmount(amount.value)">
                             <span x-text="amount.label">
 
                             </span>
@@ -71,16 +66,16 @@
 
 
             <div class="grid grid-cols-3 gap-2 mb-4">
-                <flux:button variant="primary" x-on:click="amountBet += '1'">1</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '2'">2</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '3'">3</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '4'">4</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '5'">5</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '6'">6</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '7'">7</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '8'">8</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '9'">9</flux:button>
-                <flux:button variant="primary" x-on:click="amountBet += '0'">0</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '1'">1</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '2'">2</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '3'">3</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '4'">4</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '5'">5</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '6'">6</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '7'">7</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '8'">8</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '9'">9</flux:button>
+                <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '0'">0</flux:button>
                 <div class="col-span-2">
                     <flux:button variant="danger" x-on:click="amountBet = ''" class="w-full">Clear</flux:button>
                 </div>
@@ -90,7 +85,7 @@
 
 
             <div>
-                <flux:button variant="primary" class="w-full" type="submit"> SUBMIT BET AND PRINT</flux:button>
+                <flux:button class="w-full !bg-[#1338be]" variant="ghost" type="submit"> SUBMIT BET AND PRINT</flux:button>
             </div>
         </form>
 
@@ -153,18 +148,13 @@
             amountList: [],
             init() {
                 this.amountList = [{
-                        value: 10,
-                        label: "10"
-                    },
-                    {
                         value: 20,
                         label: "20"
                     },
                     {
                         value: 50,
                         label: "50"
-                    },
-                    {
+                    }, {
                         value: 100,
                         label: "100"
                     },
