@@ -20,6 +20,7 @@ final class Console extends Component
     public BetForm $betForm;
 
     public $game;
+    public $side;
 
     public Event $event;
 
@@ -39,6 +40,7 @@ final class Console extends Component
     public function setSide(string $side): void
     {
         $this->betForm->side = $side;
+        $this->side = $side;
     }
 
     public function submitBet(BetActions $actions): void
@@ -47,6 +49,7 @@ final class Console extends Component
         $bet = $actions->handle($this->event, $this->betForm);
         $bet->load(['eventGame']);
         $this->betForm->reset();
+        $this->side = null;
 
         Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
 
@@ -66,6 +69,10 @@ final class Console extends Component
 
     public function render(): View
     {
-        return view('livewire.dashboard.teller.console');
+        return view('livewire.dashboard.teller.console', [
+            'event' => $this->event,
+            'game' => $this->game,
+            'side' => $this->side,
+        ]);
     }
 }

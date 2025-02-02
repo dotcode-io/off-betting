@@ -22,27 +22,37 @@
     <flux:card class="w-full !bg-[#232323]">
         <form wire:submit="submitBet">
             <div class="flex">
-                <div class="flex-1">
+                <flux:icon.play-circle variant="solid" class="text-[yellow] animate-pulse" />
+                <flux:heading size="lg" class="!text-[yellow]">{{ strtoupper($event->name) }} <em class="text-[gray]">({{ strtoupper($event->dateFormatted()) }})</em></flux:heading>
+            </div>
+            <div class="py-2">
+                <flux:separator variant="subtle" />
+            </div>
+            <div class="flex">
+                <div class="flex justify-between items-center w-full">
                     <flux:heading size="lg">Fight #<span x-text="game.game_number"></span></flux:heading>
+                    <flux:badge color="{{ $game['status_color'] }}" variant="pill" class="animate-pulse ">
+                        {{ strtoupper($game['status']) }}
+                    </flux:badge>
                 </div>
             </div>
-            <div class="flex space-x-2 min-h-[100px]">
-                <button type="button" class="bg-red-500 w-full text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300" wire:click="setSide('meron')">
+            <div class="flex space-x-2 min-h-[100px] pt-5">
+                <button type="button" class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300 @if($side === 'meron')border-4 border-yellow-600 bg-red-600 animate-pulse @endif" wire:click="setSide('meron')">
                     <div class="pb-2">
                         <flux:heading size="xl">MERON</flux:heading>
-                        <flux:heading size="lg">AVASRB</flux:heading>
+                        <flux:heading size="lg" x-text="game.meron_name"></flux:heading>
                     </div>
                 </button>
-                <button type="button" class="bg-green-500 w-full text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300" wire:click="setSide('draw')">
+                <button type="button" class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300 @if($side === 'draw')border-4 border-yellow-600 bg-green-600 animate-pulse @endif" wire:click="setSide('draw')">
                     <div class="pb-2">
                         <flux:heading size="xl">DRAW</flux:heading>
-                        <flux:heading size="lg">800%</flux:heading>
+                        <flux:heading size="lg">8X</flux:heading>
                     </div>
                 </button>
-                <button type="button" class="bg-blue-500 w-full text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300" wire:click="setSide('wala')">
+                <button type="button" class="bg-blue-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300 @if($side === 'wala')border-4 border-yellow-600 bg-blue-600 animate-pulse @endif" wire:click="setSide('wala')">
                     <div class="pb-2">
                         <flux:heading size="xl">WALA</flux:heading>
-                        <flux:heading size="lg">KAIZEN GF</flux:heading>
+                        <flux:heading size="lg" x-text="game.wala_name">KAIZEN GF</flux:heading>
                     </div>
                 </button>
             </div>
