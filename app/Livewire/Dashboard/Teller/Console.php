@@ -53,12 +53,14 @@ final class Console extends Component
 
         Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
 
+
+
         $this->dispatch('silent-print', [
             'printData' => [
                 'event' => $this->event->name,
                 'fight' => $bet->eventGame->game_number,
                 'side' => $bet->side->label(),
-                'amount' => number_format($bet->bet_amount, 2, '.', ','),
+                'amount' => number_format((float)$bet->bet_amount, 2, '.', ','),
                 'ref' => $bet->uuid,
                 'teller' => Auth::user()->username,
                 'date' => $bet->bet_at->format('F d, Y'),

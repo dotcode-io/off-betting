@@ -18,6 +18,7 @@ use App\Models\EventGame;
 use Exception;
 use Flux\Flux;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -88,7 +89,7 @@ final class Show extends Component
     /**
      * @throws Exception
      */
-    public function closeEvent(ClosedEventActions $action): RedirectResponse
+    public function closeEvent(ClosedEventActions $action): Redirector
     {
         $action->handle($this->event);
 
