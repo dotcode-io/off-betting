@@ -17,7 +17,6 @@ use App\Models\Event;
 use App\Models\EventGame;
 use Exception;
 use Flux\Flux;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Livewire\Attributes\On;

@@ -37,7 +37,7 @@ final class Login extends Component
 
         if ($user->isController()) {
             $this->redirectIntended(default: route('controller.dashboard', absolute: false), navigate: true);
-        }        
+        }
     }
 
     public function render(): \Illuminate\View\View

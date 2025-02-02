@@ -37,19 +37,19 @@
                 </div>
             </div>
             <div class="flex space-x-2 min-h-[100px] pt-5">
-                <button type="button" class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300 @if($side === 'meron')border-4 border-yellow-600 bg-red-600 animate-pulse @endif" wire:click="setSide('meron')">
+                <button type="button" class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300 @if($side === 'meron')border-4 border-yellow-600 bg-red-600 animate-pulse @endif" wire:click="setSide('meron')" :disabled="game.status !== 'Opened'">
                     <div class="pb-2">
                         <flux:heading size="xl">MERON</flux:heading>
                         <flux:heading size="lg" x-text="game.meron_name"></flux:heading>
                     </div>
                 </button>
-                <button type="button" class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300 @if($side === 'draw')border-4 border-yellow-600 bg-green-600 animate-pulse @endif" wire:click="setSide('draw')">
+                <button type="button" class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300 @if($side === 'draw')border-4 border-yellow-600 bg-green-600 animate-pulse @endif" wire:click="setSide('draw')" :disabled="game.status !== 'Opened'">
                     <div class="pb-2">
                         <flux:heading size="xl">DRAW</flux:heading>
                         <flux:heading size="lg">8X</flux:heading>
                     </div>
                 </button>
-                <button type="button" class="bg-blue-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300 @if($side === 'wala')border-4 border-yellow-600 bg-blue-600 animate-pulse @endif" wire:click="setSide('wala')">
+                <button type="button" class="bg-blue-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300 @if($side === 'wala')border-4 border-yellow-600 bg-blue-600 animate-pulse @endif" wire:click="setSide('wala')" :disabled="game.status !== 'Opened'">
                     <div class="pb-2">
                         <flux:heading size="xl">WALA</flux:heading>
                         <flux:heading size="lg" x-text="game.wala_name">KAIZEN GF</flux:heading>
@@ -153,7 +153,7 @@
 
     document.addEventListener('alpine:init', () => {
         Alpine.data('consoleData', () => ({
-            game: @entangle('game'),
+            game: @entangle('game').live,
             amountBet: @entangle('betForm.amount'),
             amountList: [],
             init() {
@@ -195,6 +195,16 @@
 
 
                 ]
+
+                Echo.channel(`game-event.{{ $event->uuid }}`)
+                    .listen('GameEvent', (e) => {
+                        this.game = e.current
+                            if (e.next) {
+                                setTimeout(() => {
+                                    this.game = e.next;
+                                }, 4000);
+                            }
+                    });
             },
             setAmount(value) {
                 this.amountBet = value
