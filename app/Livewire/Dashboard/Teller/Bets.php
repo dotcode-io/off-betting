@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard\Teller;
 
 use Livewire\Component;
 
-class Bets extends Component
+final class Bets extends Component
 {
     public function render()
     {
