@@ -25,7 +25,19 @@ final class Login extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $user = auth()->user();
+
+        if ($user->isAdmin()) {
+            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        }
+
+        if ($user->isTeller()) {
+            $this->redirectIntended(default: route('teller.dashboard', absolute: false), navigate: true);
+        }
+
+        if ($user->isController()) {
+            $this->redirectIntended(default: route('controller.dashboard', absolute: false), navigate: true);
+        }        
     }
 
     public function render(): \Illuminate\View\View
