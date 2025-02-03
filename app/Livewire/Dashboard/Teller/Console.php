@@ -66,6 +66,8 @@ final class Console extends Component
                 'time' => $bet->bet_at->format('H:i A'),
             ],
         ]);
+
+        $this->dispatch('bet-placed');
     }
 
     public function render(): View

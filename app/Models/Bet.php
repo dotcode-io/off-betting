@@ -31,4 +31,9 @@ final class Bet extends Model
     {
         return ['uuid'];
     }
+
+    public function isWin(): bool
+    {
+        return $this->status === BetStatus::Winner;
+    }
 }

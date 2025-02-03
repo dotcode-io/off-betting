@@ -7,6 +7,20 @@ use Livewire\Volt\Volt;
 
 Volt::route('login', 'auth.login')->name('login')->middleware('guest');
 
+Route::get('/', function () {
+    if (auth()->user()->isAdmin()) {
+        return redirect()->route('dashboard');
+    }
+
+    if (auth()->user()->isTeller()) {
+        return redirect()->route('teller.console');
+    }
+
+    if (auth()->user()->isController()) {
+        return redirect()->route('controller.events.index');
+    }
+})->middleware('auth');
+
 Route::prefix('app')->middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
         Volt::route('dashboard', 'home')->name('dashboard');

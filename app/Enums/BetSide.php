@@ -22,9 +22,9 @@ enum BetSide: string
     public function color(): string
     {
         return match ($this) {
-            self::Meron => 'green',
-            self::Wala => 'red',
-            self::Draw => 'blue',
+            self::Meron => 'red',
+            self::Wala => 'blue',
+            self::Draw => 'green',
         };
     }
 }
