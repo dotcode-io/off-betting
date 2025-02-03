@@ -29,7 +29,6 @@
                                 </flux:badge>
 
                             </div>
-
                             <div>
                                 Nickname: {{ $bet->nickname ?? 'N/A' }}
                             </div>
@@ -46,13 +45,19 @@
                         </div>
                     </flux:cell>
                     <flux:cell>
-                        <flux:badge variant="solid" color="{{ $bet->result->color() }}" size="sm" inset="top bottom">
+                        <flux:badge variant="solid" color="{{ $bet->result->color() }}" size="sm">
                             {{ $bet->result->label() }}
                         </flux:badge>
 
                     </flux:cell>
                     <flux:cell>
-                        <flux:button size="sm" icon="printer" class="!bg-[white] !text-[black]" wire:click="reprintReceipt({{ $bet->id }})">REPRINT</flux:button>
+                        <flux:dropdown position="bottom" align="end">
+                            <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"></flux:button>
+
+                            <flux:navmenu>
+                                <flux:navmenu.item icon="printer" wire:click="reprintReceipt({{ $bet->id }})">Reprint</flux:navmenu.item>
+                            </flux:navmenu>
+                        </flux:dropdown>
                     </flux:cell>
 
 
