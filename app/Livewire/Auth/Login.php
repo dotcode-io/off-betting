@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Auth;
 
 use App\Livewire\Forms\LoginForm;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -26,6 +27,8 @@ final class Login extends Component
         Session::regenerate();
 
         $user = auth()->user();
+
+        Auth::logoutOtherDevices($this->form->password);
 
         if ($user->isAdmin()) {
             $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);

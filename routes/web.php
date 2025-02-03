@@ -19,9 +19,9 @@ Route::get('/', function () {
     if (auth()->user()->isController()) {
         return redirect()->route('controller.events.index');
     }
-})->middleware('auth');
+})->middleware(['auth', 'auth.session']);
 
-Route::prefix('app')->middleware('auth')->group(function () {
+Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
         Volt::route('dashboard', 'home')->name('dashboard');
 
