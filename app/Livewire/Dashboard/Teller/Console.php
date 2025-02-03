@@ -73,7 +73,7 @@ final class Console extends Component
     public function render(): View
     {
         return view('livewire.dashboard.teller.console', [
-            'event' => $this->event,
+            'event' => $this->event ?? null,
             'game' => $this->game,
             'side' => $this->side,
         ]);

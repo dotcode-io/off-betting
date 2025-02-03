@@ -70,6 +70,7 @@ final class Event extends Model
 
     public function createGames(): void
     {
+        $settings = Cache::remember('app_settings', 600, fn () => AppSetting::first());
 
         $end = $this->number_of_games;
         if ($end % 6 === 0) {
@@ -87,7 +88,7 @@ final class Event extends Model
                 'game_number' => $i,
                 'status' => 'pending',
                 'result' => 'pending',
-                'plasada' => 8,
+                'plasada' => $settings->plasada ?? 5,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

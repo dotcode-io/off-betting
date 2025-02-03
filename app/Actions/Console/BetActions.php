@@ -42,6 +42,13 @@ final class BetActions
                 $openGame->increment('draw_bettors');
             }
 
+            $totalBets = $openGame->meron_bets + $openGame->wala_bets;
+
+            $openGame->update([
+                'meron_odds' => $openGame->meron_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->meron_bets : 0,
+                'wala_odds' => $openGame->wala_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->wala_bets : 0,
+            ]);
+
             $bet = Bet::create([
                 'reference_no' => 'B'.auth()->id().'-'.now()->format('ymd').'-'.now()->format('His'),
                 'event_id' => $event->id,

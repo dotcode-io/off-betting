@@ -201,7 +201,7 @@
 
                 ]
 
-                Echo.channel(`game-event.{{ $event->uuid }}`)
+                Echo.channel(`game-event.{{ $event?->uuid }}`)
                     .listen('GameEvent', (e) => {
                         this.game = e.current
                         console.log('game event', e)
