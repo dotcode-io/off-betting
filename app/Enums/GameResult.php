@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use Exception;
+
 enum GameResult: string
 {
     case MERON = 'meron';
@@ -31,6 +33,19 @@ enum GameResult: string
             self::DRAW => 'green',
             self::CANCELLED => 'zinc',
             self::PENDING => 'stone',
+        };
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function side(): BetSide
+    {
+        return match ($this) {
+            self::MERON => BetSide::Meron,
+            self::WALA => BetSide::Wala,
+            self::DRAW => BetSide::Draw,
+            default => throw new Exception('Invalid result'),
         };
     }
 }

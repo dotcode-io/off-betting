@@ -6,7 +6,7 @@
     </div>
     <flux:separator variant="subtle" />
 
-    <x-game-controller.main :games="$games" :game="$game" :event="$event">
+    <x-game-controller.main :games="$games" :game="$game" :event="$event" :rankings="$rankings">
         <div class="grid  grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 py-3">
             <div class="flex flex-col space-y-2">
                 <flux:card class="space-y-6">
@@ -70,6 +70,27 @@
             <div class="space-y-2">
                 <x-stats.betting />
                 <x-stats.results-count-card />
+                <flux:card class="min-h-[450px] hidden md:block">
+                    <flux:heading size="lg">Rankings</flux:heading>
+                    <flux:table>
+                        <flux:columns>
+                            <flux:column>REF</flux:column>
+                            <flux:column>SIDE</flux:column>
+                            <flux:column class="text-right">AMOUNT</flux:column>
+                        </flux:columns>
+
+                        <template x-for="row in rankings" :key="row.id">
+                            <flux:rows>
+                                <flux:row>
+                                    <flux:cell x-text="row.ref" class="font-bold"></flux:cell>
+                                    <flux:cell x-text="row.side" x-bind:class="`!text-${row.side_color}-500`" class="uppercase">
+                                    </flux:cell>
+                                    <flux:cell x-text="row.amount" class="font-bold text-right !text-green-500"></flux:cell>
+                                </flux:row>
+                            </flux:rows>
+                        </template>
+                    </flux:table>
+                </flux:card>
             </div>
             @endif
 

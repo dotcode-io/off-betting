@@ -10,6 +10,7 @@ enum GameStatus: string
     case OPENED = 'open';
     case CLOSED = 'close';
     case DONE = 'done';
+    case  OnGoing = 'on-going';
 
     public function label(): string
     {
@@ -18,6 +19,7 @@ enum GameStatus: string
             self::OPENED => 'Opened',
             self::CLOSED => 'Closed',
             self::DONE => 'Done',
+            self::OnGoing => 'OnGoing',
         };
     }
 
@@ -28,6 +30,7 @@ enum GameStatus: string
             self::OPENED => 'green',
             self::CLOSED => 'red',
             self::DONE => 'blue',
+            self::OnGoing => 'orange',
         };
     }
 }

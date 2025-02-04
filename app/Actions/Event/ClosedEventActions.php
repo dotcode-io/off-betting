@@ -21,6 +21,7 @@ final class ClosedEventActions
         }
 
         DB::transaction(function () use ($event): void {
+
             $event->update([
                 'closed_at' => now(),
                 'status' => EventStatus::CLOSED,

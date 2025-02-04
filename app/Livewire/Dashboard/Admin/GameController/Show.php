@@ -11,6 +11,7 @@ use App\Actions\Game\DeclaredGameResultAction;
 use App\Actions\Game\OpenedGameActions;
 use App\Enums\EventStatus;
 use App\Enums\GameResult;
+use App\Enums\GameStatus;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\OpenGameForm;
 use App\Models\Event;
@@ -34,6 +35,8 @@ final class Show extends Component
 
     public $resultSelected;
 
+    public $rankings = [];
+
     /**
      * @throws Exception
      */
@@ -46,10 +49,17 @@ final class Show extends Component
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function getGames(): void
     {
-        $game = EventGameResource::make($this->event->getCurrentGame())->resolve();
+        $currentGame = $this->event->getCurrentGame();
+        $game = EventGameResource::make($currentGame)->resolve();
         $this->game = $game;
+        if ($currentGame->status === GameStatus::OPENED) {
+            $this->rankings = $currentGame->getRankings();
+        }
 
         $this->games = $this->event->games()->orderBy('game_number', 'asc')->get()->map(fn (EventGame $game): array => [
             'id' => $game->id,

@@ -7,6 +7,7 @@ namespace App\Actions\Console;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
 use App\Enums\GameResult;
+use App\Events\BetRankingsEvent;
 use App\Events\GameEvent;
 use App\Livewire\Forms\BetForm;
 use App\Models\Bet;
@@ -63,6 +64,7 @@ final class BetActions
             ]);
 
             GameEvent::dispatch($openGame, null);
+            BetRankingsEvent::dispatch($event->uuid, $openGame->getRankings());
 
             return $bet;
         });

@@ -14,6 +14,7 @@ final class ClosedGameActions
     public function handle(Event $event): void
     {
         DB::transaction(function () use ($event): void {
+
             $game = $event->getCurrentGame();
             $game->closed_at = now();
             $game->status = GameStatus::CLOSED;

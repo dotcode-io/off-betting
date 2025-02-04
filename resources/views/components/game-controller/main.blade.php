@@ -1,4 +1,4 @@
-@props(['games','game', 'event'])
+@props(['games','game', 'event','rankings'])
 <div x-data="gameData">
     {{ $slot }}
 </div>
@@ -97,7 +97,7 @@
                 },
                 results: [],
                 streaks: [],
-
+                rankings: @entangle('rankings'),
                 init() {
                     this.results = chunkArray(this.games, 6);
                     this.resultCounts = resultCount(this.games);
@@ -114,8 +114,6 @@
 
                     Echo.channel(`game-event.{{ $event->uuid }}`)
                         .listen('GameEvent', (e) => {
-
-                            console.log(e)
                             this.game = e.current
 
                             if (e.next) {
@@ -135,6 +133,10 @@
                                 }, 4000);
                             }
 
+                        })
+                        .listen('BetRankingsEvent', (e) => {
+                            console.log(e)
+                            this.rankings = e.rankings;
                         });
                 }
 
