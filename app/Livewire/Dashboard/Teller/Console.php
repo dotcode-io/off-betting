@@ -38,9 +38,7 @@ final class Console extends Component
         }
     }
 
-    public function setSide(string $side): void
-    {
-    }
+    public function setSide(string $side): void {}
 
     public function submitBet(BetActions $actions): void
     {

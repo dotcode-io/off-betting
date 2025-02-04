@@ -40,14 +40,12 @@ final class EventGame extends Model
             ->where('event_game_id', $this->id)
             ->orderByDesc('bet_amount')
             ->take(10)
-            ->get()->map(function ($bet) {
-                return [
-                    'id' => $bet->id,
-                    'ref' => $bet->reference_no,
-                    'side' => $bet->side->label(),
-                    'amount' => number_format((float) $bet->bet_amount, 2),
-                    'side_color' => $bet->side->color(),
-                ];
-            })->toArray();
+            ->get()->map(fn ($bet): array => [
+                'id' => $bet->id,
+                'ref' => $bet->reference_no,
+                'side' => $bet->side->label(),
+                'amount' => number_format((float) $bet->bet_amount, 2),
+                'side_color' => $bet->side->color(),
+            ])->toArray();
     }
 }

@@ -10,7 +10,7 @@ enum GameStatus: string
     case OPENED = 'open';
     case CLOSED = 'close';
     case DONE = 'done';
-    case  OnGoing = 'on-going';
+    case OnGoing = 'on-going';
 
     public function label(): string
     {

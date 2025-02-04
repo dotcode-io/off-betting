@@ -71,7 +71,7 @@ final class DeclareResultJob implements ShouldQueue
             ->where('side', $this->result->side())
             ->where('result', GameResult::PENDING)
             ->where('status', BetStatus::OnGoing)
-            ->chunk(20, function ($bets) {
+            ->chunk(20, function ($bets): void {
                 $this->updateBets($bets);
             });
 
@@ -82,9 +82,9 @@ final class DeclareResultJob implements ShouldQueue
         return floor(($amount * 100) / 100);
     }
 
-    private function updateBets($bets): void
+    private function updateBets(\Illuminate\Support\Collection $bets): void
     {
-        DB::transaction(function () use ($bets) {
+        DB::transaction(function () use ($bets): void {
             foreach ($bets as $bet) {
                 $amount = $bet->bet_amount * ($this->odds / 100);
                 $resultAmount = $this->roundDown($amount);

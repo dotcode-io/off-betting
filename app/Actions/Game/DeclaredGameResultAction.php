@@ -8,7 +8,6 @@ use App\Enums\GameResult;
 use App\Enums\GameStatus;
 use App\Events\GameEvent;
 use App\Jobs\DeclareResultJob;
-use App\Models\Bet;
 use App\Models\Event;
 use Exception;
 use Illuminate\Support\Facades\DB;
