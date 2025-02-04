@@ -44,8 +44,7 @@
             @endif
 
             @if(auth()->user()->isController())
-            <flux:navlist.item icon="home" href="{{ route('controller.events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
-            <flux:navlist.item icon="puzzle-piece" href="{{ route('controller.events.game-controller')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
+            <flux:navlist.item icon="puzzle-piece" href="{{ route('controller.events.index')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
             @endif
         </flux:navlist>
 

@@ -26,7 +26,7 @@ enum GameStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::PENDING => 'yellow',
+            self::PENDING => 'orange',
             self::OPENED => 'green',
             self::CLOSED => 'red',
             self::DONE => 'blue',

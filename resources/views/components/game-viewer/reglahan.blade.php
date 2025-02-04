@@ -1,4 +1,4 @@
-<flux:card class="space-y-6">
+<div class="space-y-6 py-2">
     <div class="flex space-x-2 overflow-x-auto min-h-[200px] md:min-h-[250px]">
         <template x-for="(chunks,index) in streaks" :key="`game-streak-ul-${index}`">>
             <ul class="space-y-1">
@@ -12,4 +12,4 @@
             </ul>
         </template>
     </div>
-</flux:card>
+</div>

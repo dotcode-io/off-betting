@@ -42,12 +42,16 @@
                             <div class="py-2">
                                 <flux:separator variant="subtle" />
                             </div>
-                            <div>
+                            <div class="flex gap-4">
                                 @if($event->status->isPending())
                                 <flux:modal.trigger name="open-event">
                                     <flux:button variant="primary" class="w-full" :disabled="$event->status->disabledOpen() ">Open Event
                                     </flux:button>
                                 </flux:modal.trigger>
+                                @endif
+                                @if($event->status->isOpened())
+                                <flux:button variant="primary" target="_blank" href="{{ route('game-viewer', $event->uuid) }}" class="w-full">Game Viewer
+                                </flux:button>
                                 @endif
                                 @if($event->status->isOpened())
                                 <flux:modal.trigger name="close-event">

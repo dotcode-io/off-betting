@@ -31,7 +31,7 @@ enum GameResult: string
             self::MERON => 'red',
             self::WALA => 'blue',
             self::DRAW => 'green',
-            self::CANCELLED => 'zinc',
+            self::CANCELLED => 'gray',
             self::PENDING => 'stone',
         };
     }

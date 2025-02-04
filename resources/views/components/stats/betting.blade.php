@@ -1,6 +1,6 @@
 <flux:card class="space-y-6 !p-0">
     <div class="grid grid-cols-2">
-        <div class="bg-red-500 flex flex-col items-center justify-center rounded-tl-[0.75rem]">
+        <div class="bg-red-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]">
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">MERON</flux:heading>
@@ -28,7 +28,7 @@
 
         </div>
 
-        <div class="bg-blue-500 rounded-tr-[0.75rem]">
+        <div class="bg-blue-600 rounded-tr-[0.75rem]">
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">WALA</flux:heading>
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="bg-green-500 col-span-2 rounded-b-[0.75rem]">
+        <div class="bg-green-600 col-span-2 rounded-b-[0.75rem]">
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">DRAW (800%): <span x-text="game.draw_bets"></span></flux:heading>

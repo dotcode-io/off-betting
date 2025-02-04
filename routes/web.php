@@ -28,6 +28,7 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
         Volt::route('events', 'dashboard.admin.event-index')->name('events.index');
         Volt::route('game-controller', 'dashboard.admin.game-controller.index')->name('events.game-controller');
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
+
         Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
 
         Volt::route('users', 'dashboard.admin.user-index')->name('users.index');
@@ -38,9 +39,10 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
     });
 
     Route::prefix('controller')->name('controller.')->middleware('controller')->group(function () {
-        Volt::route('events', 'dashboard.admin.event-index')->name('events.index');
-        Volt::route('game-controller', 'dashboard.admin.game-controller.index')->name('events.game-controller');
+        Volt::route('game-controller', 'dashboard.controller.event-index')->name('events.index');
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
     });
+
+    Volt::route('game-viewer/{event}', 'game-viewer.index')->name('game-viewer');
 
 });
