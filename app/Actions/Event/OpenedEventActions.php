@@ -14,18 +14,19 @@ final class OpenedEventActions
     /**
      * @throws Exception
      */
-    public function handle(Event $event): void
+    public function handle(Event $event): Event
     {
         if ($event->status !== EventStatus::PENDING) {
             throw new Exception('Event is not pending');
         }
 
-        DB::transaction(function () use ($event): void {
-            $event->update([
-                'opened_at' => now(),
-                'status' => EventStatus::OPENED,
-            ]);
+        return DB::transaction(function () use ($event): Event {
+            $event->opened_at = now();
+            $event->status = EventStatus::OPENED;
+            $event->save();
             $event->createGames();
+
+            return $event;
         });
     }
 }

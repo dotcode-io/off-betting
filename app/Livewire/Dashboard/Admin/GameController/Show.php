@@ -76,7 +76,7 @@ final class Show extends Component
      */
     public function openEvent(OpenedEventActions $action): void
     {
-        $action->handle($this->event);
+        $this->event = $action->handle($this->event);
 
         Flux::toast('Event opened successfully', variant: 'success');
 

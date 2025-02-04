@@ -40,17 +40,16 @@ final class Console extends Component
 
     public function setSide(string $side): void
     {
-        $this->betForm->side = $side;
-        $this->side = $side;
     }
 
     public function submitBet(BetActions $actions): void
     {
+        $this->betForm->side = $this->side;
         $this->betForm->validate();
         $bet = $actions->handle($this->event, $this->betForm);
         $bet->load(['eventGame']);
         $this->betForm->reset();
-        $this->side = null;
+        $this->side = '';
 
         Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
 

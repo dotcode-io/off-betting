@@ -81,8 +81,7 @@
                         <div class="flex-1">
                             <div class="flex justify-between">
                                 <flux:heading size="lg">Fight #<span x-text="game.game_number"> </span></flux:heading>
-                                <flux:badge color="{{ $game['status_color'] }}" size="sm">
-                                    {{ $game['status'] }}
+                                <flux:badge  variant="pill" x-text="game.status"  class="animate-pulse uppercase " x-bind:class="`!bg-${game.status_color}-500`">
                                 </flux:badge>
                             </div>
 
