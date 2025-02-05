@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard\Teller;
 
 use Livewire\Component;
 
-class ClaimHistory extends Component
+final class ClaimHistory extends Component
 {
     public function render()
     {

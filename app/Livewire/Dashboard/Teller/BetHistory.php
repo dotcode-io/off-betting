@@ -1,26 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard\Teller;
 
-use Livewire\Component;
+use App\Enums\EventStatus;
 use App\Models\Bet;
 use App\Models\Event;
-use Livewire\WithPagination;
 use App\Traits\Table\Searchable;
 use App\Traits\Table\Sortable;
-use App\Enums\EventStatus;
+use Livewire\Component;
+use Livewire\WithPagination;
 
-class BetHistory extends Component
+final class BetHistory extends Component
 {
-    use WithPagination, Searchable, Sortable;
+    use Searchable, Sortable, WithPagination;
 
     public $events;
+
     public $eventId;
 
     public $from;
+
     public $to;
 
-    public function mount()
+    public function mount(): void
     {
         $this->eventId = Event::where('status', '!=', EventStatus::PENDING)->latest()->first()->id ?? null;
         $this->from = now()->subDays(7)->format('Y-m-d');
@@ -37,7 +41,7 @@ class BetHistory extends Component
         ];
     }
 
-    public function updated()
+    public function updated(): void
     {
         $this->resetPage();
     }

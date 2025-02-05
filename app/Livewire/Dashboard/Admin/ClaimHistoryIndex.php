@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard\Admin;
 
 use Livewire\Component;
 
-class ClaimHistoryIndex extends Component
+final class ClaimHistoryIndex extends Component
 {
     public function render()
     {
