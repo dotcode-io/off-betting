@@ -1,5 +1,5 @@
 @props(['games','game', 'event', 'gameResults'])
-<div x-data="gameData" class="h-full">
+<div x-data="gameData" class="flex h-full">
     {{ $slot }}
 </div>
 

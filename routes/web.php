@@ -31,6 +31,9 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
 
         Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
 
+        Volt::route('bet-history', 'dashboard.admin.bet-history-index')->name('bet-history');
+        Volt::route('claim-history', 'dashboard.admin.claim-history-index')->name('claim-history');
+
         Volt::route('users', 'dashboard.admin.user-index')->name('users.index');
     });
 
@@ -43,6 +46,7 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
     });
 
+    Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
     Volt::route('game-viewer/{event}', 'game-viewer.index')->name('game-viewer');
 
 });

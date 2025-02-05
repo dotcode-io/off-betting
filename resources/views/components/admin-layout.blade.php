@@ -30,8 +30,8 @@
                 <flux:navlist.item href="{{ route('events.index') }}" wire:current="font-bold text-zinc-800">Events</flux:navlist.item>
                 <flux:navlist.item href="{{ route('events.game-controller')}}" wire:current="font-bold text-zinc-800">Game Controller</flux:navlist.item>
             </flux:navlist.group>
-            <flux:navlist.item icon="clipboard-document-list" href="#" wire:current="font-bold text-zinc-800">Bets</flux:navlist.item>
-            <flux:navlist.item icon="trophy" href="#" wire:current="font-bold text-zinc-800">Winners</flux:navlist.item>
+            <flux:navlist.item icon="clipboard-document-list" href="{{ route('bet-history') }}" wire:current="font-bold text-zinc-800">Bet History</flux:navlist.item>
+            <flux:navlist.item icon="trophy" href="{{ route('claim-history') }}" wire:current="font-bold text-zinc-800">Claim History</flux:navlist.item>
             <flux:navlist.item icon="users" href="{{ route('users.index') }}" wire:current="font-bold text-zinc-800">Users</flux:navlist.item>
             @endif
 
@@ -51,7 +51,7 @@
         <flux:spacer />
 
         <flux:navlist variant="outline">
-            <flux:navlist.item icon="cog-6-tooth" href="#">Settings</flux:navlist.item>
+            <flux:navlist.item icon="cog-6-tooth" href="{{ route('profile.settings') }}">Settings</flux:navlist.item>
             <!-- <flux:navlist.item icon="information-circle" href="#">Help</flux:navlist.item> -->
         </flux:navlist>
 
