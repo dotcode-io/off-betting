@@ -40,7 +40,7 @@
         <flux:rows>
             @foreach ($bets as $bet)
             <flux:row :key="$bet->id">
-                <flux:cell>{{ $bet->created_at->format('M d, Y H:i:s A') }}</flux:cell>
+                <flux:cell>{{ $bet->created_at->format('M d, Y h:i:s A') }}</flux:cell>
                 <flux:cell>{{ $bet->reference_no }}</flux:cell>
                 <flux:cell><span class="font-bold text-[skyblue]">{{ number_format($bet->bet_amount, 2) }}</span></flux:cell>
                 <flux:cell><span class="text-{{ $bet->side->color() }}-500 uppercase font-bold">{{ $bet->side->label() }}</span></flux:cell>

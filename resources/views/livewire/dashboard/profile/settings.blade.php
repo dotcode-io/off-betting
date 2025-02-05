@@ -17,7 +17,7 @@
                 <flux:input label="Confirm Password" type="password" placeholder="Confirm new password" wire:model="confirm_password" class="mb-3" viewable />
                 <div class="flex pt-2">
                     <flux:spacer />
-                    <flux:button type="submit">Update</flux:button>
+                    <flux:button type="submit">Save Changes</flux:button>
                 </div>
             </form>
         </flux:card>

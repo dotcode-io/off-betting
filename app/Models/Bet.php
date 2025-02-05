@@ -27,6 +27,11 @@ final class Bet extends Model
         return $this->belongsTo(EventGame::class);
     }
 
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+
     public function uniqueIds(): array
     {
         return ['uuid'];
@@ -35,5 +40,10 @@ final class Bet extends Model
     public function isWin(): bool
     {
         return $this->status === BetStatus::Winner;
+    }
+
+    public function claimedBy()
+    {
+        return $this->belongsTo(User::class, 'claimed_by', 'id');
     }
 }
