@@ -39,6 +39,8 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
 
     Route::prefix('teller')->name('teller.')->middleware('teller')->group(function () {
         Volt::route('console', 'dashboard.teller.console')->name('console');
+        Volt::route('bet-history', 'dashboard.teller.bet-history')->name('bet-history');
+        Volt::route('claim-history', 'dashboard.teller.claim-history')->name('claim-history');
     });
 
     Route::prefix('controller')->name('controller.')->middleware('controller')->group(function () {
