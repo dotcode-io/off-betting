@@ -50,8 +50,9 @@ final class BetActions
                 'wala_odds' => $openGame->wala_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->wala_bets : 0,
             ]);
 
-            $bet = Bet::create([
-                'reference_no' => 'B'.auth()->id().'-'.now()->format('ymd').'-'.now()->format('His'),
+            $betCount = Bet::where('event_id', $event->id)->where('event_game_id', $openGame->id)->count() + 1;
+
+            $bet = Bet::create(['reference_no' => 'B'.$event->id.'-'.$openGame->id.'-'.mb_str_pad((string) $betCount, 4, '0', STR_PAD_LEFT),
                 'event_id' => $event->id,
                 'event_game_id' => $openGame->id,
                 'user_id' => Auth::id(),

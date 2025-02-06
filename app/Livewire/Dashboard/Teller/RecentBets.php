@@ -29,18 +29,19 @@ final class RecentBets extends Component
     {
         Flux::toast('Reprinting receipt! Please wait!', variant: 'success');
 
-        $this->dispatch('silent-print', [
-            'printData' => [
-                'event' => $this->event->name,
-                'fight' => $bet->eventGame->game_number,
-                'side' => $bet->side->label(),
-                'amount' => number_format((float) $bet->bet_amount, 2, '.', ','),
-                'ref' => $bet->reference_no,
-                'teller' => Auth::user()->username,
-                'date' => $bet->bet_at->format('F d, Y'),
-                'time' => $bet->bet_at->format('H:i A'),
-            ],
-        ]);
+        $this->dispatch('reprint-bet', $bet);
+        // $this->dispatch('silent-print', [
+        //     'printData' => [
+        //         'event' => $this->event->name,
+        //         'fight' => $bet->eventGame->game_number,
+        //         'side' => $bet->side->label(),
+        //         'amount' => number_format((float) $bet->bet_amount, 2, '.', ','),
+        //         'ref' => $bet->reference_no,
+        //         'teller' => Auth::user()->username,
+        //         'date' => $bet->bet_at->format('F d, Y'),
+        //         'time' => $bet->bet_at->format('H:i A'),
+        //     ],
+        // ]);
     }
 
     public function render()
