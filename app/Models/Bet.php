@@ -42,6 +42,16 @@ final class Bet extends Model
         return $this->status === BetStatus::Winner;
     }
 
+    public function isLost(): bool
+    {
+        return $this->status === BetStatus::Loser;
+    }
+
+    public function isOnGoing(): bool
+    {
+        return $this->status === BetStatus::OnGoing;
+    }
+
     public function claimedBy()
     {
         return $this->belongsTo(User::class, 'claimed_by', 'id');

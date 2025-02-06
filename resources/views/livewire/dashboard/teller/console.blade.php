@@ -153,7 +153,7 @@
 
             <div style="text-align: center; color: #000000; font-size: 12px; font-weight: bold; margin-top: 20px;">Ref: {{ $betToPrint->reference_no }}</div>
             <div style="text-align: center; color: #000000; font-size: 11px;">Nickname: {{ $betToPrint->nickname ?? '-' }}</div>
-            <div style="text-align: center; color: #000000; font-size: 11px;">Side: {{ $betToPrint->side->label() }}</div>
+            <div style="text-align: center; color: #000000; font-size: 14px;">Side: {{ $betToPrint->side->label() }}</div>
             <div style="text-align: center; color: #000000; font-size: 14px; font-weight: bold;">Bet: ₱ {{ number_format($betToPrint->bet_amount, 2) }}</div>
             <div style="display: flex; justify-content: center; align-items: center;">
                 <img src="{{ (new chillerlan\QRCode\QRCode)->render($betToPrint->reference_no) }}" alt="QR Code" style="height: 130px; width: 130px; margin-top: 10px; text-align: center;" />

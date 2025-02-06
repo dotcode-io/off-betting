@@ -89,7 +89,7 @@ final class ClaimHistoryIndex extends Component
     public function render()
     {
         $query = Bet::query()
-            ->with('eventGame', 'claimedBy')
+            ->with('eventGame', 'claimedBy', 'event')
             ->where('is_claimed', 1);
 
         if ($this->eventId) {

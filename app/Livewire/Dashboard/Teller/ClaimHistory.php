@@ -89,7 +89,7 @@ final class ClaimHistory extends Component
     public function render()
     {
         $query = Bet::query()
-            ->with('eventGame', 'claimedBy')
+            ->with('eventGame', 'claimedBy', 'event')
             ->where('claimed_by', auth()->id())
             ->where('is_claimed', 1);
 

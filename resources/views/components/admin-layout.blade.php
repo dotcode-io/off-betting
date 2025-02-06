@@ -37,10 +37,10 @@
 
             @if(auth()->user()->isTeller())
             <flux:navlist.item icon="paper-airplane" href="{{ route('teller.console') }}" wire:current="font-bold text-zinc-800">Bet</flux:navlist.item>
-            <flux:navlist.item icon="inbox-arrow-down" href="#" wire:current="font-bold text-zinc-800">Claim Ticket</flux:navlist.item>
+            <flux:navlist.item icon="inbox-arrow-down" href="{{ route('teller.claim-ticket') }}" wire:current="font-bold text-zinc-800">Claim Ticket</flux:navlist.item>
             <flux:navlist.item icon="document-arrow-down" href="{{ route('teller.bet-history') }}" wire:current="font-bold text-zinc-800">Bet History</flux:navlist.item>
             <flux:navlist.item icon="document-arrow-up" href="{{ route('teller.claim-history') }}" wire:current="font-bold text-zinc-800">Claim History</flux:navlist.item>
-            <flux:navlist.item icon="document-text" href="#" wire:current="font-bold text-zinc-800">Summary</flux:navlist.item>
+            <flux:navlist.item icon="document-text" href="{{ route('teller.summary') }}" wire:current="font-bold text-zinc-800">Summary</flux:navlist.item>
             @endif
 
             @if(auth()->user()->isController())
