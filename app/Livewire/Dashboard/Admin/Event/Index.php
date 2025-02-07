@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Dashboard\Admin;
+namespace App\Livewire\Dashboard\Admin\Event;
 
 use App\Actions\Event\ClosedEventActions;
 use App\Actions\Event\OpenedEventActions;
@@ -16,9 +16,9 @@ use Illuminate\Http\Response;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-final class EventIndex extends Component
+final class Index extends Component
 {
-    use Searchable, Sortable , WithPagination;
+    use Searchable, Sortable, WithPagination;
 
     public EventForm $form;
 
@@ -80,7 +80,7 @@ final class EventIndex extends Component
         $query = $this->applySearch($query, ['name']);
         $events = $query->paginate(10);
 
-        return view('livewire.dashboard.admin.event-index', [
+        return view('livewire.dashboard.admin.event.index', [
             'events' => $events,
         ])->title('Events');
     }

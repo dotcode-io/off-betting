@@ -23,9 +23,10 @@ Route::get('/', function () {
 
 Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
-        Volt::route('dashboard', 'home')->name('dashboard');
+        Volt::route('dashboard', 'dashboard.index')->name('dashboard');
 
-        Volt::route('events', 'dashboard.admin.event-index')->name('events.index');
+        Volt::route('events', 'dashboard.admin.event.index')->name('events.index');
+        Volt::route('events/{event}', 'dashboard.admin.event.show')->name('events.show');
         Volt::route('game-controller', 'dashboard.admin.game-controller.index')->name('events.game-controller');
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
 
