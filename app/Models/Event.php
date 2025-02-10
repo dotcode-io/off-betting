@@ -124,4 +124,12 @@ final class Event extends Model
             GameStatus::OPENED
         )->orderBy('game_number', 'asc')->firstOrFail();
     }
+
+    public static function getCurrent(): Event
+    {
+        return Event::query()
+            ->where('status', EventStatus::OPENED)
+            ->orderBy('created_at', 'desc')
+            ->firstOrFail();
+    }
 }

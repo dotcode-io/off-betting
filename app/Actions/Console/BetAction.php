@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Console;
 
+use App\DataTransferObjects\BettingDataTransferObject;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
 use App\Enums\GameResult;
@@ -15,31 +16,31 @@ use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-final class BetActions
+final class BetAction
 {
-    public function handle(Event $event, BetForm $form): Bet
+    public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject): Bet
     {
 
-        return DB::transaction(function () use ($event, $form) {
+        return DB::transaction(function () use ($event, $bettingDataTransferObject) {
             $openGame = $event->getOpenGame();
 
-            $side = BetSide::from($form->side);
+            $side = BetSide::from($bettingDataTransferObject->side);
             if ($side === BetSide::Meron) {
                 // increment meron_bets,meron_bettors
-                $openGame->increment('meron_bets', $form->amount);
+                $openGame->increment('meron_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('meron_bettors');
 
             }
 
             if ($side === BetSide::Wala) {
                 // increment wala_bets,wala_bettors
-                $openGame->increment('wala_bets', $form->amount);
+                $openGame->increment('wala_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('wala_bettors');
             }
 
             if ($side === BetSide::Draw) {
                 // increment draw_bets,draw_bettors
-                $openGame->increment('draw_bets', $form->amount);
+                $openGame->increment('draw_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('draw_bettors');
             }
 
@@ -55,7 +56,7 @@ final class BetActions
                 'event_id' => $event->id,
                 'event_game_id' => $openGame->id,
                 'user_id' => Auth::id(),
-                'bet_amount' => $form->amount,
+                'bet_amount' => $bettingDataTransferObject->amount,
                 'side' => $side,
                 'status' => BetStatus::OnGoing,
                 'result' => GameResult::PENDING,

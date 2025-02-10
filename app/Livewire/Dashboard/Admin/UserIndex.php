@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Admin;
 
-use App\Actions\User\UpsertUserActions;
+use App\Actions\User\UpsertUserAction;
 use App\Livewire\Forms\UserForm;
 use App\Models\User;
 use App\Traits\Table\Searchable;
@@ -38,7 +38,7 @@ final class UserIndex extends Component
         Flux::modal('user-form')->show();
     }
 
-    public function save(UpsertUserActions $actions): Response
+    public function save(UpsertUserAction $actions): Response
     {
         $this->form->validate();
 

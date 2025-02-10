@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-final class UpsertUserActions
+final class UpsertUserAction
 {
     public function handle(User $user, UserForm $form): User
     {

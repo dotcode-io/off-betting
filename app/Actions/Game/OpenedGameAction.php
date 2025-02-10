@@ -11,7 +11,7 @@ use App\Models\Event;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-final class OpenedGameActions
+final class OpenedGameAction
 {
     /**
      * @throws Exception

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Teller;
 
-use App\Actions\Console\BetActions;
+use App\Actions\Console\BetAction;
+use App\DataTransferObjects\BettingDataTransferObject;
 use App\Enums\EventStatus;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\BetForm;
@@ -40,11 +41,14 @@ final class Console extends Component
 
     public function setSide(string $side): void {}
 
-    public function submitBet(BetActions $actions): void
+    public function submitBet(BetAction $actions): void
     {
         $this->betForm->side = $this->side;
         $this->betForm->validate();
-        $bet = $actions->handle($this->event, $this->betForm);
+        $bet = $actions->handle($this->event, BettingDataTransferObject::fromArray([
+            'amount' => $this->betForm->amount,
+            'side' => $this->betForm->side,
+        ]));
         $bet->load(['eventGame']);
         $this->betForm->reset();
         $this->side = '';
