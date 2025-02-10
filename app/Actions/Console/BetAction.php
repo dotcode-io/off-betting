@@ -10,7 +10,6 @@ use App\Enums\BetStatus;
 use App\Enums\GameResult;
 use App\Events\BetRankingsEvent;
 use App\Events\GameEvent;
-use App\Livewire\Forms\BetForm;
 use App\Models\Bet;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
