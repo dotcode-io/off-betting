@@ -9,7 +9,7 @@ use App\Models\Event;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-final class UpdateEventActions
+final class UpdateEventAction
 {
     /**
      * @throws Exception

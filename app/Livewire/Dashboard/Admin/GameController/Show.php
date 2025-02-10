@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Admin\GameController;
 
-use App\Actions\Event\ClosedEventActions;
-use App\Actions\Event\OpenedEventActions;
-use App\Actions\Game\ClosedGameActions;
+use App\Actions\Event\ClosedEventAction;
+use App\Actions\Event\OpenedEventAction;
+use App\Actions\Game\ClosedGameAction;
 use App\Actions\Game\DeclaredGameResultAction;
-use App\Actions\Game\OpenedGameActions;
+use App\Actions\Game\OpenedGameAction;
 use App\Enums\EventStatus;
 use App\Enums\GameResult;
 use App\Enums\GameStatus;
@@ -84,7 +84,7 @@ final class Show extends Component
     /**
      * @throws Exception
      */
-    public function openEvent(OpenedEventActions $action): void
+    public function openEvent(OpenedEventAction $action): void
     {
         $this->event = $action->handle($this->event);
 
@@ -98,7 +98,7 @@ final class Show extends Component
     /**
      * @throws Exception
      */
-    public function closeEvent(ClosedEventActions $action): Redirector
+    public function closeEvent(ClosedEventAction $action): Redirector
     {
         $action->handle($this->event);
 
@@ -112,7 +112,7 @@ final class Show extends Component
     /**
      * @throws Exception
      */
-    public function openGame(OpenedGameActions $action): void
+    public function openGame(OpenedGameAction $action): void
     {
         $this->gameForm->validate();
         $action->handle($this->event, $this->gameForm);
@@ -124,7 +124,7 @@ final class Show extends Component
         $this->gameForm->reset();
     }
 
-    public function closeGame(ClosedGameActions $action): void
+    public function closeGame(ClosedGameAction $action): void
     {
         $action->handle($this->event);
         $this->dispatch('game-updated');

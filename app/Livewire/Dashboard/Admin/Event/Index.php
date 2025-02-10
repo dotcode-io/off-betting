@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Admin\Event;
 
-use App\Actions\Event\ClosedEventActions;
-use App\Actions\Event\OpenedEventActions;
-use App\Actions\Event\UpsertEventActions;
+use App\Actions\Event\ClosedEventAction;
+use App\Actions\Event\OpenedEventAction;
+use App\Actions\Event\UpsertEventAction;
 use App\Livewire\Forms\EventForm;
 use App\Models\Event;
 use App\Traits\Table\Searchable;
@@ -41,7 +41,7 @@ final class Index extends Component
         Flux::modal('event-form')->show();
     }
 
-    public function save(UpsertEventActions $actions): Response
+    public function save(UpsertEventAction $actions): Response
     {
         $this->form->validate();
 
@@ -55,7 +55,7 @@ final class Index extends Component
         return response()->noContent();
     }
 
-    public function open(Event $event, OpenedEventActions $actions): Response
+    public function open(Event $event, OpenedEventAction $actions): Response
     {
         $actions->handle($event);
 
@@ -64,7 +64,7 @@ final class Index extends Component
         return response()->noContent();
     }
 
-    public function close(Event $event, ClosedEventActions $actions): Response
+    public function close(Event $event, ClosedEventAction $actions): Response
     {
         $actions->handle($event);
 

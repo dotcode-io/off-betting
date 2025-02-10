@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Teller;
 
-use App\Actions\Console\BetActions;
+use App\Actions\Console\BetAction;
+use App\DataTransferObjects\BettingDataTransferObject;
 use App\Enums\EventStatus;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\BetForm;
@@ -12,7 +13,6 @@ use App\Models\Bet;
 use App\Models\Event;
 use Exception;
 use Flux\Flux;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -45,12 +45,16 @@ final class Console extends Component
 
     public function setSide(string $side): void {}
 
-    public function submitBet(BetActions $actions): void
+    public function submitBet(BetAction $actions): void
     {
         $this->betForm->side = $this->side;
         $this->betForm->validate();
-        $bet = $actions->handle($this->event, $this->betForm);
-        $bet->load(['eventGame', 'user', 'event']);
+
+        $bet = $actions->handle($this->event, BettingDataTransferObject::fromArray([
+            'amount' => $this->betForm->amount,
+            'side' => $this->betForm->side,
+        ]));
+        $bet->load(['eventGame']);
         $this->betForm->reset();
         $this->side = '';
 
@@ -60,19 +64,6 @@ final class Console extends Component
 
         Flux::modal('print-bet')->show();
 
-        // $this->dispatch('silent-print', [
-        //     'printData' => [
-        //         'event' => $this->event->name,
-        //         'fight' => $bet->eventGame->game_number,
-        //         'side' => $bet->side->label(),
-        //         'amount' => number_format((float) $bet->bet_amount, 2, '.', ','),
-        //         'ref' => $bet->reference_no,
-        //         'teller' => Auth::user()->username,
-        //         'date' => $bet->bet_at->format('F d, Y'),
-        //         'time' => $bet->bet_at->format('H:i A'),
-        //     ],
-        // ]);
-
         $this->dispatch('bet-placed');
     }
 
@@ -81,18 +72,7 @@ final class Console extends Component
     {
         $this->betToPrint = $bet->load(['eventGame', 'user', 'event']);
         Flux::modal('print-bet')->show();
-        // $this->dispatch('silent-print', [
-        //     'printData' => [
-        //         'event' => $this->event->name,
-        //         'fight' => $bet->eventGame->game_number,
-        //         'side' => $bet->side->label(),
-        //         'amount' => number_format((float) $bet->bet_amount, 2, '.', ','),
-        //         'ref' => $bet->reference_no,
-        //         'teller' => Auth::user()->username,
-        //         'date' => $bet->bet_at->format('F d, Y'),
-        //         'time' => $bet->bet_at->format('H:i A'),
-        //     ],
-        // ]);
+
     }
 
     public function printBet(): void

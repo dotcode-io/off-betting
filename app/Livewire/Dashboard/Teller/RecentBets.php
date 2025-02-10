@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Dashboard\Teller;
 
 use App\Models\Bet;
+use App\Models\Event;
 use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -15,9 +16,9 @@ final class RecentBets extends Component
 {
     use WithPagination;
 
-    public $event;
+    public Event $event;
 
-    public function mount($event): void
+    public function mount(Event $event): void
     {
         $this->event = $event;
     }

@@ -9,7 +9,7 @@ use App\Livewire\Forms\EventForm;
 use App\Models\Event;
 use Illuminate\Support\Facades\DB;
 
-final class UpsertEventActions
+final class UpsertEventAction
 {
     public function handle(Event $event, EventForm $form): Event
     {

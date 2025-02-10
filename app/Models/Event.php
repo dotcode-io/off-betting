@@ -32,6 +32,14 @@ final class Event extends Model
             ->find($id)->uuid);
     }
 
+    public static function getCurrent(): self
+    {
+        return self::query()
+            ->where('status', EventStatus::OPENED)
+            ->orderBy('created_at', 'desc')
+            ->firstOrFail();
+    }
+
     /**
      * Get the attributes that should be cast.
      *

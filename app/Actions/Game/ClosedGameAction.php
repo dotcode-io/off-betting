@@ -9,7 +9,7 @@ use App\Events\GameEvent;
 use App\Models\Event;
 use Illuminate\Support\Facades\DB;
 
-final class ClosedGameActions
+final class ClosedGameAction
 {
     public function handle(Event $event): void
     {
