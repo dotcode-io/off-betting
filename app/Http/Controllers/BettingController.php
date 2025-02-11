@@ -48,12 +48,4 @@ final class BettingController
 
         return response(status: 201);
     }
-
-    protected function getMatches(): array
-    {
-        return [
-            'reference_no' => 'reference_no',
-            'nickname' => 'nickname',
-        ];
-    }
 }
