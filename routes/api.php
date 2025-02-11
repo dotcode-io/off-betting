@@ -12,8 +12,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'authenticate']);
+
 Route::prefix('teller')->group(function () {
-    Route::get('', [TellerConsoleController::class::class, 'index']);
+    Route::get('console', [TellerConsoleController::class, 'index']);
     Route::get('recent-bet/{event}', [RecentBetController::class, 'show']);
+    Route::get('bet-history', [BettingController::class, 'index']);
     Route::post('betting', [BettingController::class, 'store']);
 })->middleware(['auth:sanctum', 'teller']);

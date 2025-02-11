@@ -14,12 +14,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Laravel\Sanctum\HasApiTokens;
 use Override;
 
 final class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     /** @use HasFactory<UserFactory> */
-    use Authenticatable, Authorizable, HasFactory, HasUuids;
+    use Authenticatable, Authorizable, HasApiTokens, HasFactory,HasUuids;
 
     /**
      * The attributes that should be hidden for serialization.
