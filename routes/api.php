@@ -8,15 +8,20 @@ use App\Http\Controllers\TellerConsoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'authenticate']);
+Route::get('/user', function (Request $request) {
+    $user = $request->user();
+
+    return [
+        'id' => $user->uuid,
+        'username' => $user->username,
+    ];
+})->middleware('auth:sanctum');
+Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::prefix('teller')->group(function () {
-    Route::get('console', [TellerConsoleController::class, 'index']);
-    Route::get('recent-bet/{event}', [RecentBetController::class, 'show']);
-    Route::get('bet-history', [BettingController::class, 'index']);
-    Route::post('betting', [BettingController::class, 'store']);
-})->middleware(['auth:sanctum', 'teller']);
+    Route::get('console', [TellerConsoleController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
+    Route::get('recent-bet/{event}', [RecentBetController::class, 'show'])->middleware(['auth:sanctum', 'teller']);
+    Route::get('bet-history', [BettingController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
+    Route::post('betting', [BettingController::class, 'store'])->middleware(['auth:sanctum', 'teller']);
+});

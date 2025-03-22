@@ -25,6 +25,7 @@ final class LoginController
         ]);
 
         $user = User::query()->where('username', $request->username)
+
             ->where('status', UserStatus::ACTIVE)
             ->where('user_type', UserType::TELLER)
             ->first();
@@ -37,7 +38,17 @@ final class LoginController
 
         return response()->json([
             'token' => $user->createToken('mobile')->plainTextToken,
-            'user' => $user,
+            'user' => [
+                'id' => $user->uuid,
+                'username' => $user->username,
+            ],
         ]);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out']);
     }
 }

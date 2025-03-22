@@ -11,7 +11,6 @@ use App\Models\Event;
 use App\Traits\Table\Searchable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 final class BettingController
 {
@@ -37,15 +36,28 @@ final class BettingController
         ]);
     }
 
-    public function store(BetAction $actions, Request $request): Response
+    public function store(BetAction $actions, Request $request): JsonResponse
     {
         $request->validate([
             'amount' => 'required', 'numeric', 'min:1', 'max:100000', 'regex:/^\d*(\.\d{1,2})?$/',
             'side' => 'required', 'string', 'in:meron,wala,draw',
         ]);
         $event = Event::getCurrent();
-        $actions->handle($event, BettingDataTransferObject::fromArray($request->only('amount', 'side')));
+        $bet = $actions->handle($event, BettingDataTransferObject::fromArray($request->only('amount', 'side')));
+        $bet->load('eventGame');
 
-        return response(status: 201);
+        return response()->json([
+            'message' => 'Bet placed successfully',
+            'bet' => [
+                'id' => $bet->id,
+                'reference_no' => $bet->reference_no,
+                'amount' => number_format((float) $bet->bet_amount, 2, '.', ''),
+                'side' => $bet->side->label(),
+                'fight_number' => $bet->eventGame->game_number,
+                'date' => $bet->created_at->format('Y-m-d'),
+                'time' => $bet->created_at->format('H:i:s'),
+
+            ],
+        ]);
     }
 }

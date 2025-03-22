@@ -17,15 +17,16 @@ final class TellerConsoleController
      */
     public function index(): JsonResponse
     {
-        $event = Event::query()->where('status', EventStatus::OPENED)->find();
+        $event = Event::query()
+            ->where('status', EventStatus::OPENED)->latest()->first();
 
         if (! $event) {
             return response()->json(['message' => 'No opened event found'], 404);
         }
 
         return response()->json([
-            'event' => $event,
-            'game' => EventGameResource::make($event->getCurrentGame())->resolve(),
+            'event' => $event->only(['uuid', 'name', 'date']),
+            'game' => EventGameResource::make($event->getCurrentGame()),
         ], 200);
     }
 }
