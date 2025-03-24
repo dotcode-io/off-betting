@@ -12,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 
-final class GameEvent implements ShouldBroadcast
+final class GameEvent implements ShouldBroadcastNow
 {
     use Dispatchable;
 
