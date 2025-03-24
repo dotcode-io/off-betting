@@ -22,7 +22,7 @@ final class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'admin',
             'user_type' => 'admin',
-            Hash::make('password'),
+            'password' => Hash::make('password'),
             'wallet_amount' => 0,
             'commission_amount' => 0,
 
@@ -31,7 +31,7 @@ final class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'teller',
             'user_type' => 'teller',
-            Hash::make('password'),
+            'password' => Hash::make('password'),
             'wallet_amount' => 0,
             'commission_amount' => 0,
         ]);
@@ -39,7 +39,7 @@ final class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'controller',
             'user_type' => 'controller',
-            Hash::make('password'),
+            'password' => Hash::make('password'),
             'wallet_amount' => 0,
             'commission_amount' => 0,
         ]);
