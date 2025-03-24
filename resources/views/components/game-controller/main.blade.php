@@ -47,7 +47,7 @@
             }
         }
 
-// Handle the last streak
+        // Handle the last streak
         if (currentStreak.length > 6) {
             for (let j = 0; j < currentStreak.length; j += 6) {
                 result.push(currentStreak.slice(j, j + 6));
@@ -85,61 +85,61 @@
         }
     }
 
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('gameData', () => ({
-                games: @entangle('games'),
-                game: @entangle('game'),
-                resultCounts: {
-                    meron: 0,
-                    wala: 0,
-                    draw: 0,
-                    cancelled: 0
-                },
-                results: [],
-                streaks: [],
-                rankings: @entangle('rankings'),
-                init() {
-                    this.results = chunkArray(this.games, 6);
-                    this.resultCounts = resultCount(this.games);
-                    this.streaks =streak(this.games);
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('gameData', () => ({
+            games: @entangle('games'),
+            game: @entangle('game'),
+            resultCounts: {
+                meron: 0,
+                wala: 0,
+                draw: 0,
+                cancelled: 0
+            },
+            results: [],
+            streaks: [],
+            rankings: @entangle('rankings'),
+            init() {
+                this.results = chunkArray(this.games, 6);
+                this.resultCounts = resultCount(this.games);
+                this.streaks = streak(this.games);
 
 
 
-                    this.$watch('games', value => {
-                        this.results = chunkArray(value, 6);
-                        this.resultCounts = resultCount(value);
-                        this.streaks = streak(value);
+                this.$watch('games', value => {
+                    this.results = chunkArray(value, 6);
+                    this.resultCounts = resultCount(value);
+                    this.streaks = streak(value);
 
-                    });
+                });
 
-                    Echo.channel(`game-event.{{ $event->uuid }}`)
-                        .listen('GameEvent', (e) => {
-                            this.game = e.current
+                Echo.channel(`game-event.{{ $event->uuid }}`)
+                    .listen('.game-event', (e) => {
+                        this.game = e.current
 
-                            if (e.next) {
+                        if (e.next) {
 
-                                const index = this.games.findIndex((item) => item.game_number === e.current.game_number);
-                                if (index !== -1) {
-                                    this.games[index] = {
-                                        id: e.current.id,
-                                        game_number: e.current.game_number,
-                                        color: e.current.result_color,
-                                        result: e.current.result_value,
-                                    };
-                                }
-                                console.log(this.games[index], e.current)
-                                setTimeout(() => {
-                                    this.game = e.next;
-                                }, 4000);
+                            const index = this.games.findIndex((item) => item.game_number === e.current.game_number);
+                            if (index !== -1) {
+                                this.games[index] = {
+                                    id: e.current.id,
+                                    game_number: e.current.game_number,
+                                    color: e.current.result_color,
+                                    result: e.current.result_value,
+                                };
                             }
+                            console.log(this.games[index], e.current)
+                            setTimeout(() => {
+                                this.game = e.next;
+                            }, 4000);
+                        }
 
-                        })
-                        .listen('BetRankingsEvent', (e) => {
-                            console.log(e)
-                            this.rankings = e.rankings;
-                        });
-                }
+                    })
+                    .listen('BetRankingsEvent', (e) => {
+                        console.log(e)
+                        this.rankings = e.rankings;
+                    });
+            }
 
-            }));
-        });
+        }));
+    });
 </script>

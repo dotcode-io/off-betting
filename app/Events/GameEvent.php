@@ -8,10 +8,11 @@ use App\Http\Resources\EventGameResource;
 use App\Models\Event;
 use App\Models\EventGame;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 
-final class GameEvent implements ShouldBroadcastNow
+final class GameEvent implements ShouldBroadcast
 {
     use Dispatchable;
 
@@ -30,5 +31,10 @@ final class GameEvent implements ShouldBroadcastNow
         return [
             new Channel('game-event.'.Event::getUuidInCache($this->currentGame->event_id)),
         ];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'game-event';
     }
 }

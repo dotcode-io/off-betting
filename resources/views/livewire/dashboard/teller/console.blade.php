@@ -260,7 +260,7 @@
                 ]
 
                 Echo.channel(`game-event.{{ $event?->uuid }}`)
-                    .listen('GameEvent', (e) => {
+                    .listen('.game-event', (e) => {
                         this.game = e.current
                         console.log('game event', e)
                         if (e.next) {
