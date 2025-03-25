@@ -1,17 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import '../../vendor/livewire/flux/dist/flux.css';
 
-@layer base {
-    :root {
-        --color-accent: var(--color-lime-400);
-        --color-accent-content: var(--color-lime-600);
-        --color-accent-foreground: var(--color-lime-900);
-    }
-
-    .dark {
-        --color-accent: var(--color-lime-400);
-        --color-accent-content: var(--color-lime-400);
-        --color-accent-foreground: var(--color-lime-950);
-    }
-}
+/* Required for dark mode in Flux... */
+@custom-variant dark (&:where(.dark, .dark *));

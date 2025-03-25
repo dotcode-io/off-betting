@@ -8,16 +8,16 @@
             <flux:separator variant="subtle" />
         </div>
         <flux:table :paginate="$bets">
-            <flux:columns>
-                <flux:column>Details</flux:column>
-                <flux:column>Result</flux:column>
-                <flux:column></flux:column>
-            </flux:columns>
+            <flux:table.columns>
+                <flux:table.column>Details</flux:table.column>
+                <flux:table.column>Result</flux:table.column>
+                <flux:table.column></flux:table.column>
+            </flux:table.columns>
 
-            <flux:rows>
+            <flux:table.rows>
                 @foreach ($bets as $bet)
-                <flux:row :key="$bet->id">
-                    <flux:cell>
+                <flux:table.rows :key="$bet->id">
+                    <flux:table.cell>
                         <div>
                             <div class="text-[yellow] text-[12px]">#{{ $bet->reference_no }}</div>
 
@@ -43,14 +43,14 @@
                             @endif
 
                         </div>
-                    </flux:cell>
-                    <flux:cell>
+                    </flux:table.cell>
+                    <flux:table.cell>
                         <flux:badge variant="solid" color="{{ $bet->result->color() }}" size="sm">
                             {{ $bet->result->label() }}
                         </flux:badge>
 
-                    </flux:cell>
-                    <flux:cell>
+                    </flux:table.cell>
+                    <flux:table.cell>
                         <flux:dropdown position="bottom" align="end">
                             <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"></flux:button>
 
@@ -58,12 +58,12 @@
                                 <flux:navmenu.item icon="printer" wire:click="reprintReceipt({{ $bet->id }})">Reprint</flux:navmenu.item>
                             </flux:navmenu>
                         </flux:dropdown>
-                    </flux:cell>
+                    </flux:table.cell>
 
 
-                </flux:row>
+                </flux:table.row>
                 @endforeach
-            </flux:rows>
+            </flux:table.rows>
         </flux:table>
     </div>
 </flux:card>

@@ -77,21 +77,21 @@
                 <flux:card class="min-h-[450px] hidden md:block">
                     <flux:heading size="lg">Rankings</flux:heading>
                     <flux:table>
-                        <flux:columns>
-                            <flux:column>REF</flux:column>
-                            <flux:column>SIDE</flux:column>
-                            <flux:column class="text-right">AMOUNT</flux:column>
-                        </flux:columns>
+                        <flux:table.columns>
+                            <flux:table.column>REF</flux:table.column>
+                            <flux:table.column>SIDE</flux:table.column>
+                            <flux:column class="text-right">AMOUNT</flux:table.column>
+                        </flux:table.columns>
 
                         <template x-for="row in rankings" :key="row.id">
-                            <flux:rows>
-                                <flux:row>
-                                    <flux:cell x-text="row.ref" class="font-bold"></flux:cell>
-                                    <flux:cell x-text="row.side" x-bind:class="`!text-${row.side_color}-500`" class="uppercase">
-                                    </flux:cell>
-                                    <flux:cell x-text="row.amount" class="font-bold text-right !text-green-500"></flux:cell>
-                                </flux:row>
-                            </flux:rows>
+                            <flux:table.rows>
+                                <flux:table.row>
+                                    <flux:table.cell x-text="row.ref" class="font-bold"></flux:table.cell>
+                                    <flux:table.cell x-text="row.side" x-bind:class="`!text-${row.side_color}-500`" class="uppercase">
+                                    </flux:table.cell>
+                                    <flux:table.cell x-text="row.amount" class="font-bold text-right !text-green-500"></flux:table.cell>
+                                </flux:table.row>
+                            </flux:table.rows>
                         </template>
                     </flux:table>
                 </flux:card>
@@ -132,7 +132,7 @@
                                     @foreach (\App\Enums\GameResult::cases() as $result)
 
                                     @if($result !== \App\Enums\GameResult::CANCELLED && $result !== \App\Enums\GameResult::PENDING)
-                                    <flux:option value="{{ $result->value}}">
+                                    <flux:select.option value="{{ $result->value}}">
                                         <div class="flex items-center gap-2">
                                             <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
                                             </div>
@@ -141,7 +141,7 @@
                                             </div>
                                         </div>
 
-                                    </flux:option>
+                                    </flux:select.option>
                                     @endif
                                     @endforeach
 

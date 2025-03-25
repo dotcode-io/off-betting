@@ -81,52 +81,52 @@
         </flux:card>
     </div>
     <flux:table :paginate="$games">
-        <flux:columns>
-            <flux:column>Game#</flux:column>
-            <flux:column>Meron</flux:column>
-            <flux:column>Wala</flux:column>
-            <flux:column>Draw</flux:column>
-            <flux:column>Earnings</flux:column>
-            <flux:column>Draw Earnings</flux:column>
-            <flux:column>Result</flux:column>
-            <flux:column>Status</flux:column>
-        </flux:columns>
+        <flux:table.columns>
+            <flux:table.column>Game#</flux:table.column>
+            <flux:table.column>Meron</flux:table.column>
+            <flux:table.column>Wala</flux:table.column>
+            <flux:table.column>Draw</flux:table.column>
+            <flux:table.column>Earnings</flux:table.column>
+            <flux:table.column>Draw Earnings</flux:table.column>
+            <flux:table.column>Result</flux:table.column>
+            <flux:table.column>Status</flux:table.column>
+        </flux:table.columns>
 
-        <flux:rows>
+        <flux:table.rows>
             @foreach ($games as $game)
-            <flux:row :key="$game->id">
-                <flux:cell>{{ $game->game_number }}</flux:cell>
-                <flux:cell>
+            <flux:table.rows :key="$game->id">
+                <flux:table.cell>{{ $game->game_number }}</flux:table.cell>
+                <flux:table.cell>
                     <div>Entry: {{ $game->meron_entry }}</div>
                     <div>Bets: {{ number_format($game->meron_bets, 2) }}</div>
                     <div>Bettors: {{ number_format($game->meron_bettors) }}</div>
                     <div>Odds: {{ number_format($game->meron_odds, 2) }}%</div>
-                </flux:cell>
-                <flux:cell>
+                </flux:table.cell>
+                <flux:table.cell>
                     <div>Entry: {{ $game->wala_entry }}</div>
                     <div>Bets: {{ number_format($game->wala_bets, 2) }}</div>
                     <div>Bettors: {{ number_format($game->wala_bettors) }}</div>
                     <div>Odds: {{ number_format($game->wala_odds, 2) }}%</div>
-                </flux:cell>
-                <flux:cell>
+                </flux:table.cell>
+                <flux:table.cell>
                     <div>Bets: {{ number_format($game->draw_bets, 2) }}</div>
                     <div>Bettors: {{ number_format($game->draw_bettors) }}</div>
-                </flux:cell>
-                <flux:cell>{{ number_format($game->earnings, 2) }}</flux:cell>
-                <flux:cell>{{ number_format($game->draw_earnings, 2) }}</flux:cell>
-                <flux:cell>
+                </flux:table.cell>
+                <flux:table.cell>{{ number_format($game->earnings, 2) }}</flux:table.cell>
+                <flux:table.cell>{{ number_format($game->draw_earnings, 2) }}</flux:table.cell>
+                <flux:table.cell>
                     <flux:badge color="{{ $game->result->color() }}" size="sm" variant="solid">
                         {{ $game->result->label() }}
                     </flux:badge>
-                </flux:cell>
-                <flux:cell>
+                </flux:table.cell>
+                <flux:table.cell>
                     <flux:badge color="{{ $game->status->color() }}" size="sm" variant="solid">
                         {{ $game->status->label() }}
                     </flux:badge>
-                </flux:cell>
+                </flux:table.cell>
 
-            </flux:row>
+            </flux:table.row>
             @endforeach
-        </flux:rows>
+        </flux:table.rows>
     </flux:table>
 </div>

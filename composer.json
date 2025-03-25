@@ -15,8 +15,8 @@
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "livewire/flux": "^1.1",
-        "livewire/flux-pro": "^1.1",
+        "livewire/flux": "^2.0",
+        "livewire/flux-pro": "^2.0",
         "livewire/volt": "^1.6"
     },
     "require-dev": {

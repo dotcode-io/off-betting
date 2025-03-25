@@ -10,12 +10,15 @@ enum UserType: string
     case CONTROLLER = 'controller';
     case TELLER = 'teller';
 
+    case PLAYER = 'player';
+
     public function label(): string
     {
         return match ($this) {
             self::ADMIN => 'Admin',
             self::CONTROLLER => 'Controller',
             self::TELLER => 'Teller',
+            self::PLAYER => 'Player',
         };
     }
 
@@ -25,6 +28,7 @@ enum UserType: string
             self::ADMIN => 'yellow',
             self::CONTROLLER => 'orange',
             self::TELLER => 'red',
+            self::PLAYER => 'green',
         };
     }
 }

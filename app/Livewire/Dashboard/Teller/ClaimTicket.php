@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Teller;
 
+use App\Actions\ClaimTicketAction;
 use App\Models\Bet;
 use Flux\Flux;
 use Livewire\Component;
@@ -51,15 +52,10 @@ final class ClaimTicket extends Component
         $this->reference_no = '';
     }
 
-    public function claim()
+    public function claim(ClaimTicketAction $action): ?\Illuminate\Http\RedirectResponse
     {
         if ($this->bet) {
-            $this->bet->update([
-                'is_claimed' => 1,
-                'claimed_by' => auth()->id(),
-                'claimed_at' => now(),
-            ]);
-
+            $action->handle($this->bet);
             Flux::toast(heading: 'Congratulations!', text: 'Ticket claimed successfully!', variant: 'success');
 
             $this->bet = null;

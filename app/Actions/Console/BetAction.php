@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Console;
 
+use App\Actions\User\AddWalletAction;
 use App\DataTransferObjects\BettingDataTransferObject;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\DB;
 
 final class BetAction
 {
+    public function __construct(public AddWalletAction $addWalletAction)
+    {
+        //
+    }
+
     public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject): Bet
     {
 
@@ -62,6 +68,11 @@ final class BetAction
                 'result' => GameResult::PENDING,
                 'is_claimed' => false,
                 'bet_at' => now(),
+            ]);
+
+            $this->addWalletAction->handle(Auth::user(), [
+                'amount' => $bettingDataTransferObject->amount,
+                'description' => 'Placed a bet on '.$event->name,
             ]);
 
             GameEvent::dispatch($openGame, null);

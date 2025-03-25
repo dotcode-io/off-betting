@@ -17,36 +17,36 @@
 
     </div>
     <flux:table :paginate="$events">
-        <flux:columns>
-            <flux:column>Event name</flux:column>
-            <flux:column>Date</flux:column>
-            <flux:column>No. of Games</flux:column>
-            <flux:column>Status</flux:column>
-            <flux:column></flux:column>
-        </flux:columns>
+        <flux:table.columns>
+            <flux:table.column>Event name</flux:table.column>
+            <flux:table.column>Date</flux:table.column>
+            <flux:table.column>No. of Games</flux:table.column>
+            <flux:table.column>Status</flux:table.column>
+            <flux:table.column></flux:table.column>
+        </flux:table.columns>
 
-        <flux:rows>
+        <flux:table.rows>
             @foreach ($events as $event)
-            <flux:row :key="$event->id">
-                <flux:cell>{{ $event->name }}</flux:cell>
-                <flux:cell>{{ $event->dateFormatted() }}</flux:cell>
-                <flux:cell>{{ $event->number_of_games }}</flux:cell>
-                <flux:cell>
+            <flux:table.rows :key="$event->id">
+                <flux:table.cell>{{ $event->name }}</flux:table.cell>
+                <flux:table.cell>{{ $event->dateFormatted() }}</flux:table.cell>
+                <flux:table.cell>{{ $event->number_of_games }}</flux:table.cell>
+                <flux:table.cell>
                     <flux:badge color="{{ $event->status->color() }}" size="sm" inset="top bottom">
                         {{ $event->status->label() }}
                     </flux:badge>
-                </flux:cell>
-                <flux:cell class="flex space-x-2 items-center justify-center">
+                </flux:table.cell>
+                <flux:table.cell class="flex space-x-2 items-center justify-center">
                     @if($event->status->isEditable())
                     <flux:button size="sm" wire:click="openFormModal('{{ $event->uuid }}')">Edit</flux:button>
                     @endif
                     <flux:button size="sm" href="{{ route('events.show', $event->uuid) }}">View</flux:button>
-                </flux:cell>
+                </flux:table.cell>
 
 
-            </flux:row>
+            </flux:table.row>
             @endforeach
-        </flux:rows>
+        </flux:table.rows>
     </flux:table>
 
 
