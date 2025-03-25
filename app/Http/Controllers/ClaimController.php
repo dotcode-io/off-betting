@@ -19,11 +19,15 @@ class ClaimController
         $query = Bet::query()->with('eventGame')->where('user_id', auth()->id());
 
         if ($request->has('event_id')) {
-            $query->where('event_id', $request->event_id);
+            if (!isEmpty($request->event_id)) {
+                $query->where('event_id', $request->event_id);
+            }
         }
 
         if ($request->has('from') && $request->has('to')) {
-            $query->whereDate('created_at', '>=', $request->get('from'))->whereDate('created_at', '<=', $request->get('to'));
+            if (!isEmpty($request->from) && !isEmpty($request->to)) {
+                $query->whereDate('created_at', '>=', $request->get('from'))->whereDate('created_at', '<=', $request->get('to'));
+            }
         }
 
         $query = $this->applySearch($query, ['reference_no', 'nickname']);
