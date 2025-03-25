@@ -51,7 +51,7 @@ final class Console extends Component
         $this->betForm->validate();
 
         $bet = $actions->handle($this->event, BettingDataTransferObject::fromArray([
-            'amount' => $this->betForm->amount,
+            'amount' => (float) $this->betForm->amount,
             'side' => $this->betForm->side,
         ]));
         $bet->load(['eventGame']);

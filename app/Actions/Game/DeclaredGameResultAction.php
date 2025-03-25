@@ -37,7 +37,9 @@ final class DeclaredGameResultAction
             $nextGame = $event->getCurrentGame();
 
             GameEvent::dispatch($game, $nextGame);
-            defer(fn () => (new DeclareResultJob($game->id, $result, $game->getOdds()))->handle());
+            DeclareResultJob::dispatch($game->id, $result, $game->getOdds());
         });
     }
 }
+
+

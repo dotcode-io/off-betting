@@ -125,4 +125,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'gb_ids' => explode( ',',env('APP_GB_ID', '1')),
+
 ];

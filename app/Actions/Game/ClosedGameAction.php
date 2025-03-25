@@ -15,7 +15,10 @@ final class ClosedGameAction
     {
         DB::transaction(function () use ($event): void {
 
+            // Bet sum case when side meron,wala,draw then sum amount else 0 end as total_bets
+
             $game = $event->getCurrentGame();
+
             $game->closed_at = now();
             $game->status = GameStatus::CLOSED;
             $game->save();

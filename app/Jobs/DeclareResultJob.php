@@ -9,6 +9,7 @@ use App\Enums\BetStatus;
 use App\Enums\GameResult;
 use App\Events\GameEvent;
 use App\Models\Bet;
+use App\Models\EventGame;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -33,6 +34,8 @@ final class DeclareResultJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $earnings = 0;
+        $game = EventGame::query()->find($this->gameId);
         if ($this->result === GameResult::CANCELLED) {
             Bet::query()->where('event_game_id', $this->gameId)
                 ->where('result', GameResult::PENDING)
@@ -57,8 +60,7 @@ final class DeclareResultJob implements ShouldQueue
                     'win_amount' => DB::raw('bet_amount'),
                 ]);
 
-
-
+            $drawEarnings = -$game->draw_bets * 8;
 
         } else {
 
@@ -70,7 +72,14 @@ final class DeclareResultJob implements ShouldQueue
                     'status' => BetStatus::Loser,
                     'result' => $this->result,
                 ]);
+            $drawEarnings = $game->draw_bets;
+            $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * ($game->plasada / 100);
         }
+
+        $game->update([
+            'earnings' => $earnings,
+            'draw_earnings' => $drawEarnings,
+        ]);
 
         Bet::query()->where('event_game_id', $this->gameId)
             ->where('side', $this->result->side())

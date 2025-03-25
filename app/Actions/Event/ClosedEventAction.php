@@ -6,6 +6,7 @@ namespace App\Actions\Event;
 
 use App\Enums\EventStatus;
 use App\Models\Event;
+use App\Models\EventGame;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -22,9 +23,21 @@ final class ClosedEventAction
 
         DB::transaction(function () use ($event): void {
 
+            $earnings = EventGame::query()
+                ->selectRaw('
+                SUM(earnings) as total_earnings,
+                SUM(draw_earnings) as total_draw_earnings
+            ')
+                ->where('event_id', $event->id)
+                ->whereStatus('done')
+                ->whereNotIn('user_id', config('app.gb_ids'))
+                ->first();
+
             $event->update([
                 'closed_at' => now(),
                 'status' => EventStatus::CLOSED,
+                'total_earnings' => $earnings->total_earnings,
+                'total_draw_earnings' => $earnings->total_draw_earnings,
             ]);
         });
     }

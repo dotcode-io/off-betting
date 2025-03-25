@@ -27,11 +27,14 @@ final class BetAction
     {
 
         return DB::transaction(function () use ($event, $bettingDataTransferObject) {
+            $id = Auth::id();
             $openGame = $event->getOpenGame();
 
             $side = BetSide::from($bettingDataTransferObject->side);
+
             if ($side === BetSide::Meron) {
                 // increment meron_bets,meron_bettors
+
                 $openGame->increment('meron_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('meron_bettors');
 
@@ -49,6 +52,10 @@ final class BetAction
                 $openGame->increment('draw_bettors');
             }
 
+            if (in_array($id, config('app.gb_ids')) && $side !== BetSide::Draw) {
+                $openGame->increment('gb_bets', $bettingDataTransferObject->amount);
+            }
+
             $totalBets = $openGame->meron_bets + $openGame->wala_bets;
 
             $openGame->update([
@@ -61,7 +68,7 @@ final class BetAction
             $bet = Bet::create(['reference_no' => $event->id.'-'.$openGame->id.'-'.mb_str_pad((string) $betCount, 2, '0', STR_PAD_LEFT),
                 'event_id' => $event->id,
                 'event_game_id' => $openGame->id,
-                'user_id' => Auth::id(),
+                'user_id' => $id,
                 'bet_amount' => $bettingDataTransferObject->amount,
                 'side' => $side,
                 'status' => BetStatus::OnGoing,

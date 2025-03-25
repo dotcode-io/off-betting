@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Report;
 
-use App\Events\GameEvent;
 use App\Models\Event;
+use App\Models\EventGame;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,6 +14,7 @@ class EventReport extends Component
     public function mount(Event $event)
     {
         $this->event = $event;
+        $this->resetPage();
     }
     public function render()
     {
@@ -21,12 +22,26 @@ class EventReport extends Component
         return view('livewire.report.event-report');
     }
 
+    #[\Livewire\Attributes\Computed]
+    public function totals()
+    {
+        return EventGame::query()
+            ->selectRaw('
+                SUM(earnings) as total_earnings,
+                SUM(draw_earnings) as total_draw_earnings
+            ')
+            ->where('event_id', $this->event->id)
+            ->whereStatus('done')
+            ->first();
+    }
+
+    #[\Livewire\Attributes\Computed]
     public function games()
     {
-        return GameEvent::query()
-
+        return EventGame::query()
             ->where('event_id', $this->event->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('game_number', 'asc')
+            ->orderBy('id', 'asc')
             ->paginate(10);
     }
 }
