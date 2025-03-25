@@ -36,6 +36,8 @@ final class ViewWalletModal extends Component
         return WalletLog::query()
             ->where('user_id', $this->user->id)
             ->whereDate('created_at', $this->date)
+            ->latest()
+            ->orderBy('id', 'desc')
             ->paginate(10);
     }
 

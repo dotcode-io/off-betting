@@ -25,7 +25,7 @@
             <form wire:submit="submitBet">
                 <div class="flex">
                     <flux:icon.play-circle variant="solid" class="text-[yellow] animate-pulse" />
-                    <flux:heading size="lg" class="!text-[yellow]">{{ strtoupper($event->name) }} <em
+                    <flux:heading size="lg" class="text-[yellow]!">{{ strtoupper($event->name) }} <em
                             class="text-[gray]">({{ strtoupper($event->dateFormatted()) }})</em></flux:heading>
                 </div>
                 <div class="py-2">
@@ -48,8 +48,8 @@
                         x-on:click="setSide('meron')"
                         :disabled="game.status !== 'Opened'">
                         <div class="pb-2">
-                            <flux:heading class="!font-bold !text-[18px]">MERON</flux:heading>
-                            <flux:heading class="!text-[14px]" x-text="game.meron_name"></flux:heading>
+                            <flux:heading class="font-bold! text-[18px]!">MERON</flux:heading>
+                            <flux:heading class="text-[14px]!" x-text="game.meron_name"></flux:heading>
                         </div>
                     </button>
                     <button type="button"
@@ -58,8 +58,8 @@
                         x-on:click="setSide('draw')"
                         :disabled="game.status !== 'Opened'">
                         <div class="pb-2">
-                            <flux:heading class="!font-bold !text-[18px]">DRAW</flux:heading>
-                            <flux:heading class="!text-[14px]">8X</flux:heading>
+                            <flux:heading class="font-bold! text-[18px]!">DRAW</flux:heading>
+                            <flux:heading class="text-[14px]!">8X</flux:heading>
                         </div>
                     </button>
                     <button type="button"
@@ -67,8 +67,8 @@
                         :class="side === 'wala' ? 'border-4 border-yellow-500 bg-blue-600 animate-pulse' : ''"
                         x-on:click="setSide('wala')" :disabled="game.status !== 'Opened'">
                         <div class="pb-2">
-                            <flux:heading class="!font-bold !text-[18px]">WALA</flux:heading>
-                            <flux:heading class="!text-[14px]" x-text="game.wala_name"></flux:heading>
+                            <flux:heading class="font-bold! text-[18px]!">WALA</flux:heading>
+                            <flux:heading class="text-[14px]!" x-text="game.wala_name"></flux:heading>
                         </div>
                     </button>
                 </div>
@@ -92,25 +92,25 @@
 
 
                 <div class="grid grid-cols-3 gap-2 mb-4">
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '1'">1
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '1'">1
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '2'">2
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '2'">2
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '3'">3
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '3'">3
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '4'">4
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '4'">4
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '5'">5
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '5'">5
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '6'">6
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '6'">6
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '7'">7
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '7'">7
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '8'">8
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '8'">8
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '9'">9
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '9'">9
                     </flux:button>
-                    <flux:button class="!bg-[#fff44f]" variant="primary" x-on:click="amountBet += '0'">0
+                    <flux:button class="bg-[#fff44f]!" variant="primary" x-on:click="amountBet += '0'">0
                     </flux:button>
                     <div class="col-span-2">
                         <flux:button variant="danger" x-on:click="amountBet = ''" class="w-full">Clear</flux:button>
@@ -121,7 +121,7 @@
 
 
                 <div>
-                    <flux:button class="w-full !bg-[#1338be]" variant="ghost" type="submit"> SUBMIT BET AND PRINT
+                    <flux:button class="w-full bg-[#1338be]!" variant="ghost" type="submit"> SUBMIT BET AND PRINT
                     </flux:button>
                 </div>
             </form>

@@ -28,6 +28,7 @@
                 <flux:table.cell>
                     <flux:button size="sm" href="{{ route('controller.events.game-controller.show', $event->uuid) }}">View
                     </flux:button>
+                    
                 </flux:table.cell>
             </flux:table.row>
             @endforeach

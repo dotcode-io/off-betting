@@ -76,33 +76,34 @@
 
     <flux:modal name="bet-details" class="min-w-[28rem] space-y-6">
         <div class="space-y-4">
-            <flux:heading size="lg" class="!font-bold">Bet Details <span x-text="game.game_number"> </span></flux:heading>
+            <flux:heading size="lg" class="font-bold!">Bet Details <span x-text="game.game_number"> </span></flux:heading>
         </div>
         <div class="space-y-1">
-            <div class="flex flex-row justify-between items-center">
-                <div class="text-gray-400">
-                    Reference No.
+           @if($bet)
+                <div class="flex flex-row justify-between items-center">
+                    <div class="text-gray-400">
+                        Reference No.
+                    </div>
+                    <div>
+                        {{ $bet->reference_no }}
+                    </div>
                 </div>
-                <div>
-                    {{ $bet->reference_no }}
+                <div class="flex flex-row justify-between items-center">
+                    <div class="text-gray-400">
+                        Event
+                    </div>
+                    <div>
+                        {{ $bet->event->name }}
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-row justify-between items-center">
-                <div class="text-gray-400">
-                    Event
+                <div class="flex flex-row justify-between items-center">
+                    <div class="text-gray-400">
+                        Game
+                    </div>
+                    <div>
+                        #{{ $bet->eventGame->game_number }}
+                    </div>
                 </div>
-                <div>
-                    {{ $bet->event->name }}
-                </div>
-            </div>
-            <div class="flex flex-row justify-between items-center">
-                <div class="text-gray-400">
-                    Game
-                </div>
-                <div>
-                    #{{ $bet->eventGame->game_number }}
-                </div>
-            </div>
         </div>
         <flux:separator variant="subtle" />
         <div class="space-y-1">
@@ -182,6 +183,8 @@
                 </div>
             </div>
         </div>
+        @endif
+
 
         <div class="flex justify-end gap-2 pt-2">
             <flux:modal.close>

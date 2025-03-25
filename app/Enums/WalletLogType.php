@@ -10,8 +10,8 @@ enum WalletLogType: string
     public function label(): string
     {
         return match ($this) {
-            self::CREDIT => 'Credit',
-            self::DEBIT => 'Debit',
+            self::CREDIT => 'Cash In',
+            self::DEBIT => 'Cash Out',
         };
     }
 

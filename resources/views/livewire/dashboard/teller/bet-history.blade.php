@@ -54,7 +54,7 @@
                 <flux:table.cell>
                     <span class="font-bold text-[yellowgreen]">{{ $bet->win_amount > 0 ? number_format($bet->win_amount, 2) : '-' }}</span>
                     @if($bet->is_claimed)
-                    <flux:badge class="!h-[18px] !text-[10px]" color="blue" size="sm" variant="solid">
+                    <flux:badge class="h-[18px]! text-[10px]!" color="blue" size="sm" variant="solid">
                         Claimed
                     </flux:badge>
                     @endif

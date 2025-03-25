@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800 !bg-[#111111]">
+<body class="min-h-screen bg-white dark:bg-zinc-800 bg-[#111111]!">
     <flux:main>
         {{ $slot }}
     </flux:main>

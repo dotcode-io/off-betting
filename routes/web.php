@@ -36,6 +36,8 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
         Volt::route('claim-history', 'dashboard.admin.claim-history-index')->name('claim-history');
 
         Volt::route('users', 'dashboard.admin.user-index')->name('users.index');
+        Volt::route('report/{event}', 'report.report-index')->name('report.index');
+
     });
 
     Route::prefix('teller')->name('teller.')->middleware('teller')->group(function () {

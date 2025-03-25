@@ -1,4 +1,4 @@
-<div class="!p-0 h-full flex flex-col gap-2">
+<div class="p-0! h-full flex flex-col gap-2">
     <div class="h-[10%]">
         <div class="flex flex-row justify-between items-center bg-dark text-center h-full">
             <p class="text-[40px] text-center font-semibold text-[#ffffff]">FIGHT # <span x-text="game.game_number"></span></p>

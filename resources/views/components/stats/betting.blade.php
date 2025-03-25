@@ -1,4 +1,4 @@
-<flux:card class="space-y-6 !p-0">
+<flux:card class="space-y-6 p-0!">
     <div class="grid grid-cols-2">
         <div class="bg-red-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]">
             <div class="my-5 text-center">

@@ -80,7 +80,7 @@
                         <flux:table.columns>
                             <flux:table.column>REF</flux:table.column>
                             <flux:table.column>SIDE</flux:table.column>
-                            <flux:column class="text-right">AMOUNT</flux:table.column>
+                            <flux:table.column class="text-right">AMOUNT</flux:table.column>
                         </flux:table.columns>
 
                         <template x-for="row in rankings" :key="row.id">
@@ -89,7 +89,7 @@
                                     <flux:table.cell x-text="row.ref" class="font-bold"></flux:table.cell>
                                     <flux:table.cell x-text="row.side" x-bind:class="`!text-${row.side_color}-500`" class="uppercase">
                                     </flux:table.cell>
-                                    <flux:table.cell x-text="row.amount" class="font-bold text-right !text-green-500"></flux:table.cell>
+                                    <flux:table.cell x-text="row.amount" class="font-bold text-right text-green-500!"></flux:table.cell>
                                 </flux:table.row>
                             </flux:table.rows>
                         </template>
@@ -118,7 +118,7 @@
                                 <flux:heading size="lg">Game Controller</flux:heading>
                                 <div class="flex items-center space-x-2 py-2 gap-2">
                                     <flux:modal.trigger name="open-game">
-                                        <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::PENDING->label() }}'">Open</flux:button>
+                                        <flux:button class="bg-green-500! w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::PENDING->label() }}'">Open</flux:button>
                                     </flux:modal.trigger>
                                     <flux:modal.trigger name="close-game">
                                         <flux:button variant="danger" class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::OPENED->label() }}'">Close</flux:button>
@@ -148,7 +148,7 @@
                                 </flux:select>
                                 <div class="flex items-center py-2 gap-2">
                                     <flux:modal.trigger name="game-result">
-                                        <flux:button class="!bg-green-500 w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">Declare</flux:button>
+                                        <flux:button class="bg-green-500! w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">Declare</flux:button>
                                     </flux:modal.trigger>
                                     <flux:button class="w-full" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'" wire:click="cancelledGameModal">Cancel Game</flux:button>
                                 </div>

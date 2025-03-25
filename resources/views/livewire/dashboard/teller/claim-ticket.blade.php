@@ -24,7 +24,7 @@
         @if($bet)
         <flux:card class="w-1/3">
             <div class="space-y-4">
-                <flux:heading size="lg" class="!font-bold">Bet Details <span x-text="game.game_number"> </span></flux:heading>
+                <flux:heading size="lg" class="font-bold!">Bet Details <span x-text="game.game_number"> </span></flux:heading>
             </div>
             <div class="space-y-1">
                 <div class="flex flex-row justify-between items-center">

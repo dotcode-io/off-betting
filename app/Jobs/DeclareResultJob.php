@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
 use App\Enums\GameResult;
+use App\Events\GameEvent;
 use App\Models\Bet;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -56,7 +57,11 @@ final class DeclareResultJob implements ShouldQueue
                     'win_amount' => DB::raw('bet_amount'),
                 ]);
 
+
+
+
         } else {
+
             Bet::query()->where('event_game_id', $this->gameId)
                 ->where('side', '!=', $this->result->side())
                 ->where('result', GameResult::PENDING)
