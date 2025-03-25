@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BettingController;
+use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\RecentBetController;
 use App\Http\Controllers\TellerConsoleController;
 use Illuminate\Http\Request;
@@ -24,4 +25,5 @@ Route::prefix('teller')->group(function () {
     Route::get('recent-bet/{event}', [RecentBetController::class, 'show'])->middleware(['auth:sanctum', 'teller']);
     Route::get('bet-history', [BettingController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
     Route::post('betting', [BettingController::class, 'store'])->middleware(['auth:sanctum', 'teller']);
+    Route::get('claim-history', [ClaimController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
 });
