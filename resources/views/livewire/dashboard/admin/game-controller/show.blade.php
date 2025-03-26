@@ -295,6 +295,8 @@
         </div>
     </flux:modal>
 
+    <livewire:dashboard.admin.game-controller.change-result-modal />
+
 
 
 

@@ -5,8 +5,18 @@
                 <template x-for="(item,index) in chunks" :key="`game-result-li-${index}`">
                     <li>
                         <span
-                            class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold"
-                            :class="'bg-' + item.color + '-600'" x-text="item.game_number"></span>
+                            class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border rounded-full text-xm font-bold "
+                            :class="{
+                                ['bg-' + item.color + '-600']: true,
+                                'cursor-not-allowed': item.color === 'stone',
+                                'cursor-pointer': item.color !== 'stone'
+                             }"
+                            x-text="item.game_number"
+
+                            @click="$dispatch('change-result', {id: item.id})"
+                        >
+
+                        </span>
                     </li>
                 </template>
             </ul>

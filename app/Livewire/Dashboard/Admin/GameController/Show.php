@@ -81,6 +81,19 @@ final class Show extends Component
         $this->game = EventGameResource::make($this->event->getCurrentGame())->resolve();
     }
 
+    #[On('updateResult')]
+    public function updateResult(EventGame $eventGame): void
+    {
+        $this->games = array_map(function ($game) use ($eventGame) {
+            if ($game['id'] === $eventGame->id) {
+                $game['color'] = $eventGame->result->color();
+                $game['result'] = $eventGame->result->value;
+            }
+
+            return $game;
+        }, $this->games);
+    }
+
     /**
      * @throws Exception
      */
