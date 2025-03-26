@@ -48,20 +48,11 @@ final class BettingController
         ]);
         $event = Event::getCurrent();
         $bet = $actions->handle($event, BettingDataTransferObject::fromArray($request->only('amount', 'side')));
-        $bet->load('eventGame');
+        $bet->load('eventGame', 'event');
 
         return response()->json([
             'message' => 'Bet placed successfully',
-            'bet' => [
-                'id' => $bet->id,
-                'reference_no' => $bet->reference_no,
-                'amount' => number_format((float) $bet->bet_amount, 2, '.', ''),
-                'side' => $bet->side->label(),
-                'fight_number' => $bet->eventGame->game_number,
-                'date' => $bet->created_at->format('Y-m-d'),
-                'time' => $bet->created_at->format('H:i:s'),
-
-            ],
+            'bet' => $bet
         ]);
     }
 }

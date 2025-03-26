@@ -13,7 +13,7 @@ final class RecentBetController
     public function show(Event $event): JsonResponse
     {
         $bets = Bet::query()
-            ->with(['eventGame'])
+            ->with(['eventGame', 'event'])
             ->where('event_id', $event->id)
             ->where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
