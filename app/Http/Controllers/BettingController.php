@@ -12,32 +12,29 @@ use App\Traits\Table\Searchable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-use function PHPUnit\Framework\isEmpty;
-
 final class BettingController
 {
     use Searchable;
 
     public function index(Request $request): JsonResponse
     {
-        $query = Bet::query()->with('eventGame')->where('user_id', auth()->id());
+        $query = Bet::query()->with('eventGame', 'event')->where('user_id', auth()->id());
 
         if ($request->has('event_id')) {
-            if (!isEmpty($request->event_id)) {
+            if (!is_null($request->event_id)) {
                 $query->where('event_id', $request->event_id);
             }
         }
 
         if ($request->has('from') && $request->has('to')) {
-            if (!isEmpty($request->from) && !isEmpty($request->to)) {
-                $query->whereDate('created_at', '>=', $request->get('from'))->whereDate('created_at', '<=', $request->get('to'));
+            if (!empty($request->from) && !empty($request->to)) {
+                $query->whereDate('bet_at', '>=', $request->from)->whereDate('bet_at', '<=', $request->to);
             }
         }
 
         $query = $this->applySearch($query, ['reference_no', 'nickname']);
         $bets = $query->latest()->paginate(10);
 
-        info('BettingController@index', ['bets' => $bets]);
         return response()->json([
             'bets' => $bets,
         ]);

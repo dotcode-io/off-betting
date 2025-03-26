@@ -16,16 +16,16 @@ class ClaimController
 
     public function index(Request $request): JsonResponse
     {
-        $query = Bet::query()->with('eventGame')->where('user_id', auth()->id());
+        $query = Bet::query()->with('eventGame', 'event')->where('user_id', auth()->id());
 
         if ($request->has('event_id')) {
-            if (!isEmpty($request->event_id)) {
+            if (!empty($request->event_id)) {
                 $query->where('event_id', $request->event_id);
             }
         }
 
         if ($request->has('from') && $request->has('to')) {
-            if (!isEmpty($request->from) && !isEmpty($request->to)) {
+            if (!empty($request->from) && !empty($request->to)) {
                 $query->whereDate('created_at', '>=', $request->get('from'))->whereDate('created_at', '<=', $request->get('to'));
             }
         }
