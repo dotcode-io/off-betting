@@ -9,7 +9,7 @@
         <flux:tabs class="px-4">
             <flux:tab name="event" wire:click="$set('selectedTab', 'event')">Event</flux:tab>
             <flux:tab name="teller" wire:click="$set('selectedTab', 'teller')">Teller</flux:tab>
-            <flux:tab name="account">GB</flux:tab>
+            <flux:tab name="gb" wire:click="$set('selectedTab', 'gb')">GB</flux:tab>
         </flux:tabs>
         <livewire:dynamic-component :is="$view" :key="$view" :$event />
     </div>

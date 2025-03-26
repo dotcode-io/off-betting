@@ -4,14 +4,14 @@
         <flux:card size="sm" class="pt-2 ">
             <flux:subheading>Total Earning</flux:subheading>
 
-            <flux:heading size="xl" class="mb-1">{{ $this->totals->total_earnings }}</flux:heading>
+            <flux:heading size="xl" class="mb-1"> <flux:text color="green" size="xl">{{ number_format($this->totals->total_earnings,2) }} </flux:text></flux:heading>
 
 
         </flux:card>
         <flux:card size="sm" class="pt-2">
             <flux:subheading>Total Draw Earning</flux:subheading>
 
-            <flux:heading size="xl" class="mb-1">{{ $this->totals->total_draw_earnings }}</flux:heading>
+            <flux:heading size="xl" class="mb-1"> <flux:text color="green" size="xl">{{ number_format($this->totals->total_draw_earnings,2) }} </flux:text></flux:heading>
 
         </flux:card>
 
