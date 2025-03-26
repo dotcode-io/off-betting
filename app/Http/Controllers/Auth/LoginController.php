@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 final class LoginController
 {
@@ -35,6 +36,8 @@ final class LoginController
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
+
+        Auth::logoutOtherDevices($request->password);
 
         return response()->json([
             'token' => $user->createToken('mobile')->plainTextToken,

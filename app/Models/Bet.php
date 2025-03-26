@@ -47,6 +47,11 @@ final class Bet extends Model
         return $this->status === BetStatus::Loser;
     }
 
+    public function isCancelled(): bool
+    {
+        return $this->status === BetStatus::Refund;
+    }
+
     public function isOnGoing(): bool
     {
         return $this->status === BetStatus::OnGoing;
