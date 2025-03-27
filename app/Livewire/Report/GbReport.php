@@ -29,15 +29,15 @@ final class GbReport extends Component
             ->with(['user', 'eventGame' => function ($query) {
                 $query->select('id', 'plasada', 'game_number');
             }])
-            ->selectRaw('
+            ->selectRaw("
                 user_id,
                 event_game_id,
-                SUM(CASE WHEN side = "meron" THEN bet_amount ELSE 0 END) as meron_amount,
-                SUM(CASE WHEN side = "wala" THEN bet_amount ELSE 0 END) as wala_amount,
-                SUM(CASE WHEN side = "meron" THEN win_amount ELSE 0 END) as meron_win_amount,
-                SUM(CASE WHEN side = "wala" THEN win_amount ELSE 0 END) as wala_win_amount,
+                SUM(CASE WHEN side = 'meron' THEN bet_amount ELSE 0 END) as meron_amount,
+                SUM(CASE WHEN side = 'wala' THEN bet_amount ELSE 0 END) as wala_amount,
+                SUM(CASE WHEN side = 'meron' THEN win_amount ELSE 0 END) as meron_win_amount,
+                SUM(CASE WHEN side = 'wala' THEN win_amount ELSE 0 END) as wala_win_amount,
                 SUM(win_amount) as total_win_amount
-            ')
+            ")
             ->whereIn('user_id', config('app.gb_ids'))
             ->whereIn('result', ['meron', 'wala'])
             ->where('event_id', $this->event->id)

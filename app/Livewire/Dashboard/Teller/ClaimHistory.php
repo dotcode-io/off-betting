@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Teller;
 
+use App\Actions\User\DepositWallet;
 use App\Actions\User\WithdrawalWallet;
 use App\Enums\EventStatus;
 use App\Models\Bet;
@@ -11,6 +12,7 @@ use App\Models\Event;
 use App\Traits\Table\Searchable;
 use App\Traits\Table\Sortable;
 use Flux\Flux;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -66,7 +68,7 @@ final class ClaimHistory extends Component
         Flux::modal('bet-details')->show();
     }
 
-    public function voidClaim(WithdrawalWallet $action)
+    public function voidClaim(DepositWallet $action)
     {
         $bet = Bet::findOrFail($this->voidClaimId);
 
@@ -79,7 +81,7 @@ final class ClaimHistory extends Component
 
             Flux::modal('void-claim')->close();
             Flux::toast('Transaction voided successfully', variant: 'success');
-            $action->handle($bet->claimedBy, [
+            $action->handle(Auth::user(), [
                 'amount' => $bet->amount,
                 'description' => 'Voided claim',
             ]);

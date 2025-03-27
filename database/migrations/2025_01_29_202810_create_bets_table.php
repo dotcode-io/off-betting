@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('side')->nullable();
             $table->string('status')->default('on-going');
             $table->string('result')->nullable();
-            $table->tinyInteger('is_claimed')->default(0);
+            $table->boolean('is_claimed')->default(0);
             $table->dateTime('bet_at');
             $table->unsignedBigInteger('claimed_by')->nullable();
             $table->dateTime('claimed_at')->nullable();

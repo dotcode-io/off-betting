@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Actions\User\WithdrawalWallet;
 use App\Models\Bet;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 final class ClaimTicketAction
@@ -25,7 +26,7 @@ final class ClaimTicketAction
         $ticket->load('user');
 
         DB::transaction(function () use ($ticket) {
-            $teller = $ticket->user;
+            $teller = Auth::user();
 
             if ($teller->wallet_amount < $ticket->win_amount) {
                 throw new Exception('Insufficient funds');

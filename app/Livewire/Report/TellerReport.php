@@ -32,7 +32,7 @@ final class TellerReport extends Component
                 user_id,
                 SUM(bet_amount) as total_amount,
                 SUM(win_amount) as total_win_amount,
-                SUM(CASE WHEN is_claimed THEN win_amount ELSE 0 END) as total_claim_amount
+                SUM(CASE WHEN is_claimed = 1 THEN win_amount ELSE 0 END) as total_claim_amount
             ')
             ->where('event_id', $this->event->id)
             ->whereNotIn('user_id', config('app.gb_ids'))
