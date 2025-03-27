@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Actions\User\RemitWalletAction;
+use App\Actions\User\WithdrawalWallet;
 use App\Models\User;
 use Flux\Flux;
 use Illuminate\View\View;
@@ -15,7 +15,7 @@ class RemitModal extends Component
 
     public $amount = '';
 
-    public function save(RemitWalletAction $action): void
+    public function save(WithdrawalWallet $action): void
     {
 
         $this->validate([

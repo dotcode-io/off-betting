@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Actions\User\RemitWalletAction;
+use App\Actions\User\WithdrawalWallet;
 use App\Models\Bet;
-use App\Models\User;
-use App\Models\WalletLog;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 final class ClaimTicketAction
 {
-    public function __construct(public RemitWalletAction $remitWalletAction)
+    public function __construct(public WithdrawalWallet $remitWalletAction)
     {
         //
     }
+
     public function handle(Bet $ticket): void
     {
-        if($ticket->is_claimed || $ticket->win_amount <= 0) {
+        if ($ticket->is_claimed || $ticket->win_amount <= 0) {
             throw new Exception('Ticket already claimed or no winnings');
         }
 
@@ -37,14 +36,11 @@ final class ClaimTicketAction
                 'description' => 'Claimed ticket',
             ]);
 
-
-
             $ticket->update([
                 'is_claimed' => 1,
                 'claimed_by' => auth()->id(),
                 'claimed_at' => now(),
             ]);
-
 
         });
     }

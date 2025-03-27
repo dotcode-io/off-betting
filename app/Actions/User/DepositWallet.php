@@ -9,7 +9,7 @@ use App\Models\WalletLog;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-final class RemitWalletAction
+final class DepositWallet
 {
     public function handle(User $user, array $attributes): User
     {
@@ -19,7 +19,7 @@ final class RemitWalletAction
                 ->where('id', $user->id)
                 ->where('version', $user->version)
                 ->update([
-                    'wallet_amount' => $user->wallet_amount - $attributes['amount'],
+                    'wallet_amount' => $user->wallet_amount + $attributes['amount'],
                     'version' => $user->version + 1,
                 ]);
 
@@ -27,16 +27,18 @@ final class RemitWalletAction
                 throw new Exception('Failed to update wallet');
             }
 
+
+
             WalletLog::query()->create([
                 'user_id' => $user->id,
                 'amount' => $attributes['amount'],
-                'type' => 'debit',
+                'type' => 'credit',
                 'description' => $attributes['description'],
                 'previous_balance' => $user->wallet_amount,
-                'current_balance' => $user->wallet_amount - $attributes['amount'],
+                'current_balance' => $user->wallet_amount + $attributes['amount'],
             ]);
 
-            $user->wallet_amount -= $attributes['amount'];
+            $user->wallet_amount += $attributes['amount'];
 
             return $user;
         });

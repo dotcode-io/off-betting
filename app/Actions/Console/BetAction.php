@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Console;
 
-use App\Actions\User\AddWalletAction;
+use App\Actions\User\DepositWallet;
 use App\DataTransferObjects\BettingDataTransferObject;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 final class BetAction
 {
-    public function __construct(public AddWalletAction $addWalletAction)
+    public function __construct(public DepositWallet $addWalletAction)
     {
         //
     }

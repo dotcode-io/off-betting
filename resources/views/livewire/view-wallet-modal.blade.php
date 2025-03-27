@@ -8,7 +8,7 @@
                 <flux:text class="mt-2">Current Balance: {{ number_format($user?->wallet_amount,2) }}</flux:text>
             </div>
             <div class="w-1/2">
-                <flux:input label="Date" type="date" wire:model="date" />
+                <flux:input label="Date" type="date" wire:model.live="date" />
 
             </div>
             </div>

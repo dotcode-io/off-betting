@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
-use App\Actions\User\AddWalletAction;
+use App\Actions\User\DepositWallet;
 use App\Models\User;
 use Flux\Flux;
 use Livewire\Attributes\On;
@@ -24,7 +24,7 @@ final class AddWalletModal extends Component
         Flux::modal('add-wallet-modal')->show();
     }
 
-    public function save(AddWalletAction $action): void
+    public function save(DepositWallet $action): void
     {
         $this->validate([
             'amount' => ['required', 'numeric', 'min:1', 'max:100000', 'regex:/^\d*(\.\d{1,2})?$/'],

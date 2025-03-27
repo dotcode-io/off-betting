@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Teller;
 
+use App\Actions\User\WithdrawalWallet;
 use App\Enums\EventStatus;
 use App\Models\Bet;
 use App\Models\Event;
@@ -65,7 +66,7 @@ final class ClaimHistory extends Component
         Flux::modal('bet-details')->show();
     }
 
-    public function voidClaim()
+    public function voidClaim(WithdrawalWallet $action)
     {
         $bet = Bet::findOrFail($this->voidClaimId);
 
@@ -78,6 +79,10 @@ final class ClaimHistory extends Component
 
             Flux::modal('void-claim')->close();
             Flux::toast('Transaction voided successfully', variant: 'success');
+            $action->handle($bet->claimedBy, [
+                'amount' => $bet->amount,
+                'description' => 'Voided claim',
+            ]);
             $this->resetPage();
 
             return response()->noContent();

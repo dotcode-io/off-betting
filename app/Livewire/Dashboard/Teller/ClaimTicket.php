@@ -52,7 +52,7 @@ final class ClaimTicket extends Component
         $this->reference_no = '';
     }
 
-    public function claim(ClaimTicketAction $action): ?\Illuminate\Http\RedirectResponse
+    public function claim(ClaimTicketAction $action)
     {
         if ($this->bet) {
             $action->handle($this->bet);
@@ -61,10 +61,14 @@ final class ClaimTicket extends Component
             $this->bet = null;
             $this->reference_no = '';
 
-            return redirect()->route('teller.claim-history');
+        }
+        else{
+            Flux::toast(heading: 'Error', text: 'Something went wrong!', variant: 'danger');
         }
 
-        return null;
+        return redirect()->route('teller.claim-history');
+
+
     }
 
     public function render()
