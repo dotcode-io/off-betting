@@ -48,7 +48,7 @@ final class BettingController
             'side' => 'required', 'string', 'in:meron,wala,draw',
             'has_printer' => 'required|boolean',
             'ref' => [
-                'required_if:has_printer,true',
+                'required_if:has_printer,false',
                 'string',
                 function ($attribute, $value, $fail) {
                     $exists = DB::table('manual_refs')
