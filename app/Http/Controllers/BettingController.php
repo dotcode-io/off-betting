@@ -48,7 +48,6 @@ final class BettingController
             'side' => 'required', 'string', 'in:meron,wala,draw',
             'has_printer' => 'required|boolean',
             'ref' => [
-                'nullable',
                 'required_if:has_printer,true',
                 'string',
                 function ($attribute, $value, $fail) {
@@ -71,6 +70,7 @@ final class BettingController
         return response()->json([
             'message' => 'Bet placed successfully',
             'has_printer' => $request->has_printer,
+            'ref' => $request->has_printer ? $request->ref : null,
             'bet' => $bet,
         ], 201);
     }
