@@ -52,6 +52,13 @@ final class UserFactory extends Factory
         ]);
     }
 
+    public function teller(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'user_type' => 'teller',
+        ]);
+    }
+
     public function admin(): static
     {
         return $this->state(fn (array $attributes): array => [

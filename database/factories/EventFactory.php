@@ -23,6 +23,7 @@ final class EventFactory extends Factory
             'date' => fake()->date(),
             'start_of_game' => 1,
             'number_of_games' => 50,
+            'created_by' => 1,
         ];
     }
 }
