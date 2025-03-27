@@ -41,7 +41,10 @@ test('can teller bet with ref', function () {
         'ref' => $reference[0]['ref'],
     ]);
 
+
     $response->assertStatus(201);
+    dd($response->json());
+
 
 
 });
