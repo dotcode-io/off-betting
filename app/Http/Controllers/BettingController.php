@@ -49,7 +49,7 @@ final class BettingController
             'has_printer' => 'required|boolean',
             'ref' => [
                 'nullable',
-                'reqired_if:has_printer,true',
+                'required_if:has_printer,true',
                 'string',
                 function ($attribute, $value, $fail) {
                     $exists = DB::table('manual_refs')
@@ -70,6 +70,7 @@ final class BettingController
 
         return response()->json([
             'message' => 'Bet placed successfully',
+            'has_printer' => $request->has_printer,
             'bet' => $bet,
         ], 201);
     }
