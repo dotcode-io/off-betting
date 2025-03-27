@@ -26,4 +26,6 @@ Route::prefix('teller')->group(function () {
     Route::get('bet-history', [BettingController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
     Route::post('betting', [BettingController::class, 'store'])->middleware(['auth:sanctum', 'teller']);
     Route::get('claim-history', [ClaimController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
+    Route::post('check-ticket', [ClaimController::class, 'checkTicket'])->middleware(['auth:sanctum', 'teller']);
+    Route::post('claim-ticket', [ClaimController::class, 'claimTicket'])->middleware(['auth:sanctum', 'teller']);
 });
