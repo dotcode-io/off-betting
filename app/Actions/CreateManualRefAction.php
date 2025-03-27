@@ -13,9 +13,9 @@ final class CreateManualRefAction
         $start = ManualRef::query()->count() + 1;
 
         $refs = [];
-        for ($i = $start; $i <= $numberGenerate; $i++) {
+        for ($i = 0; $i < $numberGenerate; $i++) {
             $refs[] = [
-                'ref' => 'M-'.mb_str_pad((string) $i, 6, '0', STR_PAD_LEFT),
+                'ref' => 'M-'.mb_str_pad((string) ($start + $i), 4, '0', STR_PAD_LEFT),
             ];
         }
 
