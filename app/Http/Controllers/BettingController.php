@@ -9,9 +9,9 @@ use App\DataTransferObjects\BettingDataTransferObject;
 use App\Models\Bet;
 use App\Models\Event;
 use App\Traits\Table\Searchable;
-use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 final class BettingController
 {
@@ -46,8 +46,10 @@ final class BettingController
         $request->validate([
             'amount' => 'required', 'numeric', 'min:1', 'max:100000', 'regex:/^\d*(\.\d{1,2})?$/',
             'side' => 'required', 'string', 'in:meron,wala,draw',
+            'has_printer' => 'required|boolean',
             'ref' => [
-                'sometimes',
+                'nullable',
+                'reqired_if:has_printer,true',
                 'string',
                 function ($attribute, $value, $fail) {
                     $exists = DB::table('manual_refs')
