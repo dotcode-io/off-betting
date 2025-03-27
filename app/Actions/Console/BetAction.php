@@ -66,7 +66,9 @@ final class BetAction
 
             if ($ref) {
                 $referenceNo = $ref;
-                ManualRef::query()->where('reference_no', $ref)->update(['used' => true]);
+                $manualRef = ManualRef::query()->where('reference_no', $ref)->where('used', false)->firstOrFail();
+                $manualRef->update(['used' => true]);
+                $manualRef->save();
             } else {
                 $betCount = Bet::where('event_id', $event->id)->where('event_game_id', $openGame->id)->count() + 1;
                 $referenceNo = $event->id.'-'.$openGame->id.'-'.mb_str_pad((string) $betCount, 2, '0', STR_PAD_LEFT);

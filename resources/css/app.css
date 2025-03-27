@@ -1,11 +1,7 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @import '../../vendor/livewire/flux/dist/flux.css';
-
-@config '../../tailwind.config.js';
-
 /* Required for dark mode in Flux... */
 @custom-variant dark (&:where(.dark, .dark *));
-
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
