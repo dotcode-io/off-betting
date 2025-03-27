@@ -66,7 +66,7 @@ final class BetAction
 
             if ($ref) {
                 $referenceNo = $ref;
-                $manualRef = ManualRef::query()->where('reference_no', $ref)->where('used', false)->firstOrFail();
+                $manualRef = ManualRef::query()->where('ref', $ref)->where('used', false)->firstOrFail();
                 $manualRef->update(['used' => true]);
                 $manualRef->save();
             } else {
