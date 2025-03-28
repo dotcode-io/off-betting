@@ -1,5 +1,5 @@
 @props(['games','game', 'event', 'gameResults'])
-<div x-data="gameData" class="flex h-full">
+<div x-data="gameData" class="flex h-full justify-center items-center">
     {{ $slot }}
 </div>
 
@@ -99,7 +99,7 @@
             results: [],
             streaks: [],
             init() {
-                this.results = chunkArray(this.games, 6);
+                this.results = chunkArray(this.games, 4);
                 this.resultCounts = resultCount(this.games);
                 this.streaks = streak(this.games);
 

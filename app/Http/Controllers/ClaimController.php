@@ -113,12 +113,7 @@ class ClaimController
                 'type' => 'error'
             ];
         }
-        if ($bet->isCancelled()) {
-            return [
-                'message' => 'Sorry, this ticket is cancelled!',
-                'type' => 'error'
-            ];
-        }
+
         if ($bet->is_claimed === 0 && $bet->isWin()) {
             return [
                 'message' => 'Ticket found!',
