@@ -114,7 +114,7 @@ class ClaimController
             ];
         }
 
-        if ($bet->is_claimed === 0 && $bet->isWin()) {
+        if ($bet->is_claimed === 0 && ($bet->isWin()) || $bet->isCancelled()) {
             return [
                 'message' => 'Ticket found!',
                 'type' => 'success',
