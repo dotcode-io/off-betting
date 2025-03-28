@@ -28,13 +28,15 @@ final class DatabaseSeeder extends Seeder
 
         ]);
 
-        User::create([
-            'username' => 'teller',
-            'user_type' => 'teller',
-            'password' => Hash::make('password'),
-            'wallet_amount' => 0,
-            'commission_amount' => 0,
-        ]);
+        for ($i = 0; $i < 10; $i++) {
+            User::create([
+                'username' => 'teller'.$i + 1,
+                'user_type' => 'teller',
+                'password' => Hash::make('password'),
+                'wallet_amount' => 0,
+                'commission_amount' => 0,
+            ]);
+        }
 
         User::create([
             'username' => 'controller',

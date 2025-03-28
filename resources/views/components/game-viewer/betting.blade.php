@@ -32,7 +32,7 @@
 
                 <div class="pb-2">
                     <p class="text-[100px] text-[gold] font-bold text-center" x-text="game.meron_bets"></p>
-                    <p class="text-[50px] font-bold text-center">PAYOUT: <span x-text="game.meron_odds"></span></p>
+                    <p class="text-[50px] font-bold text-center text-yellow-500">PAYOUT: <span x-text="game.meron_odds"></span></p>
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
 
                 <div class="pb-2">
                     <p class="text-[100px] text-[gold] font-bold text-center" x-text="game.wala_bets"></p>
-                    <p class="text-[50px] font-bold text-center">PAYOUT: <span x-text="game.wala_odds"></span></p>
+                    <p class="text-[50px] font-bold text-center text-yellow-500"">PAYOUT: <span x-text="game.wala_odds"></span></p>
                 </div>
             </div>
         </div>
