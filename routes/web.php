@@ -33,7 +33,6 @@ Route::get('fix-winner', function () {
                 $resultAmount = floor(($amount * 100) / 100);
                 $bet->update([
                     'status' => BetStatus::Winner,
-                    'result' => $this->result,
                     'win_amount' => $resultAmount,
                 ]);
             }
