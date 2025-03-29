@@ -2,9 +2,34 @@
 
 declare(strict_types=1);
 
+use App\Enums\BetStatus;
+use App\Enums\GameResult;
+use App\Models\Bet;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
+Route::get('fix-winner', function () {
+    $betList = Bet::query()->where('event_game_id', request('game_id'))
+        ->where('side', request('side'))
+        ->where('result', GameResult::PENDING)
+        ->where('status', BetStatus::OnGoing)
+        ->get();
+
+    foreach ($betList as $bets) {
+        DB::transaction(function () use ($bets): void {
+            foreach ($bets as $bet) {
+                $amount = $bet->bet_amount * ($this->odds / 100);
+                $resultAmount = floor(($amount * 100) / 100);
+                $bet->update([
+                    'status' => BetStatus::Winner,
+                    'result' => $this->result,
+                    'win_amount' => $resultAmount,
+                ]);
+            }
+        });
+    }
+});
 Volt::route('login', 'auth.login')->name('login')->middleware('guest');
 
 Route::get('/', function () {
@@ -54,7 +79,6 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
     });
 
     Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
-
 
 });
 
