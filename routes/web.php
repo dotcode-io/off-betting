@@ -19,6 +19,7 @@ Route::get('fix-winner', function () {
         ->get();
 
 
+
     if($game->result === GameResult::MERON){
         $odds = $game->meron_odds;
     }
@@ -27,15 +28,15 @@ Route::get('fix-winner', function () {
     }
 
     foreach ($betList as $bets) {
-        DB::transaction(function () use ($bets,$odds): void {
-            foreach ($bets as $bet) {
-                $amount = $bet->bet_amount * ($odds / 100);
+        DB::transaction(function () use ($bets,$odds,$game): void {
+
+                $amount = $bets->bet_amount * ($odds / 100);
                 $resultAmount = floor(($amount * 100) / 100);
-                $bet->update([
+                $bets->update([
                     'status' => BetStatus::Winner,
                     'win_amount' => $resultAmount,
+                    'result' =>  $game->result
                 ]);
-            }
         });
     }
 });

@@ -86,8 +86,14 @@ final class DeclareResultJob implements ShouldQueue
             ->where('status', BetStatus::OnGoing)
             ->get();
 
-        foreach ($betList as $bets) {
-            $this->updateBets($bets);
+        foreach ($betList as $bet) {
+            $amount = $bet->bet_amount * ($this->odds / 100);
+            $resultAmount = $this->roundDown($amount);
+            $bet->update([
+                'status' => BetStatus::Winner,
+                'result' => $this->result,
+                'win_amount' => $resultAmount,
+            ]);
         }
 
     }
@@ -97,19 +103,5 @@ final class DeclareResultJob implements ShouldQueue
         return floor(($amount * 100) / 100);
     }
 
-    private function updateBets(\Illuminate\Support\Collection $bets): void
-    {
-        DB::transaction(function () use ($bets): void {
-            foreach ($bets as $bet) {
-                $amount = $bet->bet_amount * ($this->odds / 100);
-                $resultAmount = $this->roundDown($amount);
-                $bet->update([
-                    'status' => BetStatus::Winner,
-                    'result' => $this->result,
-                    'win_amount' => $resultAmount,
-                ]);
-            }
-        });
 
-    }
 }
