@@ -14,6 +14,7 @@ use App\Events\GameEvent;
 use App\Models\Bet;
 use App\Models\Event;
 use App\Models\ManualRef;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -34,6 +35,11 @@ final class BetAction
             $side = BetSide::from($bettingDataTransferObject->side);
 
             if ($side === BetSide::Meron) {
+
+                if ($openGame->meron_bets > 20000 && $openGame->meron_odds <= 160) {
+                    throw new Exception('Meron odds is too low');
+                }
+
                 // increment meron_bets,meron_bettors
 
                 $openGame->increment('meron_bets', $bettingDataTransferObject->amount);
@@ -42,6 +48,11 @@ final class BetAction
             }
 
             if ($side === BetSide::Wala) {
+
+                if ($openGame->wala_bets > 20000 && $openGame->wala_odds <= 160) {
+                    throw new Exception('Wala odds is too low');
+                }
+
                 // increment wala_bets,wala_bettors
                 $openGame->increment('wala_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('wala_bettors');

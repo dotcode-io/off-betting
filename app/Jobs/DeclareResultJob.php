@@ -7,7 +7,6 @@ namespace App\Jobs;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
 use App\Enums\GameResult;
-use App\Events\GameEvent;
 use App\Models\Bet;
 use App\Models\EventGame;
 use Exception;
@@ -81,13 +80,15 @@ final class DeclareResultJob implements ShouldQueue
             'draw_earnings' => $drawEarnings,
         ]);
 
-        Bet::query()->where('event_game_id', $this->gameId)
+        $betList = Bet::query()->where('event_game_id', $this->gameId)
             ->where('side', $this->result->side())
             ->where('result', GameResult::PENDING)
             ->where('status', BetStatus::OnGoing)
-            ->chunk(20, function ($bets): void {
-                $this->updateBets($bets);
-            });
+            ->get();
+
+        foreach ($betList as $bets) {
+            $this->updateBets($bets);
+        }
 
     }
 
