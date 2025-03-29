@@ -28,7 +28,7 @@ final class DatabaseSeeder extends Seeder
 
         ]);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             User::create([
                 'username' => 'teller'.$i + 1,
                 'user_type' => 'teller',

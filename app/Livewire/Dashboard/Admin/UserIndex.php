@@ -28,15 +28,20 @@ final class UserIndex extends Component
         ];
     }
 
-    public function addWallet(int $id){
+    public function addWallet(int $id)
+    {
 
         $this->dispatch('add-wallet', $id);
     }
-    public function remit(int $id){
+
+    public function remit(int $id)
+    {
 
         $this->dispatch('remit', $id);
     }
-    public function view(int $id){
+
+    public function view(int $id)
+    {
 
         $this->dispatch('view-wallet', $id);
     }
@@ -56,7 +61,11 @@ final class UserIndex extends Component
     {
         $this->form->validate();
 
-        $user = $this->form->user ?? new User();
+        $user = $this->form->user;
+
+        if (! ($user instanceof User)) {
+            $user = new User();
+        }
 
         $actions->handle($user, $this->form);
         $this->form->reset();
@@ -72,6 +81,7 @@ final class UserIndex extends Component
         $query = User::query();
         $query = $this->applySorting($query, 'username');
         $query = $this->applySearch($query, ['username']);
+
         return $query->paginate(10);
     }
 
