@@ -58,4 +58,4 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
 
 });
 
-Volt::route('app/game-viewer/{event}', 'game-viewer.index')->name('game-viewer');
+Volt::route('app/game-viewer/now', 'game-viewer.index')->name('game-viewer');

@@ -20,13 +20,13 @@ final class Index extends Component
 
     public array $gameResults = [];
 
-    public function mount(Event $event): void
+    public function mount(): void
     {
-        $this->event = $event;
+        $this->event = Event::query()
+            ->where('status', EventStatus::OPENED)->latest()->firstOrFail();
+        $this->getGames();
 
-        if ($this->event->status === EventStatus::OPENED) {
-            $this->getGames();
-        }
+
     }
 
     public function getGames(): void
