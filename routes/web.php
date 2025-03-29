@@ -10,16 +10,26 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::get('fix-winner', function () {
+
+    $game = App\Models\EventGame::query()->find(request('game_id'));
     $betList = Bet::query()->where('event_game_id', request('game_id'))
-        ->where('side', request('side'))
+        ->where('side', $game->result->side())
         ->where('result', GameResult::PENDING)
         ->where('status', BetStatus::OnGoing)
         ->get();
 
+
+    if($game->result === GameResult::MERON){
+        $odds = $game->meron_odds;
+    }
+    if($game->result === GameResult::WALA){
+        $odds = $game->wala_odds;
+    }
+
     foreach ($betList as $bets) {
-        DB::transaction(function () use ($bets): void {
+        DB::transaction(function () use ($bets,$odds): void {
             foreach ($bets as $bet) {
-                $amount = $bet->bet_amount * ($this->odds / 100);
+                $amount = $bet->bet_amount * ($odds / 100);
                 $resultAmount = floor(($amount * 100) / 100);
                 $bet->update([
                     'status' => BetStatus::Winner,
