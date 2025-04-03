@@ -31,26 +31,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy composer files first for better caching
-COPY composer.* ./
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www
-
 # Copy existing application directory
 COPY . /var/www
-
-# Install dependencies (this will be skipped if auth is not provided)
-RUN if [ -f "auth.json" ]; then \
-    composer install --no-scripts --no-autoloader; \
-    else \
-    echo "Skipping composer install - auth.json not found"; \
-    fi
-
-# Generate optimized autoload files if vendor exists
-RUN if [ -d "vendor" ]; then \
-    composer dump-autoload --optimize; \
-    fi
 
 # Create log directory for Supervisor
 RUN mkdir -p /var/log/supervisor
@@ -62,13 +44,10 @@ COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Install global npm packages
-RUN npm install -g vite
-
 # Create public/build directory and set permissions
 RUN mkdir -p public/build && chown -R www-data:www-data public/build
 
 # Set proper permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

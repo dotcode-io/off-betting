@@ -88,7 +88,7 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
     });
 
-    Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
+    
 
 });
 
