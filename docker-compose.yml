@@ -50,6 +50,21 @@ services:
     networks:
       - off-betting
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: off-betting-phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-root}
+    depends_on:
+      - mysql
+    networks:
+      - off-betting
+
   redis:
     image: redis:alpine
     container_name: off-betting-redis
