@@ -8,6 +8,12 @@ composer config http-basic.composer.fluxui.dev ivankrister.garcia@icloud.com 608
 # Install composer dependencies
 echo "Installing composer dependencies..."
 composer install --no-dev
+
+# Set proper storage permissions
+echo "Setting storage permissions..."
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+
 # Optimizing the application
 echo "Optimizing the application..."
 php artisan optimize

@@ -28,7 +28,7 @@ final class Login extends Component
 
         $user = auth()->user();
 
-        Auth::logoutOtherDevices($this->form->password);
+       // Auth::logoutOtherDevices($this->form->password);
 
         if ($user->isAdmin()) {
             $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
