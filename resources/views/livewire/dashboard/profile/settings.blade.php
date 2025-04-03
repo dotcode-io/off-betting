@@ -6,6 +6,17 @@
     </div>
     <flux:separator variant="subtle" />
     <div class="mt-4">
+         <flux:card class="w-1/3 pb-4 mb-4">
+            <div>
+                <flux:heading size="lg" class="mb-4">Theme</flux:heading>
+            </div>
+            <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                <flux:radio value="light" icon="sun">{{ __('Light') }}</flux:radio>
+                <flux:radio value="dark" icon="moon">{{ __('Dark') }}</flux:radio>
+                <flux:radio value="system" icon="computer-desktop">{{ __('System') }}</flux:radio>
+            </flux:radio.group>
+        </flux:card>
+
         <flux:card class="w-1/3">
             <form wire:submit='save'>
                 <div>
@@ -21,5 +32,7 @@
                 </div>
             </form>
         </flux:card>
+
+       
     </div>
 </div>

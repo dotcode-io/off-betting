@@ -1,66 +1,166 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Off-Betting Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based betting application with WebSocket support using Laravel Reverb.
 
-## About Laravel
+## System Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Docker
+- Docker Compose
+- Git
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup Instructions
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd off-betting
+```
 
-## Learning Laravel
+2. Copy the environment file:
+```bash
+cp .env.example .env
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. Configure your `.env` file with the following settings:
+```env
+APP_URL=http://192.168.254.111:8088
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=off_betting
+DB_USERNAME=off_betting
+DB_PASSWORD=secret
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+REDIS_CLIENT=phpredis
+REDIS_HOST=redis
+REDIS_PASSWORD=null
+REDIS_PORT=6379
 
-## Laravel Sponsors
+BROADCAST_CONNECTION=reverb
+REVERB_APP_ID=928134
+REVERB_APP_KEY=dhoqbptglvmhcaeuqmcd
+REVERB_APP_SECRET=dppwarecleaoo2hiodus
+REVERB_HOST=192.168.254.111
+REVERB_PORT=8089
+REVERB_SCHEME=ws
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Build and start the Docker containers:
+```bash
+docker-compose build
+docker-compose up -d
+```
 
-### Premium Partners
+5. Install dependencies and set up the application:
+```bash
+# Access the app container
+docker exec -it off-betting-app bash
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# Generate application key
+php artisan key:generate
 
-## Contributing
+# Run database migrations
+php artisan migrate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Clear configuration cache
+php artisan config:clear
+```
 
-## Code of Conduct
+## Services
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The application runs the following services:
 
-## Security Vulnerabilities
+- **Web Application**: http://192.168.254.111:8088
+- **WebSocket Server**: ws://192.168.254.111:8089
+- **MySQL**: Port 3307 (external), 3306 (internal)
+- **Redis**: Port 6380 (external), 6379 (internal)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Managed Processes
 
-## License
+All processes are managed by Supervisor:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- PHP-FPM
+- Laravel Queue Worker (2 processes)
+- Laravel Scheduler
+- Laravel Reverb (WebSocket Server)
+
+## File Descriptors and Connections
+
+The application is configured to handle high concurrent connections:
+
+- Nginx: 10,000 concurrent connections
+- Supervisor: 10,000 file descriptors
+- Laravel Reverb: WebSocket connections
+
+## Logs
+
+You can find logs in the following locations inside the containers:
+
+- **Supervisor Logs**: `/var/log/supervisor/`
+  - PHP-FPM: `php-fpm.out.log`, `php-fpm.err.log`
+  - Queue Worker: `worker.log`
+  - Scheduler: `scheduler.log`
+  - Reverb: `reverb.log`
+- **Nginx Logs**: `/var/log/nginx/`
+  - Access Log: `access.log`
+  - Error Log: `error.log`
+
+To view logs:
+```bash
+# Supervisor logs
+docker exec off-betting-app tail -f /var/log/supervisor/worker.log
+docker exec off-betting-app tail -f /var/log/supervisor/reverb.log
+
+# Nginx logs
+docker exec off-betting-nginx tail -f /var/log/nginx/error.log
+```
+
+## Common Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# Stop all services
+docker-compose down
+
+# Restart a specific service
+docker-compose restart app
+docker-compose restart nginx
+
+# View logs
+docker-compose logs -f app
+docker-compose logs -f nginx
+
+# Access container shell
+docker exec -it off-betting-app bash
+```
+
+## Production Deployment
+
+For production environments, you can run Cloudflare tunnel with auto-restart:
+```bash
+docker run -d \
+  --name off-betting-cloudflared \
+  --restart always \
+  cloudflare/cloudflared:latest \
+  tunnel --no-autoupdate run --token eyJhIjoiZDZjNjAxOWFjODRhMGFjNDg5Y2FiY2IzZWRmZmJmM2QiLCJ0IjoiOTcyYWUxNmEtNGQwOS00NzUwLTg2ZjUtZTdmYTJmYTdjN2RmIiwicyI6IllUUmtZemRoWlRBdE0yVmxOUzAwWVRBNUxUZzRPVGd0TURGalpESXhNek0zTVRFMCJ9
+```
+
+This will ensure the tunnel restarts automatically if the server reboots.
+
+## Troubleshooting
+
+1. If WebSocket connections fail:
+   - Check if Reverb is running: `docker exec off-betting-app supervisorctl status`
+   - Verify Nginx ports are accessible
+   - Check Reverb logs for errors
+
+2. If queue jobs aren't processing:
+   - Check queue worker status: `docker exec off-betting-app supervisorctl status laravel-worker:*`
+   - View worker logs for errors
+
+3. For database connection issues:
+   - Verify MySQL is running: `docker-compose ps mysql`
+   - Check connection settings in `.env`
