@@ -33,7 +33,7 @@ services:
     container_name: off-betting-nginx
     restart: always
     ports:
-      - "0.0.0.0:8088:80"
+      - "0.0.0.0:80:80"
       - "0.0.0.0:8080:8080"
     volumes:
       - .:/var/www
