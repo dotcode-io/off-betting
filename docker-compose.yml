@@ -15,14 +15,6 @@ services:
     environment:
       - DB_HOST=mysql
       - REDIS_HOST=redis
-      - REVERB_SERVER_HOST=0.0.0.0
-      - REVERB_SERVER_PORT=8080
-      - REVERB_APP_ID=928134
-      - REVERB_APP_KEY=rgjtcdesot3ej1pg8vt3
-      - REVERB_APP_SECRET=dppwarecleaoo2hiodus
-      - REVERB_HOST=0.0.0.0
-      - REVERB_PORT=8080
-      - REVERB_SCHEME=http
     entrypoint: ["/usr/local/bin/entrypoint.sh"]
     depends_on:
       - redis
