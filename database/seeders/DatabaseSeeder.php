@@ -48,6 +48,7 @@ final class DatabaseSeeder extends Seeder
 
         AppSetting::create([
             'app_name' => 'OCBS - KCI Gaming Services',
+            'plasada' => 6,
         ]);
     }
 }

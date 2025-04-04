@@ -60,7 +60,7 @@
                 <flux:table.cell variant="strong"><flux:text color="green" >{{ number_format($totalMeron + $totalWala,2) }}</flux:text> </flux:table.cell>
                  <flux:table.cell variant="strong"><flux:text color="green" >{{ number_format($totalCommission,2) }}</flux:text> </flux:table.cell>
                 <flux:table.cell variant="strong"><flux:text color="green" >{{ number_format($totalWinAmount,2) }}</flux:text> </flux:table.cell>
-                <flux:table.cell variant="strong"><flux:text color="{{ $winLose < 0 ? 'red':'green' }}" >{{ number_format($totalWinLose,2) }}</flux:text> </flux:table.cell>
+                <flux:table.cell variant="strong"><flux:text color="{{ $totalWinLose < 0 ? 'red':'green' }}" >{{ number_format($totalWinLose,2) }}</flux:text> </flux:table.cell>
 
 
         </flux:table.rows>
