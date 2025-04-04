@@ -99,7 +99,7 @@ final class BetAction
 
             $this->addWalletAction->handle(Auth::user(), [
                 'amount' => $bettingDataTransferObject->amount,
-                'description' => 'Placed a bet on Event#'.$event->id,
+                'description' => 'Placed a bet on Event#'.$event->id.' - Game#'.$openGame->game_number,
             ]);
 
             GameEvent::dispatch($openGame, null);
