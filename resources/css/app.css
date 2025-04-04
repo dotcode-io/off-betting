@@ -14,14 +14,15 @@
 
 
 @theme {
-    --color-accent: var(--color-green-600);
-    --color-accent-content: var(--color-green-600);
+    --color-accent: var(--color-teal-600);
+    --color-accent-content: var(--color-teal-600);
     --color-accent-foreground: var(--color-white);
+    --bg-orange-500: var(--bg-orange-500);
 }
 @layer theme {
     .dark {
-        --color-accent: var(--color-green-600);
-        --color-accent-content: var(--color-green-400);
+        --color-accent: var(--color-teal-600);
+        --color-accent-content: var(--color-teal-400);
         --color-accent-foreground: var(--color-white);
     }
 }

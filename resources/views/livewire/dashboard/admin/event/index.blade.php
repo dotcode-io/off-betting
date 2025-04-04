@@ -40,8 +40,8 @@
                     @if($event->status->isEditable())
                     <flux:button size="sm" wire:click="openFormModal('{{ $event->uuid }}')">Edit</flux:button>
                     @endif
-                    <flux:button size="sm" href="{{ route('events.show', $event->uuid) }}">View</flux:button>
-                    <flux:button size="sm" href="{{ route('report.index', $event->uuid) }}">Report</flux:button>
+                    <flux:button size="sm" variant="primary" href="{{ route('events.show', $event->uuid) }}">View</flux:button>
+                    <flux:button size="sm" variant="filled" href="{{ route('report.index', $event->uuid) }}">Report</flux:button>
 
                 </flux:table.cell>
 

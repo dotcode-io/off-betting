@@ -79,10 +79,9 @@ final class UserIndex extends Component
     public function userData()
     {
         $query = User::query();
-        $query = $this->applySorting($query, 'username');
         $query = $this->applySearch($query, ['username']);
 
-        return $query->paginate(10);
+        return $query->orderBy('id')->paginate(10);
     }
 
     public function render()

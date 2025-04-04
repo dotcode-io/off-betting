@@ -6,6 +6,7 @@ use App\Http\Controllers\BettingController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\RecentBetController;
 use App\Http\Controllers\TellerConsoleController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,7 @@ Route::get('/user', function (Request $request) {
 Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::prefix('teller')->group(function () {
+    Route::get('wallet', [WalletController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
     Route::get('console', [TellerConsoleController::class, 'index'])->middleware(['auth:sanctum', 'teller']);
     Route::get('recent-bet/{event}', [RecentBetController::class, 'show'])->middleware(['auth:sanctum', 'teller']);
     Route::get('bet-history', [BettingController::class, 'index'])->middleware(['auth:sanctum', 'teller']);

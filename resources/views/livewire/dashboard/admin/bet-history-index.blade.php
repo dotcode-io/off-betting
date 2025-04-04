@@ -35,6 +35,7 @@
             <flux:table.column>Game</flux:table.column>
             <flux:table.column>Result</flux:table.column>
             <flux:table.column>Win Amount</flux:table.column>
+            <flux:table.column></flux:table.column>
         </flux:table.columns>
 
         <flux:table.rows>
@@ -58,9 +59,31 @@
                         Claimed
                     </flux:badge>
                     @endif
+
+                </flux:table.cell>
+                <flux:table.cell>
+
+                    @if($bet->eventGame->status === \App\Enums\GameStatus::OPENED)
+                        <flux:button wire:click="openModal({{ $bet->id }})" variant="danger" size="sm" class="ml-2">
+                            Cancel
+                        </flux:button>
+                    @endif
                 </flux:table.cell>
             </flux:table.row>
             @endforeach
         </flux:table.rows>
     </flux:table>
+
+    <flux:modal name="cancel-bet" class="md:w-96">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Cancel bet</flux:heading>
+                <flux:text class="mt-2">Are you sure you want to cancel this bet?</flux:text>
+            </div>
+            <div class="flex">
+                <flux:spacer />
+                <flux:button  wire:click="cancelBet" variant="danger">Cancel Bet</flux:button>
+            </div>
+        </div>
+    </flux:modal>
 </div>

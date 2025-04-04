@@ -106,7 +106,11 @@
                         <div class="flex-1">
                             <div class="flex justify-between">
                                 <flux:heading size="lg">Fight #<span x-text="game.game_number"> </span></flux:heading>
-                                <flux:badge  variant="pill" x-text="game.status"  class="animate-pulse uppercase " x-bind:class="`!bg-${game.status_color}-500`">
+                                <flux:badge  variant="pill" x-text="game.status"  class="animate-pulse uppercase !text-zinc-700 !font-bold shadow-2xl" x-bind:class="{
+    '!bg-orange-500': game.status_color === 'orange',
+    '!bg-green-500': game.status_color === 'green',
+    '!bg-red-500': game.status_color === 'red'
+}">
                                 </flux:badge>
                             </div>
 
@@ -179,8 +183,6 @@
 
             <form wire:submit="openGame">
 
-                <flux:input type="text" label="MERON ENTRY NAME" wire:model="gameForm.meron_name" class="mb-3" placeholder="Enter Meron Entry Name" />
-                <flux:input type="text" label="WALA ENTRY NAME" wire:model="gameForm.wala_name" placeholder="Enter Wala Entry Name" />
                 <div class="flex gap-2 pt-2">
                     <flux:spacer />
 

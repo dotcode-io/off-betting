@@ -9,9 +9,7 @@ use Livewire\Form;
 
 final class OpenGameForm extends Form
 {
-    #[Validate('required', 'string')]
-    public string $meron_name = '';
+    public string $meron_name = '-';
 
-    #[Validate('required', 'string')]
-    public string $wala_name = '';
+    public string $wala_name = '-';
 }

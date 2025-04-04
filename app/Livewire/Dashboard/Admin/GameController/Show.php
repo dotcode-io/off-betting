@@ -127,7 +127,6 @@ final class Show extends Component
      */
     public function openGame(OpenedGameAction $action): void
     {
-        $this->gameForm->validate();
         $action->handle($this->event, $this->gameForm);
 
         $this->dispatch('game-updated');

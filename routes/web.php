@@ -18,25 +18,23 @@ Route::get('fix-winner', function () {
         ->where('status', BetStatus::OnGoing)
         ->get();
 
-
-
-    if($game->result === GameResult::MERON){
+    if ($game->result === GameResult::MERON) {
         $odds = $game->meron_odds;
     }
-    if($game->result === GameResult::WALA){
+    if ($game->result === GameResult::WALA) {
         $odds = $game->wala_odds;
     }
 
     foreach ($betList as $bets) {
-        DB::transaction(function () use ($bets,$odds,$game): void {
+        DB::transaction(function () use ($bets, $odds, $game): void {
 
-                $amount = $bets->bet_amount * ($odds / 100);
-                $resultAmount = floor(($amount * 100) / 100);
-                $bets->update([
-                    'status' => BetStatus::Winner,
-                    'win_amount' => $resultAmount,
-                    'result' =>  $game->result
-                ]);
+            $amount = $bets->bet_amount * ($odds / 100);
+            $resultAmount = floor(($amount * 100) / 100);
+            $bets->update([
+                'status' => BetStatus::Winner,
+                'win_amount' => $resultAmount,
+                'result' => $game->result,
+            ]);
         });
     }
 });
@@ -88,7 +86,7 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
     });
 
-    
+
 
 });
 

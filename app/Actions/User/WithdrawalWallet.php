@@ -8,9 +8,18 @@ use App\Models\User;
 use App\Models\WalletLog;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 final class WithdrawalWallet
 {
+    /**
+     * @param array{
+     *     amount: float,
+     *     description: string,
+     * } $attributes
+     *
+     * @throws Exception|Throwable
+     */
     public function handle(User $user, array $attributes): User
     {
         return DB::transaction(function () use ($user, $attributes): User {

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Admin;
 
+use App\Actions\CancelBetAction;
 use App\Enums\EventStatus;
 use App\Models\Bet;
 use App\Models\Event;
 use App\Traits\Table\Searchable;
 use App\Traits\Table\Sortable;
+use Flux\Flux;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Throwable;
 
 final class BetHistoryIndex extends Component
 {
@@ -23,6 +26,8 @@ final class BetHistoryIndex extends Component
     public $from;
 
     public $to;
+
+    public $betId;
 
     public function mount(): void
     {
@@ -44,6 +49,32 @@ final class BetHistoryIndex extends Component
     public function updated(): void
     {
         $this->resetPage();
+    }
+
+    public function openModal(int $betId): void
+    {
+
+        $this->betId = $betId;
+
+        Flux::modal('cancel-bet')->show();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function cancelBet(CancelBetAction $action): void
+    {
+
+        $action->handle($this->betId);
+
+        $this->reset('betId');
+        Flux::modal('cancel-bet')->close();
+
+        Flux::toast(
+            'Bet cancelled successfully',
+            'success'
+        );
+
     }
 
     public function render()
