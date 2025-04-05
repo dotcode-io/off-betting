@@ -30,7 +30,6 @@ final class ClosedEventAction
             ')
                 ->where('event_id', $event->id)
                 ->whereStatus('done')
-                ->whereNotIn('user_id', config('app.gb_ids'))
                 ->first();
 
             $event->update([
