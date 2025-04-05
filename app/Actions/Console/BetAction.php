@@ -14,16 +14,19 @@ use App\Events\GameEvent;
 use App\Models\Bet;
 use App\Models\Event;
 use App\Models\ManualRef;
+use App\Services\BetReferenceService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class BetAction
 {
-    public function __construct(public DepositWallet $addWalletAction)
+    public function __construct(public DepositWallet $addWalletAction, public BetReferenceService $betReferenceService)
     {
         //
     }
+
 
     public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject, ?string $ref): Bet
     {
@@ -81,8 +84,9 @@ final class BetAction
                 $manualRef->update(['used' => true]);
                 $manualRef->save();
             } else {
-                $betCount = Bet::where('event_id', $event->id)->where('event_game_id', $openGame->id)->count() + 1;
-                $referenceNo = $event->id.'-'.$openGame->id.'-'.mb_str_pad((string) $betCount, 2, '0', STR_PAD_LEFT);
+                $eventId = $event->id;
+                $gameId = $openGame->id;
+                $referenceNo = $this->betReferenceService->generate($eventId, $gameId);
             }
 
             $bet = Bet::create(['reference_no' => $referenceNo,
