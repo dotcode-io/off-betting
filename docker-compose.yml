@@ -8,10 +8,16 @@ services:
     container_name: off-betting-app
     restart: always
     working_dir: /var/www
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+      - SYS_BOOT
     volumes:
       - .:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./docker/supervisor:/etc/supervisor/conf.d
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
     environment:
       - DB_HOST=mysql
       - REDIS_HOST=redis

@@ -10,7 +10,10 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    supervisor
+    supervisor \
+    openssh-client \
+    sshpass
+
 
 # Install Node.js and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
