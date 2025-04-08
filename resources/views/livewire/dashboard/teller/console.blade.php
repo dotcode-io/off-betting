@@ -42,16 +42,24 @@
                     </div>
                 </div>
                 <div class="flex space-x-2 min-h-[100px] pt-5">
-                    <button type="button"
-                        class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300"
-                        :class="side === 'meron' ? 'border-4 border-yellow-500 bg-red-600 animate-pulse' : ''"
-                        x-on:click="setSide('meron')"
-                        :disabled="game.status !== 'Opened'">
-                        <div class="pb-2">
-                            <flux:heading class="font-bold! text-[18px]!">MERON</flux:heading>
-                            <flux:heading class="text-[14px]!" x-text="game.meron_name"></flux:heading>
-                        </div>
-                    </button>
+                    <div class="w-full flex flex-col items-center">
+                        <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && open_meron" >OPEN</flux:text>
+                        <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && !open_meron">CLOSE</flux:text>
+                        <button type="button"
+                                class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300"
+                                :class="side === 'meron' ? 'border-4 border-yellow-500 bg-red-600 animate-pulse' : ''"
+                                x-on:click="setSide('meron')"
+                                :disabled="game.status !== 'Opened'">
+                            <div class="pb-2">
+                                <flux:heading class="font-bold! text-[18px]!">MERON</flux:heading>
+                                <flux:heading class="text-[14px]!" x-text="game.meron_name"></flux:heading>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="w-full flex flex-col items-center">
+
+                        <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened'">OPEN</flux:text>
+                        <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status === 'Closed'">CLOSE</flux:text>
                     <button type="button"
                         class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300"
                         :class="side === 'draw' ? 'border-4 border-yellow-500 bg-green-600 animate-pulse' : ''"
@@ -62,6 +70,10 @@
                             <flux:heading class="text-[14px]!">8X</flux:heading>
                         </div>
                     </button>
+                    </div>
+                    <div class="w-full flex flex-col items-center">
+                        <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && open_wala ">OPEN</flux:text>
+                        <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status === 'Closed' && !open_wala">CLOSE</flux:text>
                     <button type="button"
                         class="bg-blue-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300"
                         :class="side === 'wala' ? 'border-4 border-yellow-500 bg-blue-600 animate-pulse' : ''"
@@ -71,10 +83,11 @@
                             <flux:heading class="text-[14px]!" x-text="game.wala_name"></flux:heading>
                         </div>
                     </button>
+                    </div>
                 </div>
 
                 <div class="pt-3">
-                    <flux:input wire:model="betForm.amount" label="AMOUNT" x-mask:dynamic="$money($input)"
+                    <flux:input wire:model="betForm.amount" label="AMOUNT" x-mask:dynamic="$money($input, '.', ',', 0)"
                         placeholder="ENTER AMOUNT TO BET" />
                     <div class="flex overflow-x-auto   gap-[4px] py-[16px]">
 
@@ -218,6 +231,8 @@
             game: @entangle('game'),
             side: @entangle('side'),
             amountBet: @entangle('betForm.amount'),
+            open_meron: @entangle('open_meron'),
+            open_wala: @entangle('open_wala'),
             amountList: [],
             init() {
                 this.amountList = [{
@@ -260,6 +275,10 @@
                 ]
 
                 Echo.channel(`game-event.{{ $event?->uuid }}`)
+                    .listen('.side-opened', (e) => {
+                        this.open_meron = e.open_meron
+                        this.open_wala = e.open_wala
+                    })
                     .listen('.game-event', (e) => {
                         this.game = e.current
                         console.log('game event', e)

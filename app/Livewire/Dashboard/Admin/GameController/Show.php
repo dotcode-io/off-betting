@@ -19,6 +19,7 @@ use App\Models\EventGame;
 use Exception;
 use Flux\Flux;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -37,6 +38,10 @@ final class Show extends Component
 
     public $rankings = [];
 
+    public $open_meron = 0;
+
+    public $open_wala = 0;
+
     /**
      * @throws Exception
      */
@@ -45,7 +50,10 @@ final class Show extends Component
         $this->event = $event;
 
         if ($this->event->status === EventStatus::OPENED) {
+            $this->open_meron = Cache::get('open_meron', 1);
+            $this->open_wala = Cache::get('open_wala', 1);
             $this->getGames();
+
         }
     }
 
@@ -72,6 +80,7 @@ final class Show extends Component
     #[On('event-opened')]
     public function eventOpened(): void
     {
+
         $this->getGames();
     }
 
@@ -100,6 +109,9 @@ final class Show extends Component
     public function openEvent(OpenedEventAction $action): void
     {
         $this->event = $action->handle($this->event);
+        $this->open_meron = 1;
+        $this->open_wala = 1;
+
 
         Flux::toast('Event opened successfully', variant: 'success');
 
@@ -138,6 +150,8 @@ final class Show extends Component
 
     public function closeGame(ClosedGameAction $action): void
     {
+        $this->open_meron = 1;
+        $this->open_wala = 1;
         $action->handle($this->event);
         $this->dispatch('game-updated');
 

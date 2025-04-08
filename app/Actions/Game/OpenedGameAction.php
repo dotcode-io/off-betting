@@ -6,9 +6,11 @@ namespace App\Actions\Game;
 
 use App\Enums\GameStatus;
 use App\Events\GameEvent;
+use App\Events\SideOpenEvent;
 use App\Livewire\Forms\OpenGameForm;
 use App\Models\Event;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class OpenedGameAction
@@ -19,6 +21,10 @@ final class OpenedGameAction
     public function handle(Event $event, OpenGameForm $gameForm): void
     {
         DB::transaction(function () use ($event, $gameForm): void {
+
+            Cache::put('open_meron', 1);
+            Cache::put('open_wala', 1);
+            SideOpenEvent::dispatch($event->uuid);
             $game = $event->getCurrentGame();
             $game->opened_at = now();
             $game->meron_entry = $gameForm->meron_name;

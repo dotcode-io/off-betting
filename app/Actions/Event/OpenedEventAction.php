@@ -7,6 +7,7 @@ namespace App\Actions\Event;
 use App\Enums\EventStatus;
 use App\Models\Event;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class OpenedEventAction
@@ -25,6 +26,8 @@ final class OpenedEventAction
             $event->status = EventStatus::OPENED;
             $event->save();
             $event->createGames();
+            Cache::put('open_meron', 1);
+            Cache::put('open_wala', 1);
 
             return $event;
         });
