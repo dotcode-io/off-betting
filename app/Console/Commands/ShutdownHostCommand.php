@@ -25,10 +25,7 @@ class ShutdownHostCommand extends Command
      */
     public function handle()
     {
-        if (!$this->confirm('Are you sure you want to shutdown the host server? This will terminate all services.')) {
-            $this->info('Shutdown cancelled.');
-            return;
-        }
+      
 
         $this->info('Initiating host server shutdown...');
         
