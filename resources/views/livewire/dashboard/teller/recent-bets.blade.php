@@ -56,6 +56,10 @@
 
                             <flux:navmenu>
                                 <flux:navmenu.item icon="printer" wire:click="reprintReceipt({{ $bet->id }})">Reprint</flux:navmenu.item>
+
+                                @if($bet->eventGame->status === \App\Enums\GameStatus::OPENED)
+                                    <flux:navmenu.item icon="x-mark" wire:click="openModal({{ $bet->id }})">Cancel</flux:navmenu.item>
+                                @endif
                             </flux:navmenu>
                         </flux:dropdown>
                     </flux:table.cell>
@@ -65,5 +69,18 @@
                 @endforeach
             </flux:table.rows>
         </flux:table>
+
+        <flux:modal name="cancel-bet" class="md:w-96">
+            <div class="space-y-6">
+                <div>
+                    <flux:heading size="lg">Cancel bet</flux:heading>
+                    <flux:text class="mt-2">Are you sure you want to cancel this bet?</flux:text>
+                </div>
+                <div class="flex">
+                    <flux:spacer />
+                    <flux:button  wire:click="cancelBet" variant="danger">Cancel Bet</flux:button>
+                </div>
+            </div>
+        </flux:modal>
     </div>
 </flux:card>

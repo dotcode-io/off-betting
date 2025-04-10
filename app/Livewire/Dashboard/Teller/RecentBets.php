@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dashboard\Teller;
 
+use App\Actions\CancelBetAction;
 use App\Models\Bet;
 use App\Models\Event;
 use Flux\Flux;
@@ -17,6 +18,7 @@ final class RecentBets extends Component
     use WithPagination;
 
     public Event $event;
+    public $betId;
 
     public function mount(Event $event): void
     {
@@ -25,6 +27,15 @@ final class RecentBets extends Component
 
     #[On('bet-placed')]
     public function refresh(): void {}
+
+
+    public function openModal(int $betId): void
+    {
+
+        $this->betId = $betId;
+
+        Flux::modal('cancel-bet')->show();
+    }
 
     public function reprintReceipt(Bet $bet): void
     {
@@ -43,6 +54,21 @@ final class RecentBets extends Component
         //         'time' => $bet->bet_at->format('H:i A'),
         //     ],
         // ]);
+    }
+
+    public function cancelBet(CancelBetAction $action): void
+    {
+
+        $action->handle($this->betId);
+
+        $this->reset('betId');
+        Flux::modal('cancel-bet')->close();
+
+        Flux::toast(
+            'Bet cancelled successfully',
+            'success'
+        );
+
     }
 
     public function render()
