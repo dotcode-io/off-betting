@@ -10,6 +10,9 @@ final class Summary extends Component
 {
     public function render()
     {
-        return view('livewire.dashboard.teller.summary');
+        $wallet = auth()->user()->wallet_amount;
+        return view('livewire.dashboard.teller.summary',[
+            'wallet' => $wallet
+        ]);
     }
 }
