@@ -22,9 +22,7 @@ final class OpenedGameAction
     {
         DB::transaction(function () use ($event, $gameForm): void {
 
-            Cache::put('open_meron', 1);
-            Cache::put('open_wala', 1);
-            SideOpenEvent::dispatch($event->uuid);
+
             $game = $event->getCurrentGame();
             $game->opened_at = now();
             $game->meron_entry = $gameForm->meron_name;

@@ -25,7 +25,8 @@
                     <p class="text-[50px] text-[green] font-bold text-center animate-pulse">DRAW!</p>
                 </div>
                 <div class="pb-2">
-                    <p class="text-[30px] text-gray-200 font-bold text-center text-ellipsis overflow-hidden antialiased" x-text="game.meron_name"></p>
+                    <p class="text-[30px] text-green-500 font-bold text-center text-ellipsis overflow-hidden antialiased animate-pulse" x-cloak x-show="game.status === 'Opened' && open_meron">OPEN</p>
+                    <p class="text-[30px] text-red-500 font-bold text-center text-ellipsis overflow-hidden antialiased animate-pulse" x-cloak x-show="game.status === 'Opened' && !open_meron">CLOSE</p>
 
                 </div>
 
@@ -51,7 +52,8 @@
                     <p class="text-[50px] text-[green] font-bold text-center animate-pulse">DRAW!</p>
                 </div>
                 <div class="pb-2">
-                    <p class="text-[30px] text-gray-200 font-bold text-center text-ellipsis overflow-hidden antialiased" x-text="game.wala_name"></p>
+                    <p class="text-[30px] text-green-500 font-bold text-center text-ellipsis overflow-hidden antialiased animate-pulse" x-cloak x-show="game.status === 'Opened' && open_wala">OPEN</p>
+                    <p class="text-[30px] text-red-500 font-bold text-center text-ellipsis overflow-hidden antialiased animate-pulse" x-cloak x-show="game.status === 'Opened' && !open_wala">CLOSE</p>
 
                 </div>
 

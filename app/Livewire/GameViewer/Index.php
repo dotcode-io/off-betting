@@ -8,6 +8,7 @@ use App\Enums\EventStatus;
 use App\Http\Resources\EventGameResource;
 use App\Models\Event;
 use App\Models\EventGame;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 final class Index extends Component
@@ -20,10 +21,17 @@ final class Index extends Component
 
     public array $gameResults = [];
 
+    public $open_meron = 0;
+
+    public $open_wala = 0;
+
     public function mount(): void
     {
         $this->event = Event::query()
             ->where('status', EventStatus::OPENED)->latest()->firstOrFail();
+
+        $this->open_meron = Cache::get('open_meron', 0);
+        $this->open_wala = Cache::get('open_wala', 0);
         $this->getGames();
 
 

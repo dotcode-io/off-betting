@@ -18,6 +18,9 @@ final class EventGameResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
+
+        $showOdds = $this->meron_bets > 0 && $this->wala_bets > 0;
+
         return [
             'id' => $this->id,
             'game_number' => $this->game_number,
@@ -25,8 +28,8 @@ final class EventGameResource extends JsonResource
             'status_color' => $this->status->color(),
             'meron_name' => $this->meron_entry ?? '-',
             'wala_name' => $this->wala_entry ?? '-',
-            'meron_odds' => number_format((float) $this->meron_odds, 2).'%',
-            'wala_odds' => number_format((float) $this->wala_odds, 2).'%',
+            'meron_odds' => $showOdds ? number_format((float) $this->meron_odds, 2).'%': '-',
+            'wala_odds' => $showOdds ? number_format((float) $this->wala_odds, 2).'%': '-',
             'meron_bets' => number_format((float) $this->meron_bets, 2),
             'wala_bets' => number_format((float) $this->wala_bets, 2),
             'draw_bets' => number_format((float) $this->draw_bets, 2),

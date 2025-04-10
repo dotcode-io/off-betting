@@ -90,6 +90,8 @@
             games: @entangle('games'),
             game: @entangle('game'),
             gameResults: @entangle('gameResults'),
+            open_meron: @entangle('open_meron'),
+            open_wala: @entangle('open_wala'),
             resultCounts: {
                 meron: 0,
                 wala: 0,
@@ -113,6 +115,10 @@
                 });
 
                 Echo.channel(`game-event.{{ $event->uuid }}`)
+                    .listen('.side-opened', (e) => {
+                        this.open_meron = e.open_meron
+                        this.open_wala = e.open_wala
+                    })
                     .listen('.game-event', (e) => {
                         this.game = e.current
 

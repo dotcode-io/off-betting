@@ -34,7 +34,7 @@ final class SideOpenEvent implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('game-event.'.Event::getUuidInCache($this->eventId)),
+            new Channel('game-event.'.$this->eventId),
         ];
     }
 }

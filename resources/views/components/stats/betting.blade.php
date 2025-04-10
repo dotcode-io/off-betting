@@ -7,7 +7,9 @@
 
 
 
-                    <flux:heading size="lg" x-text="game.meron_name"></flux:heading>
+                    <div class="bg-zinc-700 p-2">
+                        <flux:switch wire:model.live="openSide.open_meron" label="Open" />
+                    </div>
                 </div>
 
 
@@ -28,11 +30,13 @@
 
         </div>
 
-        <div class="bg-blue-600 rounded-tr-[0.75rem]">
+        <div class="bg-blue-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]">
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">WALA</flux:heading>
-                    <flux:heading size="lg" x-text="game.wala_name"></flux:heading>
+                    <div class="bg-zinc-700 p-2">
+                        <flux:switch  wire:model.live="openSide.open_wala" label="Open" />
+                    </div>
                 </div>
 
 

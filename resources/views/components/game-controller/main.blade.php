@@ -129,6 +129,7 @@
                             }
                             console.log(this.games[index], e.current)
                             setTimeout(() => {
+                                if(this.game.id === e.next.id) return
                                 this.game = e.next;
                             }, 4000);
                         }

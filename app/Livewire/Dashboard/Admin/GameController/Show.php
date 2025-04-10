@@ -12,6 +12,7 @@ use App\Actions\Game\OpenedGameAction;
 use App\Enums\EventStatus;
 use App\Enums\GameResult;
 use App\Enums\GameStatus;
+use App\Events\SideOpenEvent;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\OpenGameForm;
 use App\Models\Event;
@@ -38,9 +39,10 @@ final class Show extends Component
 
     public $rankings = [];
 
-    public $open_meron = 0;
-
-    public $open_wala = 0;
+    public array $openSide = [
+        'open_meron' => false,
+        'open_wala' => false,
+    ];
 
     /**
      * @throws Exception
@@ -50,11 +52,21 @@ final class Show extends Component
         $this->event = $event;
 
         if ($this->event->status === EventStatus::OPENED) {
-            $this->open_meron = Cache::get('open_meron', 1);
-            $this->open_wala = Cache::get('open_wala', 1);
+            $this->openSide = [
+                'open_meron' => (bool) Cache::get('open_meron', 0),
+                'open_wala' => (bool) Cache::get('open_wala', 0),
+            ];
             $this->getGames();
 
         }
+    }
+
+    public function updatedOpenSide($value)
+    {
+            Cache::put('open_meron', $this->openSide['open_meron'] ? 1 : 0);
+            Cache::put('open_wala', $this->openSide['open_wala'] ? 1 : 0);
+
+            SideOpenEvent::dispatch($this->event->uuid);
     }
 
     /**
@@ -109,9 +121,6 @@ final class Show extends Component
     public function openEvent(OpenedEventAction $action): void
     {
         $this->event = $action->handle($this->event);
-        $this->open_meron = 1;
-        $this->open_wala = 1;
-
 
         Flux::toast('Event opened successfully', variant: 'success');
 
@@ -141,17 +150,32 @@ final class Show extends Component
     {
         $action->handle($this->event, $this->gameForm);
 
-        $this->dispatch('game-updated');
+        $this->openSide = [
+            'open_meron' => true,
+            'open_wala' => true,
+        ];
+
+        Cache::put('open_meron', 1);
+        Cache::put('open_wala', 1);
+
+        SideOpenEvent::dispatch($this->event->uuid);
+
 
         Flux::toast('Game opened successfully', variant: 'success');
         Flux::modal('open-game')->close();
-        $this->gameForm->reset();
     }
 
     public function closeGame(ClosedGameAction $action): void
     {
-        $this->open_meron = 1;
-        $this->open_wala = 1;
+        $this->openSide = [
+            'open_meron' => false,
+            'open_wala' => false,
+        ];
+
+        Cache::put('open_meron', 0);
+        Cache::put('open_wala', 0);
+        SideOpenEvent::dispatch($this->event->uuid);
+
         $action->handle($this->event);
         $this->dispatch('game-updated');
 
@@ -173,7 +197,6 @@ final class Show extends Component
         $result = GameResult::tryFrom($this->resultSelected);
         $action->handle($this->event, $result);
 
-        $this->getGames();
 
         Flux::toast('Game successfully declared', variant: 'success');
         Flux::modal('game-result')->close();

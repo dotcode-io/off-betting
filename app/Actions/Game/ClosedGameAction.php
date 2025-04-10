@@ -19,11 +19,6 @@ final class ClosedGameAction
 
             // Bet sum case when side meron,wala,draw then sum amount else 0 end as total_bets
 
-
-            Cache::put('open_meron', 0);
-            Cache::put('open_wala', 0);
-
-            SideOpenEvent::dispatch($event->uuid);
             $game = $event->getCurrentGame();
 
             $game->closed_at = now();
