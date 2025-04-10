@@ -6,7 +6,7 @@
     </div>
     <flux:separator variant="subtle" />
     <div class="mt-4">
-         <flux:card class="w-1/3 pb-4 mb-4">
+         <flux:card class="w-full md:w-1/3 pb-4 mb-4">
             <div>
                 <flux:heading size="lg" class="mb-4">Theme</flux:heading>
             </div>
@@ -17,7 +17,7 @@
             </flux:radio.group>
         </flux:card>
 
-        <flux:card class="w-1/3">
+        <flux:card class="w-full md:w-1/3">
             <form wire:submit='save'>
                 <div>
                     <flux:heading size="lg" class="mb-4">Update Password</flux:heading>
@@ -34,7 +34,7 @@
         </flux:card>
 
         @if(\Illuminate\Support\Facades\Auth::user()?->isAdmin())
-        <flux:card class="w-1/3 mt-4">
+        <flux:card class="w-full md:w-1/3 mt-4">
             <div>
                 <flux:heading size="lg" class="mb-4">Server Management</flux:heading>
                 <p class="text-red-600 dark:text-red-400 mb-4">Warning: This action will shutdown the host server.</p>
@@ -68,6 +68,6 @@
                 <flux:button wire:click="cancelShutdown" >Cancel</flux:button>
                 <flux:button wire:click="shutdownServer" variant="danger">Yes, Shutdown Server</flux:button>
             </div>
-           
+
     </flux:modal>
 </div>
