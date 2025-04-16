@@ -46,7 +46,6 @@
 
                 </flux:table.cell>
                 <flux:table.cell class="flex space-x-2 items-center justify-center">
-                    <flux:button size="sm" variant="danger" wire:click="openVoidModal('{{ $bet->id }}')">Void</flux:button>
                     <flux:button size="sm" wire:click="openBetDetailsModal('{{ $bet->id }}')">View Bet Details</flux:button>
                 </flux:table.cell>
             </flux:table.row>
