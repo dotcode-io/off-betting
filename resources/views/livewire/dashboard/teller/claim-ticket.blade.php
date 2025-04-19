@@ -116,9 +116,76 @@
 
             <div class="flex justify-end gap-2 pt-2">
                 <flux:button wire:click="close()">Close</flux:button>
+                @if(!$bet->is_claimed)
                 <flux:button icon="check" variant="primary" wire:click="claim()">Claim Winning</flux:button>
+                @else
+                <flux:button icon="printer" variant="primary" wire:click="reprint()">Reprint</flux:button>
+                @endif
             </div>
         </flux:card>
         @endif
     </div>
+    <flux:modal name="print-bet" class="min-w-[28rem] space-y-6" :dismissible="false">
+        <div id="betReceipt" style="display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: white; height: 400px; padding-top:30px;">
+            @if($bet)
+            <div style="text-align: center; color: #000000; font-size: 12px; font-weight: bold;">{{ $bet->event->name }}</div>
+            <div style="text-align: center; color: #000000; font-size: 11px;">Claim: {{ $bet->claimed_at?->format('F d, Y h:i:s A') }}</div>
+            <div style="text-align: center; color: #000000; font-size: 11px;">Teller: {{ $bet->claimedBy?->username }}</div>
+
+            <div style="text-align: center; color: #000000; font-size: 12px; font-weight: bold; margin-top: 20px;">Ref: {{ $bet->reference_no }}</div>
+            <div style="text-align: center; color: #000000; font-size: 11px;">Nickname: {{ $bet->nickname ?? '-' }}</div>
+            <div style="text-align: center; color: #000000; font-size: 14px;">Side: {{ $bet->side->label() }}</div>
+            <div style="text-align: center; color: #000000; font-size: 14px; font-weight: bold;">Bet: ₱ {{ number_format($bet->bet_amount, 2) }}</div>
+            <div style="text-align: center; color: #000000; font-size: 14px; font-weight: bold;">Win Amount: ₱ {{ number_format($bet->win_amount, 2) }}</div>
+            @endif
+        </div>
+        <flux:button icon="printer" variant="primary" type="button" wire:click="printBet()"> Print
+        </flux:button>
+    </flux:modal>
 </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+
+<script>
+    window.addEventListener('silent-print', (event) => {
+        const data = event.detail[0].printData
+        document.getElementById('event').innerText = data.event;
+        document.getElementById('fight').innerText = data.fight;
+        document.getElementById('side').innerText = data.side;
+        document.getElementById('amount').innerText = data.amount;
+        document.getElementById('date').innerText = data.date;
+        document.getElementById('time').innerText = data.time;
+        document.getElementById('teller').innerText = data.teller;
+        document.getElementById('ref').innerText = data.ref;
+
+
+        let printFrame = document.createElement('iframe');
+        printFrame.style.position = 'absolute';
+        printFrame.style.width = '0px';
+        printFrame.style.height = '0px';
+        printFrame.style.border = 'none';
+        document.body.appendChild(printFrame);
+
+        let doc = printFrame.contentDocument || printFrame.contentWindow.document;
+        doc.open();
+        doc.write(document.getElementById('receipt-content').innerHTML);
+        doc.close();
+
+        printFrame.contentWindow.focus();
+        printFrame.contentWindow.print();
+
+        setTimeout(() => {
+            document.body.removeChild(printFrame);
+        }, 1000);
+    });
+
+    window.addEventListener('bet-to-print', (event) => {
+        let printContents = document.getElementById('betReceipt').innerHTML;
+        let originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    });
+</script>

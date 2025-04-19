@@ -20,6 +20,7 @@ final class Bet extends Model
         'status' => BetStatus::class,
         'result' => GameResult::class,
         'side' => BetSide::class,
+        'claimed_at' => 'datetime',
     ];
 
     public function eventGame(): BelongsTo

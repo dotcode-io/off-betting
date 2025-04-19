@@ -58,17 +58,29 @@ final class ClaimTicket extends Component
             $action->handle($this->bet);
             Flux::toast(heading: 'Congratulations!', text: 'Ticket claimed successfully!', variant: 'success');
 
-            $this->bet = null;
-            $this->reference_no = '';
+            // $this->bet = null;
+            // $this->reference_no = '';
 
+            Flux::modal('print-bet')->show();
         }
         else{
             Flux::toast(heading: 'Error', text: 'Something went wrong!', variant: 'danger');
         }
 
-        return redirect()->route('teller.claim-history');
+        // return redirect()->route('teller.claim-history');
 
 
+    }
+
+    public function reprint()
+    {
+        Flux::modal('print-bet')->show();
+    }
+
+    public function printBet(): void
+    {
+        Flux::modal('print-bet')->close();
+        $this->dispatch('bet-to-print');
     }
 
     public function render()

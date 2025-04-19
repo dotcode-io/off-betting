@@ -6,7 +6,7 @@
     </div>
     <flux:separator variant="subtle" />
 
-    <x-game-controller.main :games="$games" :game="$game" :event="$event" :rankings="$rankings" >
+    <x-game-controller.main :games="$games" :game="$game" :event="$event" :rankings="$rankings">
         <div class="grid  grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 py-3">
             <div class="flex flex-col space-y-2">
                 <flux:card class="space-y-6">
@@ -106,7 +106,7 @@
                         <div class="flex-1">
                             <div class="flex justify-between">
                                 <flux:heading size="lg">Fight #<span x-text="game.game_number"> </span></flux:heading>
-                                <flux:badge  variant="pill" x-text="game.status"  class="animate-pulse uppercase !text-zinc-700 !font-bold shadow-2xl" x-bind:class="{
+                                <flux:badge variant="pill" x-text="game.status" class="animate-pulse uppercase !text-zinc-700 !font-bold shadow-2xl" x-bind:class="{
     '!bg-orange-500': game.status_color === 'orange',
     '!bg-green-500': game.status_color === 'green',
     '!bg-red-500': game.status_color === 'red'
@@ -132,23 +132,10 @@
                             </div>
                             <div>
                                 <flux:heading size="lg">Game Result</flux:heading>
-                                <flux:select variant="listbox" placeholder="Select Result..." x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'" wire:model.live="resultSelected">
-                                    @foreach (\App\Enums\GameResult::cases() as $result)
-
-                                    @if($result !== \App\Enums\GameResult::CANCELLED && $result !== \App\Enums\GameResult::PENDING)
-                                    <flux:select.option value="{{ $result->value}}">
-                                        <div class="flex items-center gap-2">
-                                            <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
-                                            </div>
-                                            <div class="uppercase">
-                                                {{ $result->label() }}
-                                            </div>
-                                        </div>
-
-                                    </flux:select.option>
-                                    @endif
-                                    @endforeach
-
+                                <flux:select placeholder="Select result" wire:model.live="resultSelected" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">
+                                    <flux:select.option value="meron">Meron</flux:select.option>
+                                    <flux:select.option value="wala">Wala</flux:select.option>
+                                    <flux:select.option value="draw">Draw</flux:select.option>
                                 </flux:select>
                                 <div class="flex items-center py-2 gap-2">
                                     <flux:modal.trigger name="game-result">
