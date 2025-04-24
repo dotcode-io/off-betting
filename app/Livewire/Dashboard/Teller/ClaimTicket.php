@@ -39,9 +39,8 @@ final class ClaimTicket extends Component
 
             return;
         }
-        if ($bet->is_claimed === 0 && $bet->isWin()) {
+        if (!$bet->is_claimed && ($bet->isWin()) || $bet->isCancelled()) {
             $this->bet = $bet;
-
             return;
         }
     }

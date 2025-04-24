@@ -57,20 +57,6 @@
                         </button>
                     </div>
                     <div class="w-full flex flex-col items-center">
-
-                        <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened'">OPEN</flux:text>
-                    <button type="button"
-                        class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300"
-                        :class="side === 'draw' ? 'border-4 border-yellow-500 bg-green-600 animate-pulse' : ''"
-                        x-on:click="setSide('draw')"
-                        :disabled="game.status !== 'Opened'">
-                        <div class="pb-2">
-                            <flux:heading class="font-bold! text-[18px]!">DRAW</flux:heading>
-                            <flux:heading class="text-[14px]!">8X</flux:heading>
-                        </div>
-                    </button>
-                    </div>
-                    <div class="w-full flex flex-col items-center">
                         <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && open_wala" >OPEN</flux:text>
                         <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && !open_wala">CLOSE</flux:text>
                     <button type="button"
@@ -163,7 +149,7 @@
             <div style="text-align: center; color: #000000; font-size: 11px;">Teller: {{ $betToPrint->user->username }}</div>
 
             <div style="text-align: center; color: #000000; font-size: 12px; font-weight: bold; margin-top: 20px;">Ref: {{ $betToPrint->reference_no }}</div>
-            <div style="text-align: center; color: #000000; font-size: 11px;">Nickname: {{ $betToPrint->nickname ?? '-' }}</div>
+            <div style="text-align: center; color: #000000; font-size: 11px;">Game #: {{ $betToPrint->eventGame->game_number  ?? '-' }}</div>
             <div style="text-align: center; color: #000000; font-size: 14px;">Side: {{ $betToPrint->side->label() }}</div>
             <div style="text-align: center; color: #000000; font-size: 14px; font-weight: bold;">Bet: ₱ {{ number_format($betToPrint->bet_amount, 2) }}</div>
             <div style="display: flex; justify-content: center; align-items: center;">
