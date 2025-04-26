@@ -71,7 +71,7 @@ final class ChangeGameResultJob implements ShouldQueue
                 ]);
         } else {
             Bet::query()->where('event_game_id', $this->gameId)
-                ->where('side', '!=', $this->result->side())
+                ->where('side', '!=', $this->newResult->side())
                 ->update([
                     'status' => BetStatus::Loser,
                     'result' => $this->newResult,
