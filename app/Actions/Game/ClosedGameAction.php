@@ -21,6 +21,9 @@ final class ClosedGameAction
 
             $game = $event->getCurrentGame();
 
+            $game->meron_charge = 0;
+            $game->wala_charge = 0;
+
             $game->closed_at = now();
             $game->status = GameStatus::CLOSED;
             $game->save();

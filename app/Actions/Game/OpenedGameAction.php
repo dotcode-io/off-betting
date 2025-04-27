@@ -24,6 +24,7 @@ final class OpenedGameAction
 
 
             $game = $event->getCurrentGame();
+            $game->meron_charge = config('app.bet_charge');
             $game->opened_at = now();
             $game->meron_entry = $gameForm->meron_name;
             $game->wala_entry = $gameForm->wala_name;

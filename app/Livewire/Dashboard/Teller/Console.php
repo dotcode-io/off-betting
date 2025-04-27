@@ -58,21 +58,29 @@ final class Console extends Component
         $this->betForm->validate();
         $amount = (float) str_replace(',', '', (string) $this->betForm->amount);
 
-        $bet = $actions->handle($this->event, BettingDataTransferObject::fromArray([
-            'amount' => $amount,
-            'side' => $this->betForm->side,
-        ]), null);
-        $bet->load(['eventGame']);
-        $this->betForm->reset();
-        $this->side = '';
+        try{
 
-        $this->betToPrint = $bet;
+            $bet = $actions->handle($this->event, BettingDataTransferObject::fromArray([
+                'amount' => $amount,
+                'side' => $this->betForm->side,
+            ]), null);
 
-        Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
+            $bet->load(['eventGame']);
+            $this->betForm->reset();
+            $this->side = '';
 
-        Flux::modal('print-bet')->show();
+            $this->betToPrint = $bet;
 
-        $this->dispatch('bet-placed');
+            Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
+
+            Flux::modal('print-bet')->show();
+
+            $this->dispatch('bet-placed');
+        }catch( Exception $ex){
+            $this->addError('betForm.amount', $ex->getMessage());
+        }
+       
+        
     }
 
     #[On('reprint-bet')]

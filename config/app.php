@@ -126,5 +126,5 @@ return [
     ],
 
     'gb_ids' => explode( ',',env('APP_GB_ID', '1')),
-
+    'bet_charge' => env('BET_CHARGE',5000),
 ];

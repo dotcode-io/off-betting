@@ -39,6 +39,10 @@ final class EventGameResource extends JsonResource
             'result' => $this->result->label(),
             'result_color' => $this->result->color(),
             'result_value' => $this->result->value,
+            'wala_charge' => number_format((float) $this->wala_charge,2),
+            'meron_charge' =>  number_format((float) $this->meron_charge,2),
+            'meron_open' =>(bool) $this->meron_charge > 0,
+            'wala_open' => (bool) $this->wala_charge > 0,
 
         ];
     }

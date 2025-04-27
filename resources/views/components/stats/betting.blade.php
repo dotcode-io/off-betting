@@ -1,15 +1,18 @@
 <flux:card class="space-y-6 p-0!">
     <div class="grid grid-cols-2">
-        <div class="bg-red-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]">
+        <div class="bg-red-600 flex flex-col items-center justify-center rounded-tl-[0.75rem] 
+       "
+        :class="!game.meron_open && game.status === 'Opened' 
+      ? 'text-gray-400 cursor-not-allowed opacity-60' 
+      : ''"
+        >
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">MERON</flux:heading>
 
 
 
-                    <div class="bg-zinc-700 p-2">
-                        <flux:switch wire:model.live="openSide.open_meron" label="Open" />
-                    </div>
+                 
                 </div>
 
 
@@ -30,13 +33,15 @@
 
         </div>
 
-        <div class="bg-blue-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]">
+        <div class="bg-blue-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]"
+        :class="!game.wala_open && game.status === 'Opened' 
+      ? 'text-gray-400 cursor-not-allowed opacity-60' 
+      : ''"
+        >
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">WALA</flux:heading>
-                    <div class="bg-zinc-700 p-2">
-                        <flux:switch  wire:model.live="openSide.open_wala" label="Open" />
-                    </div>
+                  
                 </div>
 
 

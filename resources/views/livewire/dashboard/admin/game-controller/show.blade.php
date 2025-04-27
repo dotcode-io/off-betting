@@ -132,10 +132,25 @@
                             </div>
                             <div>
                                 <flux:heading size="lg">Game Result</flux:heading>
-                                <flux:select placeholder="Select result" wire:model.live="resultSelected" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">
-                                    <flux:select.option value="meron">Meron</flux:select.option>
-                                    <flux:select.option value="wala">Wala</flux:select.option>
-                                    <flux:select.option value="draw">Draw</flux:select.option>
+                                <flux:select  variant="listbox" placeholder="Select result" wire:model.live="resultSelected" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">
+                                
+                                @foreach (\App\Enums\GameResult::cases() as $result)
+
+                                    @if($result !== \App\Enums\GameResult::CANCELLED && $result !== \App\Enums\GameResult::PENDING)
+                                    <flux:select.option value="{{ $result->value}}">
+                                        <div class="flex items-center gap-2">
+                                            <div class="size-4 rounded-full bg-{{ $result->color()}}-500">
+                                            </div>
+                                            <div class="uppercase">
+                                                {{ $result->label() }}
+                                            </div>
+                                        </div>
+
+                                    </flux:select.option>
+                                    @endif
+                                    @endforeach
+                                
+                            
                                 </flux:select>
                                 <div class="flex items-center py-2 gap-2">
                                     <flux:modal.trigger name="game-result">
