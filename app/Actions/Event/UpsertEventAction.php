@@ -17,6 +17,7 @@ final class UpsertEventAction
 
             $event->name = $form->name;
             $event->date = $form->date;
+            $event->charge = $form->charge;
 
             if (is_null($event->status)) {
                 $event->status = EventStatus::PENDING;
