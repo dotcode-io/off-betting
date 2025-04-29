@@ -48,7 +48,7 @@ final class BetAction
                 if($remaining === 0.00){
 
                   
-                    $openGame->increment('wala_charge',config('app.bet_charge'));
+                    $openGame->increment('wala_charge',$event->charge);
                 }
 
                 // if ($openGame->meron_bets > 20000 && $openGame->meron_odds <= 160) {
@@ -72,7 +72,7 @@ final class BetAction
                 }
 
                 if($remaining ===  0.00){
-                    $openGame->increment('meron_charge',config('app.bet_charge'));
+                    $openGame->increment('meron_charge',$event->charge);
                 }
 
                 // if ($openGame->wala_bets > 20000 && $openGame->wala_odds <= 160) {
