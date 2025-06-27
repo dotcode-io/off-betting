@@ -17,7 +17,6 @@ use App\Models\ManualRef;
 use App\Services\BetReferenceService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class BetAction
@@ -26,7 +25,6 @@ final class BetAction
     {
         //
     }
-
 
     public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject, ?string $ref): Bet
     {
@@ -39,50 +37,49 @@ final class BetAction
 
             if ($side === BetSide::Meron) {
 
-                $remaining = $openGame->meron_charge - $bettingDataTransferObject->amount;
+                //                $remaining = $openGame->meron_charge - $bettingDataTransferObject->amount;
+                //
+                //                if ($remaining < 0) {
+                //                    throw new Exception('Meron amount bet must not greater than '.$openGame->meron_charge);
+                //                }
+                //
+                //                if ($remaining === 0.00) {
+                //
+                //                    $openGame->increment('wala_charge', $event->charge);
+                //                }
 
-                if($remaining < 0){
-                    throw new Exception('Meron amount bet must not greater than '. $openGame->meron_charge);
+                if ($openGame->meron_bets > 20000 && $openGame->meron_odds <= 160) {
+                    throw new Exception('Meron odds is too low');
                 }
-
-                if($remaining === 0.00){
-
-                  
-                    $openGame->increment('wala_charge',$event->charge);
-                }
-
-                // if ($openGame->meron_bets > 20000 && $openGame->meron_odds <= 160) {
-                //     throw new Exception('Meron odds is too low');
-                // }
 
                 // increment meron_bets,meron_bettors
 
                 $openGame->increment('meron_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('meron_bettors');
-                $openGame->decrement('meron_charge', $bettingDataTransferObject->amount);
+                // $openGame->decrement('meron_charge', $bettingDataTransferObject->amount);
 
             }
 
             if ($side === BetSide::Wala) {
 
-                $remaining = $openGame->wala_charge - $bettingDataTransferObject->amount;
+                //                $remaining = $openGame->wala_charge - $bettingDataTransferObject->amount;
+                //
+                //                if ($remaining < 0) {
+                //                    throw new Exception('Wala amount bet must not greater than '.$openGame->wala_charge);
+                //                }
+                //
+                //                if ($remaining === 0.00) {
+                //                    $openGame->increment('meron_charge', $event->charge);
+                //                }
 
-                if($remaining < 0){
-                    throw new Exception('Wala amount bet must not greater than '. $openGame->wala_charge);
+                if ($openGame->wala_bets > 20000 && $openGame->wala_odds <= 160) {
+                    throw new Exception('Wala odds is too low');
                 }
-
-                if($remaining ===  0.00){
-                    $openGame->increment('meron_charge',$event->charge);
-                }
-
-                // if ($openGame->wala_bets > 20000 && $openGame->wala_odds <= 160) {
-                //     throw new Exception('Wala odds is too low');
-                // }
 
                 // increment wala_bets,wala_bettors
                 $openGame->increment('wala_bets', $bettingDataTransferObject->amount);
                 $openGame->increment('wala_bettors');
-                $openGame->decrement('wala_charge', $bettingDataTransferObject->amount);
+                // $openGame->decrement('wala_charge', $bettingDataTransferObject->amount);
             }
 
             if ($side === BetSide::Draw) {

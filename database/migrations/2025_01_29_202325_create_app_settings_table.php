@@ -22,6 +22,13 @@ return new class extends Migration
             $table->decimal('plasada', 10, 2)->default(5);
             $table->timestamps();
         });
+
+        DB::table('app_settings')->insert(
+            [
+                'app_name' => 'OCBS - KCI Gaming Services',
+                'plasada' => 6,
+            ]
+        );
     }
 
     /**

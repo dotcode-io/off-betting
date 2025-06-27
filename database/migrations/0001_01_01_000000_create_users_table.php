@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -25,8 +26,43 @@ return new class extends Migration
             $table->bigInteger('version')->default(1);
             $table->rememberToken();
             $table->timestamps();
-
         });
+
+        $tellers = [];
+        for ($i = 0; $i < 20; $i++) {
+            $tellers[] = [
+                'uuid' => Illuminate\Support\Str::uuid(),
+                'username' => 'teller'.$i + 1,
+                'user_type' => 'teller',
+                'password' => Hash::make('password'),
+                'wallet_amount' => 0,
+                'commission_amount' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        $users = [
+            [
+                'uuid' => Illuminate\Support\Str::uuid(),
+                'username' => 'admin',
+                'password' => Hash::make('password'),
+                'user_type' => 'admin',
+                'version' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'wallet_amount' => 0,
+                'commission_amount' => 0,
+            ],
+            [
+                'uuid' => Illuminate\Support\Str::uuid(),
+                'username' => 'controller',
+                'user_type' => 'controller',
+                'password' => Hash::make('password'),
+                'wallet_amount' => 0,
+                'commission_amount' => 0,
+            ],
+        ];
+        DB::table('users')->insert(values: array_merge($users, $tellers));
 
         Schema::create('password_reset_tokens', function (Blueprint $table): void {
             $table->string('email')->primary();
