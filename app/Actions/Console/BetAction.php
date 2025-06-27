@@ -41,6 +41,10 @@ final class BetAction
 
             if ($side === BetSide::Meron) {
 
+                if ($openGame->meron_charge < 1) {
+                    throw new Exception('Meron is not open');
+                }
+
                 //                $remaining = $openGame->meron_charge - $bettingDataTransferObject->amount;
                 //
                 //                if ($remaining < 0) {
@@ -65,7 +69,9 @@ final class BetAction
             }
 
             if ($side === BetSide::Wala) {
-
+                if ($openGame->wala_charge < 1) {
+                    throw new Exception('Wala is not open');
+                }
                 //                $remaining = $openGame->wala_charge - $bettingDataTransferObject->amount;
                 //
                 //                if ($remaining < 0) {
