@@ -21,8 +21,8 @@ return new class extends Migration
             $table->unsignedBigInteger('event_game_id');
             $table->unsignedBigInteger('user_id');
             $table->string('nickname')->nullable();
-            $table->decimal('bet_amount', 16, 2)->default(0);
-            $table->decimal('win_amount', 16, 2)->default(0);
+            $table->double('bet_amount', 16, 2)->default(0);
+            $table->double('win_amount', 16, 2)->default(0);
             $table->string('side')->nullable();
             $table->string('status')->default('on-going');
             $table->string('result')->nullable();

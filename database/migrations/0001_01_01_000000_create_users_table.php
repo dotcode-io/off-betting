@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('uuid')->unique();
             $table->string('username')->unique();
             $table->string('password');
-            $table->decimal('wallet_amount', 10, 2)->default(0.00);
-            $table->decimal('commission_amount', 10, 2)->default(0.00);
+            $table->double('wallet_amount', 10, 2)->default(0.00);
+            $table->double('commission_amount', 10, 2)->default(0.00);
             $table->enum('user_type', ['admin', 'teller', 'controller', 'player'])->default('player');
             $table->bigInteger('version')->default(1);
             $table->rememberToken();
@@ -35,31 +35,21 @@ return new class extends Migration
                 'username' => 'teller'.$i + 1,
                 'user_type' => 'teller',
                 'password' => Hash::make('password'),
-                'wallet_amount' => 0,
-                'commission_amount' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
             ];
         }
         $users = [
             [
                 'uuid' => Illuminate\Support\Str::uuid(),
                 'username' => 'admin',
-                'password' => Hash::make('password'),
                 'user_type' => 'admin',
-                'version' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-                'wallet_amount' => 0,
-                'commission_amount' => 0,
+                'password' => Hash::make('password'),
             ],
             [
                 'uuid' => Illuminate\Support\Str::uuid(),
                 'username' => 'controller',
                 'user_type' => 'controller',
                 'password' => Hash::make('password'),
-                'wallet_amount' => 0,
-                'commission_amount' => 0,
+
             ],
         ];
         DB::table('users')->insert(values: array_merge($users, $tellers));

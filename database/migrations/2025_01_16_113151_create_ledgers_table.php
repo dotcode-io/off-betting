@@ -23,9 +23,9 @@ return new class extends Migration
             $table->enum('type', ['wallet', 'commission']);
             $table->timestamp('transaction_date');
             $table->string('description');
-            $table->decimal('debit', 10, 2)->nullable();
-            $table->decimal('credit', 10, 2)->nullable();
-            $table->decimal('balance', 10, 2);
+            $table->double('debit', 10, 2)->nullable();
+            $table->double('credit', 10, 2)->nullable();
+            $table->double('balance', 10, 2);
             $table->enum('status', ['pending', 'completed', 'failed'])->default('completed');
             $table->timestamps();
 

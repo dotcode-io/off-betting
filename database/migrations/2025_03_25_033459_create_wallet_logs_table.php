@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('wallet_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->decimal('amount', 16, 2);
+            $table->double('amount', 16, 2);
             $table->string('type');
             $table->string('description');
             $table->decimal('previous_balance', 16, 2);
