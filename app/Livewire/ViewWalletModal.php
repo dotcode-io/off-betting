@@ -14,17 +14,17 @@ use Livewire\WithPagination;
 
 final class ViewWalletModal extends Component
 {
-    use WithPagination,WithoutUrlPagination;
+    use WithoutUrlPagination,WithPagination;
 
     public ?User $user = null;
 
     public $date = '';
 
-
-
     #[On('view-wallet')]
     public function view(int $id)
     {
+
+        $this->resetPage();
 
         $this->date = date('Y-m-d');
         $this->user = User::findOrFail($id);

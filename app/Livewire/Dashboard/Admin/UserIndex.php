@@ -18,12 +18,9 @@ use Livewire\WithPagination;
 
 final class UserIndex extends Component
 {
-    use Searchable, Sortable, WithPagination,WithoutUrlPagination;
+    use Searchable, Sortable, WithoutUrlPagination,WithPagination;
 
     public UserForm $form;
-
-
-
 
     public function getMatches(): array
     {
