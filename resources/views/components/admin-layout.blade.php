@@ -97,6 +97,8 @@
     <flux:toast position="top right" />
     @endpersist
     @fluxScripts
+
+    @stack('scripts')
 </body>
 
 </html>

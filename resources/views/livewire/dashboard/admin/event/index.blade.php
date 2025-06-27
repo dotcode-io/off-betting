@@ -62,7 +62,6 @@
             <flux:input label="Date" type="date" wire:model="form.date" class="mb-3" min="{{ now()->toDateString() }}" />
             <flux:input label="Start of game" type="number" wire:model="form.start_of_game" min="1" class="mb-3" />
             <flux:input label="Number of game" type="number" wire:model="form.number_of_games" min="50" class="mb-3" />
-            <flux:input label="Charge" type="number" step="1000" wire:model="form.charge" min="1000" max="50000" class="mb-3"/>
             <div class="flex pt-2">
                 <flux:spacer />
                 <flux:button type="submit" variant="primary">Save Event</flux:button>

@@ -1,4 +1,5 @@
-<flux:modal name="view-wallet-modal" class="!w-full">
+<flux:modal name="view-wallet-modal" class="!w-full max-w-screen-xl"
+>
    @if($user)
         <div class="space-y-6">
             <div class="flex justify-between">

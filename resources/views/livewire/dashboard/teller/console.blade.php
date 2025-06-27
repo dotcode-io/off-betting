@@ -46,26 +46,39 @@
                         <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && game.meron_open" >OPEN</flux:text>
                         <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && !game.meron_open">CLOSE</flux:text>
                         <button type="button"
-                                class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300"
+                                class="bg-red-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-red-300 h-16"
                                 :class="side === 'meron' ? 'border-4 border-yellow-500 bg-red-600 animate-pulse' : ''"
                                 x-on:click="setSide('meron')"
                                 :disabled="game.status !== 'Opened' || !game.meron_open">
                             <div class="pb-2">
                                 <flux:heading class="font-bold! text-[18px]!">MERON</flux:heading>
-                                <flux:text class="text-base text-green-500" variant="strong"  x-text="game.meron_charge"></flux:text>
                             </div>
                         </button>
                     </div>
+
+                    <div class="w-full flex flex-col items-center">
+                        <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened'" >OPEN</flux:text>
+                        <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status !== 'Opened' ">CLOSE</flux:text>
+                        <button type="button"
+                                class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300 h-16"
+                                :class="side === 'draw' ? 'border-4 border-yellow-500 bg-green-600 animate-pulse' : ''"
+                                x-on:click="setSide('draw')"
+                                :disabled="game.status !== 'Opened'">
+                            <div class="pb-2">
+                                <flux:heading class="font-bold! text-[18px]!">DRAW</flux:heading>
+                            </div>
+                        </button>
+                    </div>
+
                     <div class="w-full flex flex-col items-center">
                         <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && game.wala_open" >OPEN</flux:text>
                         <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened' && !game.wala_open">CLOSE</flux:text>
                     <button type="button"
-                        class="bg-blue-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300"
+                        class="bg-blue-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue-300 h-16"
                         :class="side === 'wala' ? 'border-4 border-yellow-500 bg-blue-600 animate-pulse' : ''"
                         x-on:click="setSide('wala')" :disabled="game.status !== 'Opened' || !game.wala_open">
                         <div class="pb-2">
                             <flux:heading class="font-bold! text-[18px]!">WALA</flux:heading>
-                            <flux:text class="text-base text-green-500" variant="strong" x-text="game.wala_charge"></flux:text>
                         </div>
                     </button>
                     </div>
@@ -165,8 +178,8 @@
     </flux:modal>
 </div>
 
+@push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
-
 <script>
     window.addEventListener('silent-print', (event) => {
         const data = event.detail[0].printData
@@ -283,3 +296,4 @@
         }));
     });
 </script>
+@endpush

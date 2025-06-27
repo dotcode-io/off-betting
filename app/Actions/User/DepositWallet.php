@@ -8,9 +8,13 @@ use App\Models\User;
 use App\Models\WalletLog;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 final class DepositWallet
 {
+    /**
+     * @throws Throwable
+     */
     public function handle(User $user, array $attributes): User
     {
         return DB::transaction(function () use ($user, $attributes): User {
@@ -26,8 +30,6 @@ final class DepositWallet
             if ($update === 0) {
                 throw new Exception('Failed to update wallet');
             }
-
-
 
             WalletLog::query()->create([
                 'user_id' => $user->id,

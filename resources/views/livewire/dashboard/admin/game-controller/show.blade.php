@@ -72,7 +72,7 @@
 
             @if($game)
             <div class="space-y-2">
-                <x-stats.betting />
+                <x-stats.betting wala_charge="{{ $wala_charge }}" meron_charge="{{ $meron_charge }}" />
                 <x-stats.results-count-card />
                 <flux:card class="min-h-[450px] hidden md:block">
                     <flux:heading size="lg">Rankings</flux:heading>
@@ -133,7 +133,7 @@
                             <div>
                                 <flux:heading size="lg">Game Result</flux:heading>
                                 <flux:select  variant="listbox" placeholder="Select result" wire:model.live="resultSelected" x-bind:disabled="game.status != '{{ \App\Enums\GameStatus::CLOSED->label() }}'">
-                                
+
                                 @foreach (\App\Enums\GameResult::cases() as $result)
 
                                     @if($result !== \App\Enums\GameResult::CANCELLED && $result !== \App\Enums\GameResult::PENDING)
@@ -149,8 +149,8 @@
                                     </flux:select.option>
                                     @endif
                                     @endforeach
-                                
-                            
+
+
                                 </flux:select>
                                 <div class="flex items-center py-2 gap-2">
                                     <flux:modal.trigger name="game-result">

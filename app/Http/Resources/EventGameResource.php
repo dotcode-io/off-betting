@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\EventGame;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Override;
 
 final class EventGameResource extends JsonResource
 {
@@ -15,9 +15,10 @@ final class EventGameResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    #[Override]
     public function toArray(Request $request): array
     {
+
+        /** @var EventGame $this->resource */
 
         $showOdds = $this->meron_bets > 0 && $this->wala_bets > 0;
 
@@ -41,8 +42,8 @@ final class EventGameResource extends JsonResource
             'result_value' => $this->result->value,
             'wala_charge' => number_format((float) $this->wala_charge, 2),
             'meron_charge' => number_format((float) $this->meron_charge, 2),
-            'meron_open' => true,
-            'wala_open' => true,
+            'meron_open' => (bool) $this->meron_charge > 0,
+            'wala_open' => (bool) $this->wala_charge > 0,
 
         ];
     }

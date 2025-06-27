@@ -9,18 +9,17 @@ use App\Actions\Event\OpenedEventAction;
 use App\Actions\Game\ClosedGameAction;
 use App\Actions\Game\DeclaredGameResultAction;
 use App\Actions\Game\OpenedGameAction;
+use App\Actions\UpdateBetStatusAction;
 use App\Enums\EventStatus;
 use App\Enums\GameResult;
 use App\Enums\GameStatus;
-use App\Events\SideOpenEvent;
 use App\Http\Resources\EventGameResource;
 use App\Livewire\Forms\OpenGameForm;
 use App\Models\Event;
 use App\Models\EventGame;
 use Exception;
 use Flux\Flux;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -39,6 +38,10 @@ final class Show extends Component
 
     public $rankings = [];
 
+    public $meron_charge = 0;
+
+    public $wala_charge = 0;
+
     public array $openSide = [
         'open_meron' => false,
         'open_wala' => false,
@@ -52,21 +55,32 @@ final class Show extends Component
         $this->event = $event;
 
         if ($this->event->status === EventStatus::OPENED) {
-            $this->openSide = [
-                'open_meron' => (bool) Cache::get('open_meron', 0),
-                'open_wala' => (bool) Cache::get('open_wala', 0),
-            ];
+
             $this->getGames();
 
         }
     }
 
-    public function updatedOpenSide($value)
+    public function updatedMeronCharge($value): void
     {
-            Cache::put('open_meron', $this->openSide['open_meron'] ? 1 : 0);
-            Cache::put('open_wala', $this->openSide['open_wala'] ? 1 : 0);
 
-            SideOpenEvent::dispatch($this->event->uuid);
+        $this->meron_charge = $value;
+
+        $action = new UpdateBetStatusAction();
+        $action->handle($this->game['id'], [
+            'meron_charge' => $this->meron_charge ? 1 : 0,
+            'wala_charge' => $this->wala_charge ? 1 : 0,
+        ]);
+    }
+
+    public function updatedWalaCharge($value): void
+    {
+        $this->wala_charge = $value;
+        $action = new UpdateBetStatusAction();
+        $action->handle($this->game['id'], [
+            'meron_charge' => $this->meron_charge ? 1 : 0,
+            'wala_charge' => $this->wala_charge ? 1 : 0,
+        ]);
     }
 
     /**
@@ -75,6 +89,8 @@ final class Show extends Component
     public function getGames(): void
     {
         $currentGame = $this->event->getCurrentGame();
+        $this->meron_charge = (bool) $currentGame->meron_charge;
+        $this->wala_charge = (bool) $currentGame->wala_charge;
         $game = EventGameResource::make($currentGame)->resolve();
         $this->game = $game;
         if ($currentGame->status === GameStatus::OPENED) {
@@ -132,7 +148,7 @@ final class Show extends Component
     /**
      * @throws Exception
      */
-    public function closeEvent(ClosedEventAction $action): Redirector
+    public function closeEvent(ClosedEventAction $action): RedirectResponse
     {
         $action->handle($this->event);
 
@@ -148,18 +164,9 @@ final class Show extends Component
      */
     public function openGame(OpenedGameAction $action): void
     {
+        $this->meron_charge = true;
+        $this->wala_charge = true;
         $action->handle($this->event, $this->gameForm);
-
-        $this->openSide = [
-            'open_meron' => true,
-            'open_wala' => true,
-        ];
-
-        Cache::put('open_meron', 1);
-        Cache::put('open_wala', 1);
-
-        SideOpenEvent::dispatch($this->event->uuid);
-
 
         Flux::toast('Game opened successfully', variant: 'success');
         Flux::modal('open-game')->close();
@@ -167,14 +174,8 @@ final class Show extends Component
 
     public function closeGame(ClosedGameAction $action): void
     {
-        $this->openSide = [
-            'open_meron' => false,
-            'open_wala' => false,
-        ];
-
-        Cache::put('open_meron', 0);
-        Cache::put('open_wala', 0);
-        SideOpenEvent::dispatch($this->event->uuid);
+        $this->meron_charge = false;
+        $this->wala_charge = false;
 
         $action->handle($this->event);
         $this->dispatch('game-updated');
@@ -196,7 +197,6 @@ final class Show extends Component
     {
         $result = GameResult::tryFrom($this->resultSelected);
         $action->handle($this->event, $result);
-
 
         Flux::toast('Game successfully declared', variant: 'success');
         Flux::modal('game-result')->close();

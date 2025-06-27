@@ -18,6 +18,7 @@ use App\Services\BetReferenceService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 final class BetAction
 {
@@ -26,6 +27,9 @@ final class BetAction
         //
     }
 
+    /**
+     * @throws Throwable
+     */
     public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject, ?string $ref): Bet
     {
 
@@ -124,7 +128,7 @@ final class BetAction
 
             $this->addWalletAction->handle(Auth::user(), [
                 'amount' => $bettingDataTransferObject->amount,
-                'description' => 'Placed a bet on Event#'.$event->id.' - Game#'.$openGame->game_number,
+                'description' => 'Placed a bet on Event#('.$event->id.')'.$event->name.' - Game#'.$openGame->game_number,
             ]);
 
             GameEvent::dispatch($openGame, null);

@@ -1,18 +1,18 @@
+@props(['meron_charge','wala_charge'])
+
+
 <flux:card class="space-y-6 p-0!">
     <div class="grid grid-cols-2">
-        <div class="bg-red-600 flex flex-col items-center justify-center rounded-tl-[0.75rem] 
-       "
-        :class="!game.meron_open && game.status === 'Opened' 
-      ? 'text-gray-400 cursor-not-allowed opacity-60' 
+        <div class="bg-red-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]
+       " :class="game.status !== 'Opened'
+      ? 'text-gray-400 cursor-not-allowed opacity-60'
       : ''"
         >
             <div class="my-5 text-center">
                 <div class="pb-2">
-                    <flux:heading size="xl">MERON</flux:heading>
+                    <flux:heading size="xl" >MERON</flux:heading>
+                    <flux:switch wire:model.live="meron_charge" x-bind:disabled="game.status !== 'Opened'"/>
 
-
-
-                 
                 </div>
 
 
@@ -34,14 +34,15 @@
         </div>
 
         <div class="bg-blue-600 flex flex-col items-center justify-center rounded-tl-[0.75rem]"
-        :class="!game.wala_open && game.status === 'Opened' 
-      ? 'text-gray-400 cursor-not-allowed opacity-60' 
+        :class="game.status !== 'Opened'
+      ? 'text-gray-400 cursor-not-allowed opacity-60'
       : ''"
         >
             <div class="my-5 text-center">
                 <div class="pb-2">
                     <flux:heading size="xl">WALA</flux:heading>
-                  
+                    <flux:switch wire:model.live="wala_charge" x-bind:disabled="game.status !== 'Opened'"/>
+
                 </div>
 
 

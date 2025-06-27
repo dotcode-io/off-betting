@@ -21,8 +21,7 @@ final class EventForm extends Form
     #[Validate('required', 'integer', 'min:1')]
     public $start_of_game = '';
 
-    #[Validate('required', 'integer', 'min:1000','max:50000', 'regex:/^[1-9][0-9]*000$/')]
-    public $charge = '';
+    public $charge = 1;
 
     #[Validate('required', 'integer', 'min:1')]
     public $number_of_games = '';
@@ -34,6 +33,5 @@ final class EventForm extends Form
         $this->date = $event->date->format('Y-m-d');
         $this->start_of_game = $event->start_of_game;
         $this->number_of_games = $event->number_of_games;
-        $this->charge = $event->charge;
     }
 }

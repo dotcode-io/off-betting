@@ -24,7 +24,8 @@ final class OpenedGameAction
 
 
             $game = $event->getCurrentGame();
-            $game->wala_charge = $event->charge;
+            $game->wala_charge = 1;
+            $game->meron_charge = 1;
             $game->opened_at = now();
             $game->meron_entry = $gameForm->meron_name;
             $game->wala_entry = $gameForm->wala_name;
