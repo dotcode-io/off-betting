@@ -13,13 +13,17 @@ use Flux\Flux;
 use Illuminate\Http\Response;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 final class UserIndex extends Component
 {
-    use Searchable, Sortable, WithPagination;
+    use Searchable, Sortable, WithPagination,WithoutUrlPagination;
 
     public UserForm $form;
+
+
+
 
     public function getMatches(): array
     {

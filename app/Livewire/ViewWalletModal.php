@@ -9,15 +9,18 @@ use App\Models\WalletLog;
 use Flux\Flux;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 final class ViewWalletModal extends Component
 {
-    use WithPagination;
+    use WithPagination,WithoutUrlPagination;
 
     public ?User $user = null;
 
     public $date = '';
+
+
 
     #[On('view-wallet')]
     public function view(int $id)
