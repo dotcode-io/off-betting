@@ -73,6 +73,16 @@ final class User extends Model implements AuthenticatableContract, AuthorizableC
         return $this->user_type === UserType::CONTROLLER;
     }
 
+    public function bets()
+    {
+        return $this->hasMany(Bet::class, 'user_id', 'id');
+    }
+
+    public function claimedBets()
+    {
+        return $this->hasMany(Bet::class, 'claimed_by', 'id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
