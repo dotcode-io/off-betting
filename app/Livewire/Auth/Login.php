@@ -35,7 +35,7 @@ final class Login extends Component
         }
 
         if ($user->isTeller()) {
-            $this->redirectIntended(default: route('teller.console', absolute: false), navigate: true);
+            $this->redirectIntended(default: route('teller.summary', absolute: false), navigate: true);
         }
 
         if ($user->isController()) {

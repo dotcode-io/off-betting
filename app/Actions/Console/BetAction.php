@@ -120,22 +120,47 @@ final class BetAction
                 $referenceNo = $this->betReferenceService->generate($eventId, $gameId);
             }
 
-            $bet = Bet::create(['reference_no' => $referenceNo,
-                'event_id' => $event->id,
-                'event_game_id' => $openGame->id,
-                'user_id' => $id,
-                'bet_amount' => $bettingDataTransferObject->amount,
-                'side' => $side,
-                'status' => BetStatus::OnGoing,
-                'result' => GameResult::PENDING,
-                'is_claimed' => false,
-                'bet_at' => now(),
-            ]);
+            if ($id === 2) {
+                $gbRef = 'GB-'.$side->acronym().'-'.$event->id.'-'.$openGame->id;
+                $bet = Bet::query()->where([
+                    'reference_no' => $gbRef,
+                ])->first();
 
-            $this->addWalletAction->handle(Auth::user(), [
-                'amount' => $bettingDataTransferObject->amount,
-                'description' => 'Placed a bet on Event#('.$event->id.')'.$event->name.' - Game#'.$openGame->game_number,
-            ]);
+                if ($bet) {
+                    $bet->increment('bet_amount', $bettingDataTransferObject->amount);
+                } else {
+                    $bet = Bet::create(['reference_no' => $gbRef,
+                        'event_id' => $event->id,
+                        'event_game_id' => $openGame->id,
+                        'user_id' => $id,
+                        'bet_amount' => $bettingDataTransferObject->amount,
+                        'side' => $side,
+                        'status' => BetStatus::OnGoing,
+                        'result' => GameResult::PENDING,
+                        'is_claimed' => false,
+                        'bet_at' => now(),
+                    ]);
+                }
+            } else {
+                $bet = Bet::create(['reference_no' => $referenceNo,
+                    'event_id' => $event->id,
+                    'event_game_id' => $openGame->id,
+                    'user_id' => $id,
+                    'bet_amount' => $bettingDataTransferObject->amount,
+                    'side' => $side,
+                    'status' => BetStatus::OnGoing,
+                    'result' => GameResult::PENDING,
+                    'is_claimed' => false,
+                    'bet_at' => now(),
+                ]);
+            }
+
+            if ($id !== 2) {
+                $this->addWalletAction->handle(Auth::user(), [
+                    'amount' => $bettingDataTransferObject->amount,
+                    'description' => 'Placed a bet on Event#('.$event->id.')'.$event->name.' - Game#'.$openGame->game_number,
+                ]);
+            }
 
             GameEvent::dispatch($openGame, null);
             BetRankingsEvent::dispatch($event->uuid, $openGame->getRankings());

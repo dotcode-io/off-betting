@@ -29,6 +29,12 @@ return new class extends Migration
         });
 
         $tellers = [];
+        $tellers[] = [
+            'uuid' => Illuminate\Support\Str::uuid(),
+            'username' => 'ghostbet',
+            'user_type' => 'teller',
+            'password' => Hash::make('password'),
+        ];
         for ($i = 0; $i < 20; $i++) {
             $tellers[] = [
                 'uuid' => Illuminate\Support\Str::uuid(),

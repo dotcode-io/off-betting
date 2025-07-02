@@ -27,4 +27,12 @@ enum BetSide: string
             self::Draw => 'green',
         };
     }
+    public function acronym(): string
+    {
+        return match ($this) {
+            self::Meron => 'M',
+            self::Wala => 'W',
+            self::Draw => 'D',
+        };
+    }
 }

@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Override;
 
@@ -31,6 +32,10 @@ final class Event extends Model
             ->select('uuid')
             ->find($id)->uuid);
     }
+
+    /**
+     * @return self
+     */
 
     public static function getCurrent(): self
     {
@@ -71,7 +76,7 @@ final class Event extends Model
         return $this->closed_at?->format('F d, Y H:i A') ?? 'Not closed yet';
     }
 
-    public function games()
+    public function games(): HasMany
     {
         return $this->hasMany(EventGame::class, 'event_id', 'id');
     }
@@ -107,6 +112,7 @@ final class Event extends Model
     }
 
     /**
+     *
      * @throws Exception
      */
     public function getCurrentGame(): EventGame
