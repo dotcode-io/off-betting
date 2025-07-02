@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Actions\CancelBetAction;
 use App\Actions\Console\BetAction;
 use App\DataTransferObjects\BettingDataTransferObject;
 use App\Models\Bet;
@@ -73,5 +74,20 @@ final class BettingController
             'ref' => $request->has_printer ? $request->ref : null,
             'bet' => $bet,
         ], 201);
+    }
+
+    public function cancel(CancelBetAction $action, Request $request): JsonResponse
+    {
+        $request->validate([
+            'bet_id' => 'required|integer|exists:bets,id',
+        ]);
+
+        try {
+            $action->handle($request->bet_id);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+
+        return response()->json(['message' => 'Bet cancelled successfully'], 200);
     }
 }
