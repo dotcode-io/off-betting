@@ -58,13 +58,11 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
     Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
     Route::prefix('admin')->middleware('admin')->group(function () {
         Volt::route('dashboard', 'dashboard.index')->name('dashboard');
-
+        Volt::route('reports', 'dashboard.admin.daily-report-index')->name('daily-report');
         Volt::route('events', 'dashboard.admin.event.index')->name('events.index');
         Volt::route('events/{event}', 'dashboard.admin.event.show')->name('events.show');
         Volt::route('game-controller', 'dashboard.admin.game-controller.index')->name('events.game-controller');
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
-
-
 
         Volt::route('bet-history', 'dashboard.admin.bet-history-index')->name('bet-history');
         Volt::route('claim-history', 'dashboard.admin.claim-history-index')->name('claim-history');
@@ -86,8 +84,6 @@ Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
         Volt::route('game-controller', 'dashboard.controller.event-index')->name('events.index');
         Volt::route('game-controller/{event}', 'dashboard.admin.game-controller.show')->name('events.game-controller.show');
     });
-
-
 
 });
 
