@@ -30,10 +30,10 @@ final class BetAction
     /**
      * @throws Throwable
      */
-    public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject, ?string $ref): Bet
+    public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject, ?string $ref, string $idempotencyKey): Bet
     {
 
-        return DB::transaction(function () use ($event, $bettingDataTransferObject, $ref) {
+        return DB::transaction(function () use ($event, $bettingDataTransferObject, $ref, $idempotencyKey) {
             $id = Auth::id();
             $openGame = $event->getOpenGame();
 
@@ -139,6 +139,7 @@ final class BetAction
                         'result' => GameResult::PENDING,
                         'is_claimed' => false,
                         'bet_at' => now(),
+                        'idempotency_key' => $idempotencyKey,
                     ]);
                 }
             } else {
@@ -152,6 +153,7 @@ final class BetAction
                     'result' => GameResult::PENDING,
                     'is_claimed' => false,
                     'bet_at' => now(),
+                    'idempotency_key' => $idempotencyKey,
                 ]);
             }
 

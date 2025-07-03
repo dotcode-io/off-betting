@@ -13,10 +13,12 @@ use App\Models\Bet;
 use App\Models\Event;
 use Exception;
 use Flux\Flux;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Throwable;
 
 final class Console extends Component
 {
@@ -48,6 +50,8 @@ final class Console extends Component
             $this->open_wala = Cache::get('open_wala', 0);
         }
 
+        // Generate initial idempotency key
+        $this->betForm->generateIdempotencyKey();
     }
 
     public function setSide(string $side): void {}
@@ -58,16 +62,29 @@ final class Console extends Component
         $this->betForm->validate();
         $amount = (float) str_replace(',', '', (string) $this->betForm->amount);
 
-        try{
+        $userId = Auth::id();
+        $lockKey = "user_bet_lock_{$userId}";
+
+        // Acquire lock for 30 seconds to prevent concurrent requests
+        $lock = Cache::lock($lockKey, 30);
+
+        try {
+            if (! $lock->get()) {
+                $this->addError('betForm.amount', 'Another betting request is currently being processed. Please wait and try again.');
+                return;
+            }
 
             $bet = $actions->handle($this->event, BettingDataTransferObject::fromArray([
                 'amount' => $amount,
                 'side' => $this->betForm->side,
-            ]), null);
+            ]), null, $this->betForm->idempotency_key);
 
             $bet->load(['eventGame']);
             $this->betForm->reset();
             $this->side = '';
+
+            // Generate new idempotency key for next bet
+            $this->betForm->generateIdempotencyKey();
 
             $this->betToPrint = $bet;
 
@@ -76,11 +93,12 @@ final class Console extends Component
             Flux::modal('print-bet')->show();
 
             $this->dispatch('bet-placed');
-        }catch( Exception $ex){
+        } catch (Throwable $ex) {
             $this->addError('betForm.amount', $ex->getMessage());
+        } finally {
+            // Always release the lock, whether success or failure
+            $lock->release();
         }
-       
-        
     }
 
     #[On('reprint-bet')]

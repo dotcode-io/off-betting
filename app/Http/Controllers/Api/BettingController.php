@@ -7,12 +7,14 @@ namespace App\Http\Controllers\Api;
 use App\Actions\CancelBetAction;
 use App\Actions\Console\BetAction;
 use App\DataTransferObjects\BettingDataTransferObject;
+use App\Http\Requests\BetRequest;
 use App\Models\Bet;
 use App\Models\Event;
 use App\Traits\Table\Searchable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use Throwable;
 
 final class BettingController
 {
@@ -42,38 +44,40 @@ final class BettingController
         ]);
     }
 
-    public function store(BetAction $actions, Request $request): JsonResponse
+    public function store(BetAction $actions, BetRequest $request): JsonResponse
     {
-        $request->validate([
-            'amount' => 'required', 'numeric', 'min:1', 'max:100000', 'regex:/^\d*(\.\d{1,2})?$/',
-            'side' => 'required', 'string', 'in:meron,wala,draw',
-            'has_printer' => 'required|boolean',
-            'ref' => [
-                'required_if:has_printer,false',
-                'string',
-                function ($attribute, $value, $fail) {
-                    $exists = DB::table('manual_refs')
-                        ->where('ref', $value)
-                        ->where('used', false)
-                        ->exists();
+        $userId = auth()->id();
+        $lockKey = "user_bet_lock_{$userId}";
 
-                    if (! $exists) {
-                        $fail('The reference is either invalid or already used.');
-                    }
-                },
-            ],
+        // Acquire lock for 30 seconds to prevent concurrent requests
+        $lock = Cache::lock($lockKey, 30);
 
-        ]);
-        $event = Event::getCurrent();
-        $bet = $actions->handle($event, BettingDataTransferObject::fromArray($request->only('amount', 'side')), $request->ref);
-        $bet->load('eventGame', 'event');
+        try {
+            if (! $lock->get()) {
+                return response()->json([
+                    'message' => 'Another betting request is currently being processed. Please wait and try again.',
+                    'error' => 'concurrent_request',
+                ], 429);
+            }
 
-        return response()->json([
-            'message' => 'Bet placed successfully',
-            'has_printer' => $request->has_printer,
-            'ref' => $request->has_printer ? $request->ref : null,
-            'bet' => $bet,
-        ], 201);
+            $event = Event::getCurrent();
+            $bet = $actions->handle($event, BettingDataTransferObject::fromArray($request->only('amount', 'side')), $request->ref, $request->idempotency_key);
+            $bet->load('eventGame', 'event');
+
+            return response()->json([
+                'message' => 'Bet placed successfully',
+                'has_printer' => $request->has_printer,
+                'ref' => $request->has_printer ? $request->ref : null,
+                'bet' => $bet,
+            ], 201);
+
+        } catch (Throwable $e) {
+            // Re-throw the exception to be handled by Laravel's exception handler
+            throw $e;
+        } finally {
+            // Always release the lock, whether success or failure
+            $lock->release();
+        }
     }
 
     public function cancel(CancelBetAction $action, Request $request): JsonResponse
@@ -84,7 +88,7 @@ final class BettingController
 
         try {
             $action->handle($request->bet_id);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
 
