@@ -128,8 +128,6 @@
 
         <div class="instructions">
             <h4>How to Renew License</h4>
-            <p>To renew your license, run the following command:</p>
-            <div class="command">php artisan license:renew</div>
             <p><small>Contact your system administrator if you need assistance.</small></p>
         </div>
     </div>
