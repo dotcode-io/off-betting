@@ -424,7 +424,7 @@
                     </div>
                     <div class="text-right">
                         <div class="text-xl font-semibold text-red-600 dark:text-red-400">
-                            ₱{{ number_format($this->dailyWithdrawals->total_win_amount ?? 0, 2) }}
+                            ₱{{ number_format($this->dailyWithdrawals->total_withdrawal_amount ?? 0, 2) }}
                         </div>
                     </div>
                 </div>
@@ -577,7 +577,7 @@
                         </flux:table.cell>
                         <flux:table.cell class="text-right">
                             <flux:text class="text-lg font-semibold text-red-600 dark:text-red-400">
-                                ₱{{ number_format($this->dailyWithdrawals->total_win_amount ?? 0, 2) }}
+                                ₱{{ number_format($this->dailyWithdrawals->total_withdrawal_amount ?? 0, 2) }}
                             </flux:text>
                         </flux:table.cell>
                         <flux:table.cell class="text-center">
@@ -585,7 +585,7 @@
                         </flux:table.cell>
                         <flux:table.cell class="text-center">
                             <flux:text size="sm" class="text-slate-500 dark:text-slate-400">
-                                {{ number_format($this->dailyWithdrawals->total_win_amount ?? 0) }} withdrawals
+                                {{ number_format($this->dailyWithdrawals->total_withdrawal_count ?? 0) }} withdrawals
                             </flux:text>
                         </flux:table.cell>
                     </flux:table.row>
