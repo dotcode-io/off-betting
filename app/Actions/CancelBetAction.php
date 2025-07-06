@@ -48,15 +48,21 @@ final class CancelBetAction
             if ($bet->side === BetSide::Meron) {
                 $openGame->decrement('meron_bets', $bet->bet_amount);
                 $openGame->decrement('meron_bettors');
-            } else {
+            }
+            if ($bet->side === BetSide::Wala) {
                 $openGame->decrement('wala_bets', $bet->bet_amount);
                 $openGame->decrement('wala_bettors');
             }
-            $totalBets = $openGame->meron_bets + $openGame->wala_bets;
-            $openGame->update([
-                'meron_odds' => $openGame->meron_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->meron_bets : 0,
-                'wala_odds' => $openGame->wala_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->wala_bets : 0,
-            ]);
+            if ($bet->side === BetSide::Draw) {
+                $openGame->decrement('draw_bets', $bet->bet_amount);
+            } else {
+                $totalBets = $openGame->meron_bets ?? 0 + $openGame->wala_bets ?? 0;
+                $openGame->update([
+                    'meron_odds' => $openGame->meron_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->meron_bets : 0,
+                    'wala_odds' => $openGame->wala_bets > 0 ? ($totalBets * (100 - $openGame->plasada)) / $openGame->wala_bets : 0,
+                ]);
+            }
+
             $openGame->save();
             $event = $bet->event;
 
