@@ -54,7 +54,7 @@ Route::get('/', function () {
     }
 })->middleware(['auth', 'auth.session']);
 
-Route::prefix('app')->middleware(['auth', 'auth.session'])->group(function () {
+Route::prefix('app')->middleware(['auth', 'auth.session','license'])->group(function () {
     Volt::route('settings', 'dashboard.profile.settings')->name('profile.settings');
     Route::prefix('admin')->middleware('admin')->group(function () {
         Volt::route('dashboard', 'dashboard.index')->name('dashboard');

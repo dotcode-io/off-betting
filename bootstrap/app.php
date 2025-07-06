@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\CheckLicense;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsController;
 use App\Http\Middleware\IsTeller;
@@ -18,10 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Global middleware - runs on all requests
+        $middleware->append(CheckLicense::class);
+
         $middleware->alias([
             'admin' => IsAdmin::class,
             'controller' => IsController::class,
             'teller' => IsTeller::class,
+            'license' => CheckLicense::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
