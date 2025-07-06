@@ -9,7 +9,7 @@ use App\Models\Bet;
 use App\Models\Event;
 use App\Traits\Table\Searchable;
 use App\Traits\Table\Sortable;
-use Flux\Flux;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -24,10 +24,6 @@ final class ClaimHistoryIndex extends Component
     public $from;
 
     public $to;
-
-    public $voidClaimId;
-
-    public $bet;
 
     public function mount(): void
     {
@@ -51,39 +47,10 @@ final class ClaimHistoryIndex extends Component
         $this->resetPage();
     }
 
-    public function openVoidModal(?Bet $bet): void
+    #[On('refreshClaimHistory')]
+    public function refreshData(): void
     {
-        $this->voidClaimId = $bet->id;
-
-        Flux::modal('void-claim')->show();
-    }
-
-    public function openBetDetailsModal(?Bet $bet): void
-    {
-        $this->bet = $bet;
-
-        Flux::modal('bet-details')->show();
-    }
-
-    public function voidClaim()
-    {
-        $bet = Bet::findOrFail($this->voidClaimId);
-
-        if ($bet) {
-            $bet->update([
-                'is_claimed' => 0,
-                'claimed_by' => null,
-                'claimed_at' => null,
-            ]);
-
-            Flux::modal('void-claim')->close();
-            Flux::toast('Transaction voided successfully', variant: 'success');
-            $this->resetPage();
-
-            return response()->noContent();
-        }
-
-        return null;
+        $this->resetPage();
     }
 
     public function render()

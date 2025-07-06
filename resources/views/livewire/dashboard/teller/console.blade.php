@@ -58,7 +58,6 @@
 
                     <div class="w-full flex flex-col items-center">
                         <flux:text color="yellow" size="lg" variant="strong" x-cloak x-show="game.status === 'Opened'" >OPEN</flux:text>
-                        <flux:text color="red" size="lg" variant="strong" x-cloak x-show="game.status !== 'Opened' ">CLOSE</flux:text>
                         <button type="button"
                                 class="bg-green-500 w-full rounded-lg text-center pt-2 hover:cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-green-300 h-16"
                                 :class="side === 'draw' ? 'border-4 border-yellow-500 bg-green-600 animate-pulse' : ''"
