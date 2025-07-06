@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
 use App\Enums\GameResult;
+use App\Models\AppSetting;
 use App\Models\Bet;
 use App\Models\EventGame;
 use Exception;
@@ -34,6 +35,7 @@ final class DeclareResultJob implements ShouldQueue
     public function handle(): void
     {
         $earnings = 0;
+        $gb_earnings = 0;
         $game = EventGame::query()->find($this->gameId);
         if ($this->result === GameResult::CANCELLED) {
             Bet::query()->where('event_game_id', $this->gameId)
@@ -73,11 +75,21 @@ final class DeclareResultJob implements ShouldQueue
                 ]);
             $drawEarnings = $game->draw_bets;
             $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * ($game->plasada / 100);
+            $gb_win = Bet::query()->where('event_game_id', $this->gameId)
+                ->where('side', $this->result->side())
+                ->where('result', GameResult::PENDING)
+                ->where('status', BetStatus::OnGoing)
+                ->where('user_id', 2)
+                ->sum('bet_amount') * ($game->plasada / 100);
+
+            $gb_earnings = ($gb_win - $game->gb_bets) + ($game->gb_bets * ((AppSetting::query()->first()->plasada * 2) / 100));
+
         }
 
         $game->update([
             'earnings' => $earnings,
             'draw_earnings' => $drawEarnings,
+            'gb_earnings' => $gb_earnings,
         ]);
 
         $betList = Bet::query()->where('event_game_id', $this->gameId)
@@ -102,6 +114,4 @@ final class DeclareResultJob implements ShouldQueue
     {
         return floor(($amount * 100) / 100);
     }
-
-
 }

@@ -47,7 +47,7 @@ class DailyReportIndex extends Component
         $endOfMonth = Carbon::parse($this->selectedDate)->endOfMonth();
 
         return Bet::query()
-            ->selectRaw('SUM(win_amount) as total_win_amount')
+            ->selectRaw('SUM(gb_earnings) as total_win_amount')
             ->whereIn('user_id', config('app.gb_ids', []))
             ->whereIn('result', ['meron', 'wala'])
             ->whereBetween('bet_at', [$startOfMonth, $endOfMonth])
@@ -79,7 +79,7 @@ class DailyReportIndex extends Component
         $endOfDay = $selectedDate->copy()->endOfDay();
 
         return Bet::query()
-            ->selectRaw('SUM(win_amount) as total_win_amount')
+            ->selectRaw('SUM(gb_earnings) as total_win_amount')
             ->whereIn('user_id', config('app.gb_ids', []))
             ->whereIn('result', ['meron', 'wala'])
             ->whereBetween('bet_at', [$startOfDay, $endOfDay])
@@ -109,12 +109,9 @@ class DailyReportIndex extends Component
         $startOfDay = $selectedDate->startOfDay();
         $endOfDay = $selectedDate->copy()->endOfDay();
 
-        return WalletLog::query()
-            ->selectRaw('
-                SUM(amount) as total_withdrawal_amount,
-                COUNT(*) as total_withdrawal_count
-            ')
-            ->where('type', WalletLogType::DEBIT)
+        return Bet::query()
+            ->selectRaw('SUM(win_amount) as total_win_amount)')
+            ->where('is_claimed', true)
             ->whereBetween('created_at', [$startOfDay, $endOfDay])
             ->first();
     }

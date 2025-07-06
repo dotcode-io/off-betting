@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Enums\BetSide;
 use App\Enums\BetStatus;
 use App\Enums\GameResult;
+use App\Models\AppSetting;
 use App\Models\Bet;
 use App\Models\EventGame;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,6 +36,7 @@ final class ChangeGameResultJob implements ShouldQueue
 
         $drawEarnings = 0;
         $odds = 0;
+        $gb_earnings = 0;
 
         if ($this->newResult === GameResult::CANCELLED) {
             Bet::query()->where('event_game_id', $this->gameId)
@@ -78,12 +80,21 @@ final class ChangeGameResultJob implements ShouldQueue
                     'win_amount' => 0,
                 ]);
             $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * ($game->plasada / 100);
+
+            $gb_win = Bet::query()->where('event_game_id', $this->gameId)
+                    ->where('side', $this->newResult->side())
+                    ->where('user_id', 2)
+                    ->sum('bet_amount') * ($game->plasada / 100);
+
+            $gb_earnings = ($gb_win - $game->gb_bets) + ($game->gb_bets * ((AppSetting::query()->first()->plasada * 2) / 100));
+
         }
 
         $game->update([
             'result' => $this->newResult,
             'draw_earnings' => $drawEarnings,
             'earnings' => $earnings,
+            'gb_earnings' => $gb_earnings,
         ]);
 
         Bet::query()->where('event_game_id', $this->gameId)
