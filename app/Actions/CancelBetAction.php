@@ -55,6 +55,7 @@ final class CancelBetAction
             }
             if ($bet->side === BetSide::Draw) {
                 $openGame->decrement('draw_bets', $bet->bet_amount);
+                $openGame->decrement('draw_bettors');
             } else {
                 $totalBets = $openGame->meron_bets ?? 0 + $openGame->wala_bets ?? 0;
                 $openGame->update([

@@ -92,21 +92,27 @@ final class DeclareResultJob implements ShouldQueue
             'gb_earnings' => $gb_earnings,
         ]);
 
-        $betList = Bet::query()->where('event_game_id', $this->gameId)
-            ->where('side', $this->result->side())
-            ->where('result', GameResult::PENDING)
-            ->where('status', BetStatus::OnGoing)
-            ->get();
+        // Process winning bets in chunks, but use a while loop to ensure all bets are processed
+        do {
+            $bets = Bet::query()->where('event_game_id', $this->gameId)
+                ->where('side', $this->result->side())
+                ->where('result', GameResult::PENDING)
+                ->where('status', BetStatus::OnGoing)
+                ->limit(20)
+                ->get();
 
-        foreach ($betList as $bet) {
-            $amount = $bet->bet_amount * ($this->odds / 100);
-            $resultAmount = $this->roundDown($amount);
-            $bet->update([
-                'status' => BetStatus::Winner,
-                'result' => $this->result,
-                'win_amount' => $resultAmount,
-            ]);
-        }
+            foreach ($bets as $bet) {
+                $amount = $bet->bet_amount * ($this->odds / 100);
+                $resultAmount = $this->roundDown($amount);
+                $bet->update([
+                    'status' => BetStatus::Winner,
+                    'result' => $this->result,
+                    'win_amount' => $resultAmount,
+                ]);
+            }
+        } while ($bets->count() > 0);
+
+
 
     }
 
