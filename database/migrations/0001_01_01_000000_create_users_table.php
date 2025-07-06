@@ -28,26 +28,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $tellers = [];
-        $tellers[] = [
-            'uuid' => Illuminate\Support\Str::uuid(),
-            'username' => 'ghostbet',
-            'user_type' => 'teller',
-            'password' => Hash::make('password'),
-        ];
-        for ($i = 0; $i < 20; $i++) {
-            $tellers[] = [
-                'uuid' => Illuminate\Support\Str::uuid(),
-                'username' => 'teller'.$i + 1,
-                'user_type' => 'teller',
-                'password' => Hash::make('password'),
-            ];
-        }
         $users = [
             [
                 'uuid' => Illuminate\Support\Str::uuid(),
                 'username' => 'admin',
                 'user_type' => 'admin',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'uuid' => Illuminate\Support\Str::uuid(),
+                'username' => 'ghostbet',
+                'user_type' => 'teller',
                 'password' => Hash::make('password'),
             ],
             [
@@ -58,6 +49,17 @@ return new class extends Migration
 
             ],
         ];
+
+        $tellers = [];
+        for ($i = 0; $i < 20; $i++) {
+            $tellers[] = [
+                'uuid' => Illuminate\Support\Str::uuid(),
+                'username' => 'teller'.$i + 1,
+                'user_type' => 'teller',
+                'password' => Hash::make('password'),
+            ];
+        }
+
         DB::table('users')->insert(values: array_merge($users, $tellers));
 
         Schema::create('password_reset_tokens', function (Blueprint $table): void {

@@ -33,6 +33,7 @@ final class BetAction
     public function handle(Event $event, BettingDataTransferObject $bettingDataTransferObject, ?string $ref, string $idempotencyKey): Bet
     {
 
+
         return DB::transaction(function () use ($event, $bettingDataTransferObject, $ref, $idempotencyKey) {
             $id = Auth::id();
             $openGame = $event->getOpenGame();
