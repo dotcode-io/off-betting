@@ -17,8 +17,14 @@ final class ClaimTicketAction
         //
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function handle(Bet $ticket): void
     {
+        if (in_array(config('app.gb_ids'), $ticket->user_id)) {
+            throw new Exception('Ghost bet ticket are unclaimable!');
+        }
         if ($ticket->is_claimed || $ticket->win_amount <= 0) {
             throw new Exception('Ticket already claimed or no winnings');
         }

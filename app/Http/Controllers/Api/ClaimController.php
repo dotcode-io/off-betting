@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Actions\ClaimTicketAction;
-use App\DataTransferObjects\BettingDataTransferObject;
 use App\Models\Bet;
-use App\Models\Event;
 use App\Traits\Table\Searchable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Throwable;
 
-class ClaimController
+final class ClaimController
 {
     use Searchable;
 
@@ -19,13 +21,13 @@ class ClaimController
         $query = Bet::query()->with('eventGame', 'event')->where('user_id', auth()->id());
 
         if ($request->has('event_id')) {
-            if (!empty($request->event_id)) {
+            if (! empty($request->event_id)) {
                 $query->where('event_id', $request->event_id);
             }
         }
 
         if ($request->has('from') && $request->has('to')) {
-            if (!empty($request->from) && !empty($request->to)) {
+            if (! empty($request->from) && ! empty($request->to)) {
                 $query->whereDate('created_at', '>=', $request->get('from'))->whereDate('created_at', '<=', $request->get('to'));
             }
         }
@@ -41,7 +43,7 @@ class ClaimController
     public function checkTicket(Request $request)
     {
         $request->validate([
-            'ticket' => 'required|string'
+            'ticket' => 'required|string',
         ]);
 
         $ticket = $request->get('ticket');
@@ -51,38 +53,55 @@ class ClaimController
 
         if ($checkTicket['type'] === 'error') {
             return response()->json([
-                'message' => $checkTicket['message']
+                'message' => $checkTicket['message'],
             ], 400);
         }
 
         return response()->json([
             'message' => $checkTicket['message'],
-            'bet' => $checkTicket['bet']
+            'bet' => $checkTicket['bet'],
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function claimTicket(ClaimTicketAction $actions, Request $request): JsonResponse
     {
         $request->validate([
-            'ticket' => 'required|string'
+            'ticket' => 'required|string',
         ]);
 
-        $ticket = $request->get('ticket');
-        $checkTicket = $this->validateTicket($ticket);
+        $lock = Cache::lock('claim_ticket_lock_'.$request->get('ticket'), 60);
 
-        if ($checkTicket['type'] === 'error') {
+        try {
+            if (! $lock->get()) {
+                return response()->json([
+                    'message' => 'Another claim request is currently being processed. Please wait and try again.',
+                    'error' => 'concurrent_request',
+                ], 429);
+            }
+
+            $ticket = $request->get('ticket');
+            $checkTicket = $this->validateTicket($ticket);
+
+            if ($checkTicket['type'] === 'error') {
+                return response()->json([
+                    'message' => $checkTicket['message'],
+                ], 400);
+            }
+
+            $bet = $checkTicket['bet'];
+            $actions->handle($bet);
+
             return response()->json([
-                'message' => $checkTicket['message']
-            ], 400);
+                'message' => 'Ticket claimed successfully!',
+                'bet' => $bet,
+            ]);
+        } finally {
+            $lock->release();
         }
 
-        $bet = $checkTicket['bet'];
-        $actions->handle($bet);
-
-        return response()->json([
-            'message' => 'Ticket claimed successfully!',
-            'bet' => $bet
-        ]);
     }
 
     private function validateTicket($ticket)
@@ -92,33 +111,33 @@ class ClaimController
         if (! $bet) {
             return [
                 'message' => 'Ticket not found!',
-                'type' => 'error'
+                'type' => 'error',
             ];
         }
         if ($bet->isOnGoing()) {
             return [
                 'message' => 'This ticket is still on going!',
-                'type' => 'error'
+                'type' => 'error',
             ];
         }
         if ($bet->is_claimed) {
             return [
                 'message' => 'Sorry, this ticket is already claimed!',
-                'type' => 'error'
+                'type' => 'error',
             ];
         }
         if ($bet->isLost()) {
             return [
                 'message' => 'Sorry, this ticket is not a winner!',
-                'type' => 'error'
+                'type' => 'error',
             ];
         }
 
-        if (!$bet->is_claimed && ($bet->isWin()) || $bet->isCancelled()) {
+        if (! $bet->is_claimed && ($bet->isWin()) || $bet->isCancelled()) {
             return [
                 'message' => 'Ticket found!',
                 'type' => 'success',
-                'bet' => $bet
+                'bet' => $bet,
             ];
         }
     }

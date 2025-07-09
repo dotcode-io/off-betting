@@ -10,6 +10,7 @@ use App\Models\Bet;
 use App\Models\Event;
 use App\Traits\Table\Searchable;
 use App\Traits\Table\Sortable;
+use Carbon\Carbon;
 use Flux\Flux;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -86,7 +87,9 @@ final class BetHistoryIndex extends Component
         }
 
         if ($this->from && $this->to) {
-            $query->whereDate('created_at', '>=', $this->from)->whereDate('created_at', '<=', $this->to);
+            $from = Carbon::parse($this->from);
+            $to = Carbon::parse($this->to);
+            $query->whereBetween('created_at', [$from->startOfDay(), $to->endOfDay()]);
         }
 
         $query = $this->applySearch($query, ['reference_no', 'nickname']);

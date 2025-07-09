@@ -90,6 +90,26 @@
                 </div>
             </div>
 
+            <!-- Monthly Retained Earning Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-4 transition-colors duration-300">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                            <flux:icon name="arrow-trending-up" class="w-5 h-5 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-slate-700 dark:text-slate-200">Monthly  Earning</h3>
+                            <flux:badge color="green" size="sm">Positive</flux:badge>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-semibold text-green-600 dark:text-green-400">
+                            ₱{{ number_format($this->monthlyRetainedEarnings->total_retained_earnings ?? 0, 2) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Monthly Draw Earnings Card -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 @php
@@ -119,7 +139,7 @@
             <!-- Monthly Total Earning Card -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 @php
-                    $monthlyTotal = ($this->monthlyEarnings->total_earnings ?? 0) + ($this->monthlyEarnings->total_draw_earnings ?? 0);
+                    $monthlyTotal = ($this->monthlyEarnings->total_earnings ?? 0) + ($this->monthlyEarnings->total_draw_earnings ?? 0) + ($this->monthlyRetainedEarnings->total_retained_earnings ?? 0);
                     $isTotalNegative = $monthlyTotal < 0;
                 @endphp
                 <div class="flex items-center justify-between">
@@ -197,6 +217,24 @@
                         </flux:table.cell>
                     </flux:table.row>
 
+                    <!-- Monthly Retained Earning -->
+                    <flux:table.row class="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <flux:table.cell class="font-medium text-slate-700 dark:text-slate-200">
+                            <div class="flex items-center gap-2 pl-3">
+                                <flux:icon name="arrow-trending-up" class="w-4 h-4 text-green-600 dark:text-green-400" />
+                                Monthly Retained Earning
+                            </div>
+                        </flux:table.cell>
+                        <flux:table.cell class="text-right">
+                            <flux:text class="text-lg font-semibold text-green-600 dark:text-green-400">
+                                ₱{{ number_format($this->monthlyRetainedEarnings->total_retained_earnings ?? 0, 2) }}
+                            </flux:text>
+                        </flux:table.cell>
+                        <flux:table.cell class="text-center">
+                            <flux:badge color="green" size="sm">Positive</flux:badge>
+                        </flux:table.cell>
+                    </flux:table.row>
+
                     <!-- Monthly Draw Earnings -->
                     <flux:table.row class="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                         <flux:table.cell class="font-medium text-slate-700 dark:text-slate-200">
@@ -231,7 +269,7 @@
                         </flux:table.cell>
                         <flux:table.cell class="text-right">
                             @php
-                                $monthlyTotal = ($this->monthlyEarnings->total_earnings ?? 0) + ($this->monthlyEarnings->total_draw_earnings ?? 0);
+                                $monthlyTotal = ($this->monthlyEarnings->total_earnings ?? 0) + ($this->monthlyEarnings->total_draw_earnings ?? 0) + ($this->monthlyRetainedEarnings->total_retained_earnings ?? 0);
                                 $isTotalNegative = $monthlyTotal < 0;
                             @endphp
                             <flux:text class="text-lg font-semibold {{ $isTotalNegative ? 'text-red-600 dark:text-red-400' : 'text-purple-600 dark:text-purple-400' }}">
@@ -303,6 +341,28 @@
                 </div>
             </div>
 
+
+            <!-- Daily Retained Earning Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-4 transition-colors duration-300">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                            <flux:icon name="banknotes" class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-slate-700 dark:text-slate-200">Daily Retained Earning</h3>
+                            <flux:badge color="green" size="sm">Positive</flux:badge>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Regular earnings</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-semibold text-emerald-600 dark:text-emerald-400">
+                            ₱{{ number_format($this->dailyRetainedEarnings->total_retained_earnings ?? 0, 2) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Daily Draw Earning Card -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 @php
@@ -333,7 +393,7 @@
             <!-- Daily Total Earning Card -->
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 @php
-                    $dailyTotal = ($this->dailyEarnings->total_earnings ?? 0) + ($this->dailyEarnings->total_draw_earnings ?? 0);
+                    $dailyTotal = ($this->dailyEarnings->total_earnings ?? 0) + ($this->dailyEarnings->total_draw_earnings ?? 0) + ($this->dailyRetainedEarnings->total_retained_earnings ?? 0);
                     $isDailyTotalNegative = $dailyTotal < 0;
                 @endphp
                 <div class="flex items-center justify-between">
@@ -463,6 +523,27 @@
                         </flux:table.cell>
                     </flux:table.row>
 
+                    <!-- Retained Earnings -->
+                    <flux:table.row class="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <flux:table.cell class="font-medium text-slate-700 dark:text-slate-200">
+                            <div class="flex items-center gap-2 pl-3">
+                                <flux:icon name="banknotes" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                Daily Retained Earning
+                            </div>
+                        </flux:table.cell>
+                        <flux:table.cell class="text-right">
+                            <flux:text class="text-lg font-semibold text-emerald-600 dark:text-emerald-400">
+                                ₱{{ number_format($this->dailyRetainedEarnings->total_retained_earnings ?? 0, 2) }}
+                            </flux:text>
+                        </flux:table.cell>
+                        <flux:table.cell class="text-center">
+                            <flux:badge color="green" size="sm">Positive</flux:badge>
+                        </flux:table.cell>
+                        <flux:table.cell class="text-center">
+                            <flux:text size="sm" class="text-slate-500 dark:text-slate-400">Retained earnings</flux:text>
+                        </flux:table.cell>
+                    </flux:table.row>
+
                     <!-- Daily Draw Earning -->
                     <flux:table.row class="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                         <flux:table.cell class="font-medium text-slate-700 dark:text-slate-200">
@@ -500,7 +581,7 @@
                         </flux:table.cell>
                         <flux:table.cell class="text-right">
                             @php
-                                $dailyTotal = ($this->dailyEarnings->total_earnings ?? 0) + ($this->dailyEarnings->total_draw_earnings ?? 0);
+                                $dailyTotal = ($this->dailyEarnings->total_earnings ?? 0) + ($this->dailyEarnings->total_draw_earnings ?? 0) + ($this->dailyRetainedEarnings->total_retained_earnings ?? 0);
                                 $isDailyTotalNegative = $dailyTotal < 0;
                             @endphp
                             <flux:text class="text-lg font-semibold {{ $isDailyTotalNegative ? 'text-red-600 dark:text-red-400' : 'text-violet-600 dark:text-violet-400' }}">

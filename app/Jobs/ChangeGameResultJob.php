@@ -44,6 +44,7 @@ final class ChangeGameResultJob implements ShouldQueue
                     'result' => $this->newResult,
                     'win_amount' => DB::raw('bet_amount'),
                     'status' => BetStatus::Refund,
+                    'retained_earnings' => 0,
                 ]);
             $game->update([
                 'result' => $this->newResult,
@@ -71,6 +72,7 @@ final class ChangeGameResultJob implements ShouldQueue
                     'result' => $this->newResult,
                     'win_amount' => DB::raw('bet_amount'),
                     'status' => BetStatus::Refund,
+                    'retained_earnings' => 0,
                 ]);
         } else {
             Bet::query()->where('event_game_id', $this->gameId)
@@ -79,6 +81,7 @@ final class ChangeGameResultJob implements ShouldQueue
                     'status' => BetStatus::Loser,
                     'result' => $this->newResult,
                     'win_amount' => 0,
+                    'retained_earnings' => 0,
                 ]);
             $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * (AppSetting::query()->first()->plasada / 100);
 
@@ -107,7 +110,7 @@ final class ChangeGameResultJob implements ShouldQueue
 
     private function roundDown(float|int $amount): float|int
     {
-        return floor(($amount * 100) / 100);
+        return floor($amount / 5) * 5;
     }
 
     private function updateBets(\Illuminate\Support\Collection $bets, $odds): void
@@ -120,6 +123,7 @@ final class ChangeGameResultJob implements ShouldQueue
                     'status' => BetStatus::Winner,
                     'result' => $this->newResult,
                     'win_amount' => $resultAmount,
+                    'retained_earnings' => $amount - $resultAmount,
                 ]);
             }
         });

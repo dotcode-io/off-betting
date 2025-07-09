@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard\Admin;
 
+use App\Enums\BetStatus;
+use App\Enums\GameStatus;
 use App\Models\Bet;
 use App\Models\EventGame;
-use App\Models\WalletLog;
-use App\Enums\WalletLogType;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class DailyReportIndex extends Component
+final class DailyReportIndex extends Component
 {
     public $selectedDate;
 
@@ -35,7 +36,7 @@ class DailyReportIndex extends Component
                 SUM(earnings) as total_earnings,
                 SUM(draw_earnings) as total_draw_earnings
             ')
-            ->whereStatus('done')
+            ->where('status', GameStatus::DONE)
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->first();
     }
@@ -50,6 +51,22 @@ class DailyReportIndex extends Component
             ->selectRaw('SUM(gb_earnings) as total_win_amount')
             ->whereIn('result', ['meron', 'wala'])
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->where('status', GameStatus::DONE)
+            ->first();
+    }
+
+    #[\Livewire\Attributes\Computed]
+    public function monthlyRetainedEarnings()
+    {
+        $startOfMonth = Carbon::parse($this->selectedDate)->startOfMonth();
+        $endOfMonth = Carbon::parse($this->selectedDate)->endOfMonth();
+
+        return Bet::query()
+            ->selectRaw('
+                SUM(retained_earnings) as total_retained_earnings
+            ')
+            ->whereBetween('bet_at', [$startOfMonth, $endOfMonth])
+            ->where('status', '!=', BetStatus::OnGoing)
             ->first();
     }
 
@@ -65,8 +82,24 @@ class DailyReportIndex extends Component
                 SUM(earnings) as total_earnings,
                 SUM(draw_earnings) as total_draw_earnings
             ')
-            ->whereStatus('done')
+            ->where('status', GameStatus::DONE)
             ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->first();
+    }
+
+    #[\Livewire\Attributes\Computed]
+    public function dailyRetainedEarnings()
+    {
+        $selectedDate = Carbon::parse($this->selectedDate);
+        $startOfDay = $selectedDate->startOfDay();
+        $endOfDay = $selectedDate->copy()->endOfDay();
+
+        return Bet::query()
+            ->selectRaw('
+                SUM(retained_earnings) as total_retained_earnings
+            ')
+            ->whereBetween('bet_at', [$startOfDay, $endOfDay])
+            ->where('status', '!=', BetStatus::OnGoing)
             ->first();
     }
 
@@ -77,9 +110,11 @@ class DailyReportIndex extends Component
         $startOfDay = $selectedDate->startOfDay();
         $endOfDay = $selectedDate->copy()->endOfDay();
 
+
         return EventGame::query()
             ->selectRaw('SUM(gb_earnings) as total_win_amount')
             ->whereIn('result', ['meron', 'wala'])
+            ->where('status', GameStatus::DONE)
             ->whereBetween('created_at', [$startOfDay, $endOfDay])
             ->first();
     }
@@ -97,6 +132,7 @@ class DailyReportIndex extends Component
                 COUNT(*) as total_bet_count
             ')
             ->whereBetween('bet_at', [$startOfDay, $endOfDay])
+            ->where('status', '!=', BetStatus::OnGoing)
             ->first();
     }
 
@@ -113,7 +149,7 @@ class DailyReportIndex extends Component
                 COUNT(*) as total_withdrawal_amount
             ')
             ->where('is_claimed', true)
-            ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->whereBetween('claimed_at', [$startOfDay, $endOfDay])
             ->first();
     }
 }

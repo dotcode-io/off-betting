@@ -46,6 +46,7 @@ final class DeclareResultJob implements ShouldQueue
                     'result' => $this->result,
                     'win_amount' => DB::raw('bet_amount'),
                     'gb_earnings' => 0,
+                    'retained_earnings' => 0,
                 ]);
 
             return;
@@ -60,6 +61,7 @@ final class DeclareResultJob implements ShouldQueue
                     'status' => BetStatus::Refund,
                     'result' => $this->result,
                     'win_amount' => DB::raw('bet_amount'),
+                    'retained_earnings' => 0,
                 ]);
 
             $drawEarnings = -$game->draw_bets * 8;
@@ -73,6 +75,7 @@ final class DeclareResultJob implements ShouldQueue
                 ->update([
                     'status' => BetStatus::Loser,
                     'result' => $this->result,
+                    'retained_earnings' => 0,
                 ]);
             $drawEarnings = $game->draw_bets;
             $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * (AppSetting::query()->first()->plasada / 100);
@@ -110,6 +113,7 @@ final class DeclareResultJob implements ShouldQueue
                     'status' => BetStatus::Winner,
                     'result' => $this->result,
                     'win_amount' => $resultAmount,
+                    'retained_earnings' => $amount - $resultAmount,
                 ]);
             }
         } while ($bets->count() > 0);
@@ -120,6 +124,6 @@ final class DeclareResultJob implements ShouldQueue
 
     private function roundDown(float|int $amount): float|int
     {
-        return floor(($amount * 100) / 100);
+        return floor($amount / 5) * 5;
     }
 }
