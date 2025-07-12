@@ -22,7 +22,7 @@ final class ClaimTicketAction
      */
     public function handle(Bet $ticket): void
     {
-        if (in_array(config('app.gb_ids'), $ticket->user_id)) {
+        if ($ticket->user_id === 2) {
             throw new Exception('Ghost bet ticket are unclaimable!');
         }
         if ($ticket->is_claimed || $ticket->win_amount <= 0) {
