@@ -15,5 +15,8 @@
         "pusher-js": "^8.4.0",
         "tailwindcss": "^4.0.15",
         "vite": "^6.0"
+    },
+    "dependencies": {
+        "countup.js": "^2.9.0"
     }
 }

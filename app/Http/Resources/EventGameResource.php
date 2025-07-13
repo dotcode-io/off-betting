@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\AppSetting;
 use App\Models\EventGame;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,6 +23,15 @@ final class EventGameResource extends JsonResource
 
         $showOdds = $this->meron_bets > 0 && $this->wala_bets > 0;
 
+        $appSetting = AppSetting::getCache();
+
+        $totalBettors = $this->meron_bettors + $this->wala_bettors;
+        $multiplier = 1;
+
+        if ($totalBettors > 6) {
+            $multiplier = $appSetting->bet_multiplier;
+        }
+
         return [
             'id' => $this->id,
             'game_number' => $this->game_number,
@@ -31,8 +41,11 @@ final class EventGameResource extends JsonResource
             'wala_name' => $this->wala_entry ?? '-',
             'meron_odds' => $showOdds ? number_format((float) $this->meron_odds, 2).'%' : '-',
             'wala_odds' => $showOdds ? number_format((float) $this->wala_odds, 2).'%' : '-',
-            'meron_bets' => number_format((float) $this->meron_bets, 2),
-            'wala_bets' => number_format((float) $this->wala_bets, 2),
+            'meron_amount' => (float) ($this->meron_bets * $multiplier),
+            'wala_amount' => (float) ($this->wala_bets * $multiplier),
+            'draw_amount' => (float) ($this->draw_bets * $multiplier),
+            'meron_bets' => number_format((float) ($this->meron_bets * $multiplier), 2),
+            'wala_bets' => number_format((float) ($this->wala_bets * $multiplier), 2),
             'draw_bets' => number_format((float) $this->draw_bets, 2),
             'meron_bettors' => $this->meron_bettors,
             'wala_bettors' => $this->wala_bettors,
