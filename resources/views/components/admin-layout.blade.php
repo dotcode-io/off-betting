@@ -97,6 +97,7 @@
     @persist('toast')
     <flux:toast position="top right" />
     @endpersist
+    @livewireScriptConfig
     @fluxScripts
 
     @stack('scripts')
