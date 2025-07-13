@@ -57,9 +57,9 @@ final class BetAction
                 //                    $openGame->increment('wala_charge', $event->charge);
                 //                }
 
-                if ($openGame->meron_bets > 20000 && $openGame->meron_odds <= 160) {
-                    throw new Exception('Meron odds is too low');
-                }
+//                if ($openGame->meron_bets > 20000 && $openGame->meron_odds <= 160) {
+//                    throw new Exception('Meron odds is too low');
+//                }
 
                 // increment meron_bets,meron_bettors
 
@@ -83,9 +83,9 @@ final class BetAction
                 //                    $openGame->increment('meron_charge', $event->charge);
                 //                }
 
-                if ($openGame->wala_bets > 20000 && $openGame->wala_odds <= 160) {
-                    throw new Exception('Wala odds is too low');
-                }
+//                if ($openGame->wala_bets > 20000 && $openGame->wala_odds <= 160) {
+//                    throw new Exception('Wala odds is too low');
+//                }
 
                 // increment wala_bets,wala_bettors
                 $openGame->increment('wala_bets', $bettingDataTransferObject->amount);
