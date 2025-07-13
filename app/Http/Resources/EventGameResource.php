@@ -43,7 +43,7 @@ final class EventGameResource extends JsonResource
             'wala_odds' => $showOdds ? number_format((float) $this->wala_odds, 2).'%' : '-',
             'meron_amount' => (float) ($this->meron_bets * $multiplier),
             'wala_amount' => (float) ($this->wala_bets * $multiplier),
-            'draw_amount' => (float) ($this->draw_bets * $multiplier),
+            'draw_amount' => (float) $this->draw_bets,
             'meron_bets' => number_format((float) ($this->meron_bets * $multiplier), 2),
             'wala_bets' => number_format((float) ($this->wala_bets * $multiplier), 2),
             'draw_bets' => number_format((float) $this->draw_bets, 2),
