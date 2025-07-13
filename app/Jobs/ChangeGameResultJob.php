@@ -90,7 +90,10 @@ final class ChangeGameResultJob implements ShouldQueue
                 ->where('user_id', 2)
                 ->sum('bet_amount') * ($game->plasada / 100);
 
-            $gb_earnings = ($gb_win - $game->gb_bets) + ($game->gb_bets * (AppSetting::getCache()->plasada / 100));
+            $gb_win = $this->roundDown($gb_win);
+
+            $gb_earnings = ($gb_win - $game->gb_bets) + ($game->gb_bets * ($game->plasada / 100));
+
 
         }
 

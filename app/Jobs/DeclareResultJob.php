@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final class DeclareResultJob implements ShouldQueue
 {
@@ -78,15 +79,25 @@ final class DeclareResultJob implements ShouldQueue
                     'retained_earnings' => 0,
                 ]);
             $drawEarnings = $game->draw_bets;
-            $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * (AppSetting::getCache()->plasada / 100);
+            $earnings = ($game->meron_bets + $game->wala_bets - $game->gb_bets) * ($game->plasada / 100);
             $gb_win = Bet::query()->where('event_game_id', $this->gameId)
                 ->where('side', $this->result->side())
                 ->where('result', GameResult::PENDING)
                 ->where('status', BetStatus::OnGoing)
                 ->where('user_id', 2)
-                ->sum('bet_amount') * ($game->plasada / 100);
+                ->sum('bet_amount') * ($this->odds / 100);
 
-            $gb_earnings = ($gb_win - $game->gb_bets) + ($game->gb_bets * (AppSetting::getCache()->plasada / 100));
+            $gb_win = $this->roundDown($gb_win);
+
+            $gb_earnings = ($gb_win - $game->gb_bets) + ($game->gb_bets * ($game->plasada / 100));
+
+            Log::info('gb data', [
+                'gb_win' => $gb_win,
+                'gb_bets' => $game->gb_bets,
+                'plasada' => $game->plasada,
+                'gb_earnings' => $gb_earnings,
+                'plasda_earnings' => ($game->gb_bets * ($game->plasada / 100)),
+            ]);
 
         }
 

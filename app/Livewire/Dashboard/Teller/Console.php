@@ -71,6 +71,7 @@ final class Console extends Component
         try {
             if (! $lock->get()) {
                 $this->addError('betForm.amount', 'Another betting request is currently being processed. Please wait and try again.');
+
                 return;
             }
 
@@ -90,7 +91,9 @@ final class Console extends Component
 
             Flux::toast('Bet placed successfully! Please wait the receipt', variant: 'success');
 
-            Flux::modal('print-bet')->show();
+            if (Auth::id() !== 2) {
+                Flux::modal('print-bet')->show();
+            }
 
             $this->dispatch('bet-placed');
         } catch (Throwable $ex) {
